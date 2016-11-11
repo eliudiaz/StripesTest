@@ -24,9 +24,9 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationError;
+import org.ms.rrhh.action.exceptions.StripesValidationException;
 import org.ms.rrhh.dao.UsuariosDao;
 import org.ms.rrhh.dao.dto.UsuarioDto;
-import org.springframework.util.DigestUtils;
 
 @UrlBinding("/Login.htm")
 public class LoginActionBean extends BaseActionBean {
@@ -54,18 +54,20 @@ public class LoginActionBean extends BaseActionBean {
         try {
             usuario = usuariosRepo.doLogin(username, password);
         } catch (Exception e) {
-            getContext().getValidationErrors().add("username", new SimpleError(e.getMessage(), new Object[]{}));
+            if (e instanceof StripesValidationException) {
+                for (ValidationError ve : ((StripesValidationException) e).getErrors()) {
+                    getContext().getValidationErrors().add("username", ve);
+                }
+            } else {
+                getContext().getValidationErrors().add("username", new SimpleError(e.getMessage(), new Object[]{}));
+            }
+
             return getContext().getSourcePageResolution();
         }
         ValidationError error = new SimpleError("Error usuario invalido", new Object[]{});//new LocalizableError("usernameDoesNotExist");
         if (usuario == null) {
             getContext().getValidationErrors().add("username", error);
             return getContext().getSourcePageResolution();
-        } else {
-            if (!usuario.getClave().equals(new String(DigestUtils.md5Digest(password.getBytes())))) {
-                getContext().getValidationErrors().add("username", error);
-                return getContext().getSourcePageResolution();
-            }
         }
         System.out.println("reading >>  " + username + " >> " + password);
         return new ForwardResolution(HomeActionBean.class);
