@@ -24,7 +24,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 /**
  *
@@ -63,7 +62,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         }
         UsuarioDtoConverter bc;
         final Usuario r = (bc = new UsuarioDtoConverter()).toEntity(request);
-        r.setClave(new String(DigestUtils.md5Digest(request.getClave().getBytes())));
+        r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
         r.setFkRole(role);
         r.setId(request.getUsuario());

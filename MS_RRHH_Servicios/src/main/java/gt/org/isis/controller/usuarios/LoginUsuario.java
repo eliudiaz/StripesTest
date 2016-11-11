@@ -34,7 +34,6 @@ public class LoginUsuario {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public HttpEntity crear(@RequestBody @Valid UsuarioLoginDto usuario) {
-        handler.handle(usuario);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(handler.handle(usuario), HttpStatus.OK);
     }
 }
