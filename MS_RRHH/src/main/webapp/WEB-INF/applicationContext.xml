@@ -13,39 +13,6 @@
     <!--  tell spring to use annotation based congfigurations -->
     <context:annotation-config  />
     <context:component-scan base-package="org.ms.*" />
-    <bean id="entityManagerFactory"
-          class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="ms_rrhh" />
-    </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" >
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="jsonConverter" />
-                <!--<ref bean="marshallingConverter" />-->
-                <!--<ref bean="atomConverter" />-->
-            </list>
-        </property>
-    </bean>
-
-    <bean id="jsonConverter"
-          class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
-        <property name="supportedMediaTypes" value="application/json" />
-    </bean>
-    <bean id="restTemplate"
-          class="org.springframework.web.client.RestTemplate">
-        <property name="messageConverters">
-            <list>
-                <!--<ref bean="marshallingConverter" />-->
-                <!--<ref bean="atomConverter"  />-->
-                <ref bean="jsonConverter" />
-            </list>
-        </property>
-    </bean>
-    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
-    <tx:jta-transaction-manager/>
 
 </beans>
