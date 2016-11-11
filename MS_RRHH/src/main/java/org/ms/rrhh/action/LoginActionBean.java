@@ -25,7 +25,7 @@ import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationError;
 import org.ms.rrhh.dao.UsuariosDao;
-import org.ms.rrhh.domain.model.Usuario;
+import org.ms.rrhh.dao.dto.UsuarioDto;
 import org.springframework.util.DigestUtils;
 
 @UrlBinding("/Login.htm")
@@ -49,7 +49,7 @@ public class LoginActionBean extends BaseActionBean {
     }
 
     public Resolution login() {
-        Usuario usuario = usuariosRepo.getOne(username);
+        UsuarioDto usuario = usuariosRepo.doLogin(username);
         ValidationError error = new SimpleError("Error usuario invalido", new Object[]{});//new LocalizableError("usernameDoesNotExist");
         if (usuario == null) {
             getContext().getValidationErrors().add("username", error);
