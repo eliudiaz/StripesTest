@@ -5,10 +5,13 @@
  */
 package org.ms.rrhh.dao.dto;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author edcracken
  */
+@XmlRootElement
 public class UsuarioDto {
 
     private String usuario;
