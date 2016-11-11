@@ -62,7 +62,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         p.setEdad(Years.yearsBetween(LocalDate.fromDateFields(p.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
         EntitiesHelper.setDateCreateRef(p);
-        repo.saveAndFlush(p);
+        final Persona pp = repo.saveAndFlush(p);
 
         p.setIdiomaCollection(new ArrayList<Idioma>());
         p.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
@@ -70,7 +70,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
             @Override
             public Idioma apply(IdiomaDto f) {
                 Idioma i = new IdiomaDtoConverter().toEntity(f);
-                i.setFkPersona(p);
+                i.setFkPersona(pp);
                 i.setCreadoPor(p.getCreadoPor());
                 EntitiesHelper.setDateCreateRef(i);
                 return i;
@@ -81,7 +81,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         p.setRegistroAcademicoCollection(
                 Arrays.asList(
                         ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico())));
-        ra.setFkPersona(p);
+        ra.setFkPersona(pp);
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(ra);
@@ -92,7 +92,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                 Arrays.asList(rl)
         );
         rl.setEstado(EstadoVariable.ACTUAL);
-        rl.setFkPersona(p);
+        rl.setFkPersona(pp);
         rl.setCreadoPor(p.getCreadoPor());
         rl.setPuestoCollection(new ArrayList<Puesto>(Collections2.transform(r.getRegistroLaboral().getPuestos(),
                 new Function<RegistroLaboralPuestoDto, Puesto>() {
@@ -115,14 +115,14 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     public EstudioSalud apply(EstudioSaludDto f) {
                         EstudioSalud es = new EstudiosSaludConverter()
                                 .toEntity(f);
-                        es.setFkPersona(p);
+                        es.setFkPersona(pp);
                         es.setCreadoPor(p.getCreadoPor());
                         return es;
                     }
                 }));
         Dpi dpi;
         p.setDpiCollection(Arrays.asList(dpi = new DpiDtoConverter().toEntity(r.getDpi())));
-        dpi.setFkPersona(p);
+        dpi.setFkPersona(pp);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
@@ -131,12 +131,12 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         p.setLugarResidenciaCollection(Arrays.asList(
                 lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia())
         ));
-        lr.setFkPersona(p);
+        lr.setFkPersona(pp);
         lr.setEstado(EstadoVariable.ACTUAL);
         lr.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(lr);
 
-        repo.saveAndFlush(p);
+        repo.saveAndFlush(pp);
         return true;
     }
 
