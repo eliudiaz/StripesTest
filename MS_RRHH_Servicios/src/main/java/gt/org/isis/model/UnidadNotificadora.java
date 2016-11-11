@@ -5,7 +5,6 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -40,8 +39,8 @@ public class UnidadNotificadora implements Serializable {
     private String valor;
     @Column(length = 50)
     private String tipo;
-    @Column(length = 50)
-    private Estado estado;
+//    @Column(length = 50)
+//    private Estado estado;
     @Column(name = "codigo_padre")
     private Integer codigoPadre;
     @Basic(optional = false)
@@ -91,14 +90,6 @@ public class UnidadNotificadora implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 
     public Integer getCodigoPadre() {

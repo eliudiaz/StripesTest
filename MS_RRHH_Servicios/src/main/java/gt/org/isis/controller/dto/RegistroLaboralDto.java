@@ -6,6 +6,7 @@
 package gt.org.isis.controller.dto;
 
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -14,15 +15,33 @@ import java.util.List;
 public class RegistroLaboralDto {
 
     private Integer id;
+    @NotNull
     private Integer anioIngreso;
-    private Integer fkExpectativa;
-    private String descripcionExpectativa;
-    private Integer fkCalificacionServicio;
-    private String descripcionCalificacionServicio;
+    @NotNull
     private Boolean comisionado;
+    @NotNull
+    private Integer fkExpectativa;
     private Integer fkComunidadComisionado;
     private String nombreComunidadComisionado;
+    @NotNull
+    private List<RegistroLaboralPuestoDto> puestos;
     private List<RegistroLaboralDto> historial;
+
+    public Integer getFkExpectativa() {
+        return fkExpectativa;
+    }
+
+    public void setFkExpectativa(Integer fkExpectativa) {
+        this.fkExpectativa = fkExpectativa;
+    }
+
+    public List<RegistroLaboralPuestoDto> getPuestos() {
+        return puestos;
+    }
+
+    public void setPuestos(List<RegistroLaboralPuestoDto> puestos) {
+        this.puestos = puestos;
+    }
 
     public List<RegistroLaboralDto> getHistorial() {
         return historial;
@@ -40,22 +59,6 @@ public class RegistroLaboralDto {
         this.nombreComunidadComisionado = nombreComunidadComisionado;
     }
 
-    public String getDescripcionExpectativa() {
-        return descripcionExpectativa;
-    }
-
-    public void setDescripcionExpectativa(String descripcionExpectativa) {
-        this.descripcionExpectativa = descripcionExpectativa;
-    }
-
-    public String getDescripcionCalificacionServicio() {
-        return descripcionCalificacionServicio;
-    }
-
-    public void setDescripcionCalificacionServicio(String descripcionCalificacionServicio) {
-        this.descripcionCalificacionServicio = descripcionCalificacionServicio;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -70,22 +73,6 @@ public class RegistroLaboralDto {
 
     public void setAnioIngreso(Integer anioIngreso) {
         this.anioIngreso = anioIngreso;
-    }
-
-    public Integer getFkExpectativa() {
-        return fkExpectativa;
-    }
-
-    public void setFkExpectativa(Integer fkExpectativa) {
-        this.fkExpectativa = fkExpectativa;
-    }
-
-    public Integer getFkCalificacionServicio() {
-        return fkCalificacionServicio;
-    }
-
-    public void setFkCalificacionServicio(Integer fkCalificacionServicio) {
-        this.fkCalificacionServicio = fkCalificacionServicio;
     }
 
     public Boolean getComisionado() {

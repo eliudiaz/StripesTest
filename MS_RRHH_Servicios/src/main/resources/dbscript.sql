@@ -1,5 +1,3 @@
-
-
 -- Table: role
 
 -- DROP TABLE role;
@@ -25,7 +23,7 @@ WITH (
 
 CREATE TABLE acceso
 (
-  id serial NOT NULL,
+   id serial NOT NULL,
   valor character varying(50),
   tipo character varying(50),
   estado character varying(50),
@@ -43,7 +41,7 @@ WITH (
 
 CREATE TABLE acceso_role
 (
-  id serial NOT NULL,
+    id serial NOT NULL,
   fk_acceso integer NOT NULL,
   fk_role integer NOT NULL,
   fecha_creacion timestamp with time zone NOT NULL,
@@ -69,7 +67,7 @@ WITH (
 
 CREATE TABLE usuario
 (
-  id character varying(100) NOT NULL,
+   id character varying(100) NOT NULL,
   correo character varying(100),
   fk_persona character varying(50),
   fk_role integer NOT NULL,
@@ -95,7 +93,7 @@ WITH (
 
 CREATE TABLE area_geografica
 (
-  id serial NOT NULL,
+ id serial NOT NULL,
   valor character varying(500),
   tipo character varying(50),
   estado character varying(50),
@@ -116,7 +114,7 @@ WITH (
 
 CREATE TABLE catalogos
 (
-  id serial NOT NULL,
+   id serial NOT NULL,
   valor character varying(500),
   tipo character varying(50),
   estado character varying(50),
@@ -138,7 +136,7 @@ WITH (
 
 CREATE TABLE persona
 (
-  cui character varying(50) NOT NULL,
+   cui character varying(50) NOT NULL,
   primer_nombre character varying(100) NOT NULL,
   segundo_nombre character varying(100),
   otros_nombres text,
@@ -173,6 +171,7 @@ CREATE TABLE persona
   creado_por character varying(50) NOT NULL,
   fecha_ultimo_cambio timestamp with time zone,
   ultimo_cambio_por character varying(50),
+  edad integer NOT NULL,
   CONSTRAINT persona_pkey PRIMARY KEY (cui)
 )
 WITH (
@@ -215,7 +214,7 @@ CREATE TABLE estudio_salud
 (
   id serial NOT NULL,
   anio_estudio integer,
-  fk_persona character varying(50),
+  fk_persona character varying(50) NOT NULL,
   fecha_creacion timestamp with time zone NOT NULL,
   creado_por character varying(50),
   fecha_ultimo_cambio timestamp with time zone,
@@ -235,8 +234,8 @@ WITH (
 
 CREATE TABLE historico_persona
 (
-  id serial NOT NULL,
-  fk_persona character varying(50),
+ id serial NOT NULL,
+  fk_persona character varying(50) NOT NULL,
   primer_nombre character varying(100) NOT NULL,
   segundo_nombre character varying(100),
   otros_nombres text,
@@ -269,6 +268,7 @@ CREATE TABLE historico_persona
   huella_dedo_izq character varying(50),
   fecha_creacion timestamp with time zone NOT NULL,
   creado_por character varying(50) NOT NULL,
+  edad integer NOT NULL,
   CONSTRAINT historico_persona_pkey PRIMARY KEY (id),
   CONSTRAINT historico_persona_fk_persona_fkey FOREIGN KEY (fk_persona)
       REFERENCES persona (cui) MATCH SIMPLE
@@ -284,10 +284,9 @@ WITH (
 
 CREATE TABLE idioma
 (
-  id serial NOT NULL,
-  estado character varying(50),
+   id serial NOT NULL,
   fk_idioma integer NOT NULL, -- Catalogo tipo IDIOMAS
-  fk_persona character varying(50),
+  fk_persona character varying(50) NOT NULL,
   fecha_creacion timestamp with time zone NOT NULL,
   creado_por character varying(50),
   fecha_ultimo_cambio timestamp with time zone,
@@ -309,9 +308,9 @@ COMMENT ON COLUMN idioma.fk_idioma IS 'Catalogo tipo IDIOMAS';
 
 CREATE TABLE lugar_residencia
 (
-  id serial NOT NULL,
+ id serial NOT NULL,
   fk_municipio integer, -- Catalogo tipo MUNICIPIOS
-  fk_persona character varying(50),
+  fk_persona character varying(50) NOT NULL,
   estado character varying(50),
   direccion text,
   fecha_creacion timestamp with time zone NOT NULL,
@@ -382,8 +381,7 @@ CREATE TABLE registro_laboral
   id serial NOT NULL,
   anio_ingreso integer,
   fk_expectativa integer, -- Catalogo tipo EXPECTATIVAS
-  fk_persona character varying(50),
-  fk_calificacion_servicio integer, -- Catalogo tipo CALIFICACION_SERVICIO
+  fk_persona character varying(50) NOT NULL,
   comisionado boolean,
   fk_comunidad_comisionado integer, -- Catalogo tipo AREA_GEOGRAFICA
   estado character varying(50),
@@ -400,7 +398,6 @@ WITH (
   OIDS=FALSE
 );
 COMMENT ON COLUMN registro_laboral.fk_expectativa IS 'Catalogo tipo EXPECTATIVAS';
-COMMENT ON COLUMN registro_laboral.fk_calificacion_servicio IS 'Catalogo tipo CALIFICACION_SERVICIO';
 COMMENT ON COLUMN registro_laboral.fk_comunidad_comisionado IS 'Catalogo tipo AREA_GEOGRAFICA';
 
 -- Table: puesto
@@ -409,8 +406,7 @@ COMMENT ON COLUMN registro_laboral.fk_comunidad_comisionado IS 'Catalogo tipo AR
 
 CREATE TABLE puesto
 (
-  id serial NOT NULL,
-  puesto_funcional character varying(50),
+ id serial NOT NULL,
   tipo character varying(50),
   fk_puesto_nominal integer,
   fk_registro_laboral integer,
@@ -419,6 +415,8 @@ CREATE TABLE puesto
   creado_por character varying(50),
   fecha_ultimo_cambio timestamp with time zone,
   ultimo_cambio_por character varying(50),
+  fk_puesto_funcional integer,
+  fk_clasificacin_servicio integer,
   CONSTRAINT puesto_pkey PRIMARY KEY (id),
   CONSTRAINT puesto_fk_registro_laboral_fkey FOREIGN KEY (fk_registro_laboral)
       REFERENCES registro_laboral (id) MATCH SIMPLE
@@ -447,7 +445,7 @@ WITH (
 
 CREATE TABLE unidad_ejecutora
 (
-  id serial NOT NULL,
+   id serial NOT NULL,
   nombre character varying(500),
   estado character varying(50),
   fecha_creacion timestamp with time zone NOT NULL,

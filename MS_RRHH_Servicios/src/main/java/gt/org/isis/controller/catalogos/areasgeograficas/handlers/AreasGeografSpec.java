@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.catalogos.areasgeograficas.handlers;
 
-import gt.org.isis.api.SpecificationBuilder;
+import gt.org.isis.api.jpa.SpecificationBuilder;
 import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;

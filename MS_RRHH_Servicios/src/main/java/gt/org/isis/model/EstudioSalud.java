@@ -39,6 +39,8 @@ public class EstudioSalud implements Serializable, CustomEntity {
     private Integer id;
     @Column(name = "anio_estudio")
     private Integer anioEstudio;
+    @Column(name = "fk_estudio_salud")
+    private Integer fkEstudioSalud;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -65,6 +67,14 @@ public class EstudioSalud implements Serializable, CustomEntity {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public Integer getFkEstudioSalud() {
+        return fkEstudioSalud;
+    }
+
+    public void setFkEstudioSalud(Integer fkEstudioSalud) {
+        this.fkEstudioSalud = fkEstudioSalud;
     }
 
     public Integer getId() {

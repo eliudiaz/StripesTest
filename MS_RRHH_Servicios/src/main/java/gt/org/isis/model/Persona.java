@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -64,7 +66,7 @@ public class Persona implements Serializable, CustomEntity {
     private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
-    private Integer fkProfesion;
+    private String fkProfesion;
     @Column(name = "limitaciones_fisicas")
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
@@ -75,6 +77,8 @@ public class Persona implements Serializable, CustomEntity {
     @Column(name = "fecha_nacimiento", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
+    @Column(name = "edad")
+    private Integer edad;
     @Column(name = "fk_municipio_nacimiento")
     private Integer fkMunicipioNacimiento;
     @Column(name = "nac_no_libro")
@@ -87,7 +91,7 @@ public class Persona implements Serializable, CustomEntity {
     @Enumerated(EnumType.STRING)
     private Pueblo fkPueblo;
     @Column(name = "fk_comunidad_linguistica")
-    private String fkComunidadLinguistica;
+    private Integer fkComunidadLinguistica;
     @Column(length = 2147483647)
     private String mrz;
     @Column(name = "no_cedula")
@@ -119,19 +123,28 @@ public class Persona implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @Column(name = "foto")
+    private String foto;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Idioma> idiomaCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<RegistroAcademico> registroAcademicoCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<HistoricoPersona> historicoPersonaCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<EstudioSalud> estudioSaludCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<RegistroLaboral> registroLaboralCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<LugarResidencia> lugarResidenciaCollection;
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.PERSIST)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Dpi> dpiCollection;
 
     public Persona() {
@@ -141,15 +154,16 @@ public class Persona implements Serializable, CustomEntity {
         this.cui = cui;
     }
 
-    public Persona(String cui, String primerNombre, String primerApellido, Integer fkNacionalidad, Integer fkProfesion, Date fechaNacimiento, Date fechaCreacion, String creadoPor) {
-        this.cui = cui;
-        this.primerNombre = primerNombre;
-        this.primerApellido = primerApellido;
-        this.fkNacionalidad = fkNacionalidad;
-        this.fkProfesion = fkProfesion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.creadoPor = creadoPor;
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Date getFechaUltimoCambio() {
+        return fechaUltimoCambio;
     }
 
     public String getUltimoCambioPor() {
@@ -186,6 +200,14 @@ public class Persona implements Serializable, CustomEntity {
 
     public String getPrimerNombre() {
         return primerNombre;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
     public void setPrimerNombre(String primerNombre) {
@@ -256,11 +278,11 @@ public class Persona implements Serializable, CustomEntity {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public Integer getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(Integer fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 
@@ -328,11 +350,11 @@ public class Persona implements Serializable, CustomEntity {
         this.nacNoPartida = nacNoPartida;
     }
 
-    public String getFkComunidadLinguistica() {
+    public Integer getFkComunidadLinguistica() {
         return fkComunidadLinguistica;
     }
 
-    public void setFkComunidadLinguistica(String fkComunidadLinguistica) {
+    public void setFkComunidadLinguistica(Integer fkComunidadLinguistica) {
         this.fkComunidadLinguistica = fkComunidadLinguistica;
     }
 

@@ -7,7 +7,6 @@ package gt.org.isis.controller.dto;
 
 import gt.org.isis.model.enums.CampoBusquedaAvanzada;
 import gt.org.isis.model.enums.ComparadorBusqueda;
-import gt.org.isis.model.enums.TipoCampoBusqueda;
 
 /**
  *
@@ -17,7 +16,6 @@ public class FiltroAvanzadoDto {
 
     private CampoBusquedaAvanzada campo;
     private ComparadorBusqueda comparador;
-    private TipoCampoBusqueda tipoDato;
     private String valor1;
     private String valor2;
 
@@ -43,14 +41,6 @@ public class FiltroAvanzadoDto {
 
     public void setValor2(String valor2) {
         this.valor2 = valor2;
-    }
-
-    public TipoCampoBusqueda getTipoDato() {
-        return tipoDato;
-    }
-
-    public void setTipoDato(TipoCampoBusqueda tipoDato) {
-        this.tipoDato = tipoDato;
     }
 
     public ComparadorBusqueda getComparador() {

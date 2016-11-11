@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,7 +35,7 @@ import javax.persistence.TemporalType;
 @Table(name = "registro_laboral", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "RegistroLaboral.findAll", query = "SELECT r FROM RegistroLaboral r")})
-public class RegistroLaboral implements Serializable, CustomEntity {
+public class RegistroLaboral implements Serializable, CustomEntity, PersonaChildEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,8 +47,6 @@ public class RegistroLaboral implements Serializable, CustomEntity {
     private Integer anioIngreso;
     @Column(name = "fk_expectativa")
     private Integer fkExpectativa;
-    @Column(name = "fk_calificacion_servicio")
-    private Integer fkCalificacionServicio;
     private Boolean comisionado;
     @Column(name = "fk_comunidad_comisionado")
     private Integer fkComunidadComisionado;
@@ -74,7 +73,7 @@ public class RegistroLaboral implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
-    @OneToMany(mappedBy = "fkRegistroLaboral")
+    @OneToMany(mappedBy = "fkRegistroLaboral", cascade = CascadeType.ALL)
     private Collection<Puesto> puestoCollection;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
@@ -115,14 +114,6 @@ public class RegistroLaboral implements Serializable, CustomEntity {
 
     public void setFkExpectativa(Integer fkExpectativa) {
         this.fkExpectativa = fkExpectativa;
-    }
-
-    public Integer getFkCalificacionServicio() {
-        return fkCalificacionServicio;
-    }
-
-    public void setFkCalificacionServicio(Integer fkCalificacionServicio) {
-        this.fkCalificacionServicio = fkCalificacionServicio;
     }
 
     public Boolean getComisionado() {

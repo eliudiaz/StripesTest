@@ -28,13 +28,13 @@ public class ExceptionsManager {
         }));
     }
 
-    public static RuntimeException newNotFound() {
-        return new NotFoundException();
-    }
-
     protected static ValidationError splitError(String error) {
         String[] e = error.split(",");
         return new ValidationError(e[0], e.length > 1 ? e[1] : error);
+    }
+
+    public static RuntimeException newNotFound() {
+        return new NotFoundException();
     }
 
 }

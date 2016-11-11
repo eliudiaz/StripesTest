@@ -24,7 +24,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 /**
  *
@@ -42,6 +41,10 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
 
     @Override
     public UsuarioDto execute(final UsuarioDto request) {
+        if (request.getUsuario() == null) {
+            throw ExceptionsManager.newValidationException("invalid_user",
+                    new String[]{"usuario,Usuario es requerido!"});
+        }
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
@@ -50,16 +53,16 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         });
         if (!ls.isEmpty()) {
             throw ExceptionsManager.newValidationException("already_exits",
-                    new String[]{"user_id,Usuario ya existe!"});
+                    new String[]{"usuario,Usuario ya existe!"});
         }
         Role role = roles.findOne(request.getRoleId());
         if (isNull(role)) {
             throw ExceptionsManager.newValidationException("invalid_role",
-                    new String[]{"role_id,Role es invalido o no existe"});
+                    new String[]{"role,Role es invalido o no existe"});
         }
         UsuarioDtoConverter bc;
         final Usuario r = (bc = new UsuarioDtoConverter()).toEntity(request);
-        r.setClave(new String(DigestUtils.md5Digest(request.getClave().getBytes())));
+        r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
         r.setFkRole(role);
         r.setId(request.getUsuario());

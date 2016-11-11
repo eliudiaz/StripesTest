@@ -53,7 +53,7 @@ public class LugarResidencia implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
-    @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
+    @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne
     private Persona fkPersona;
 

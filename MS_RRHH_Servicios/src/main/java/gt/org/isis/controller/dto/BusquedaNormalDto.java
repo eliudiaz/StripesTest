@@ -8,10 +8,11 @@ package gt.org.isis.controller.dto;
 import gt.org.isis.model.enums.Pueblo;
 import gt.org.isis.model.enums.Sexo;
 import java.util.Date;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
- * @author eliud
+ * @author ecracken
  */
 public class BusquedaNormalDto {
 
@@ -27,6 +28,15 @@ public class BusquedaNormalDto {
     private Integer municipio;
     private String direccion;
     private Pueblo pueblo;
+    private Pageable pageable;
+
+    public Pageable getPageable() {
+        return pageable;
+    }
+
+    public void setPageable(Pageable pageable) {
+        this.pageable = pageable;
+    }
 
     public String getSegundoApellido() {
         return segundoApellido;

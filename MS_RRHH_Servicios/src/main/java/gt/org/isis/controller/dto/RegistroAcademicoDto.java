@@ -18,21 +18,66 @@ public class RegistroAcademicoDto {
     private Integer id;
     @NotNull
     private Integer ultimoGrado;
+    private String nombreUltimoGrado;
+    private Integer nivelUltimoGrado;
+    private String nivelUltimoGradoNombre;
     @NotNull
     private Boolean estudiaActualmente;
     @NotNull
     private Integer gradoActual;
-    private String nobmreGradoActual;
+    private String nombreGradoActual;
+    private Integer nivelGradoActual;
+    private String nivelGradoActualNombre;
     private Date fechaCreacion;
     private String creadoPor;
     private List<RegistroAcademicoDto> historial;
 
-    public String getNobmreGradoActual() {
-        return nobmreGradoActual;
+    public String getNivelUltimoGradoNombre() {
+        return nivelUltimoGradoNombre;
     }
 
-    public void setNobmreGradoActual(String nobmreGradoActual) {
-        this.nobmreGradoActual = nobmreGradoActual;
+    public void setNivelUltimoGradoNombre(String nivelUltimoGradoNombre) {
+        this.nivelUltimoGradoNombre = nivelUltimoGradoNombre;
+    }
+
+    public String getNivelGradoActualNombre() {
+        return nivelGradoActualNombre;
+    }
+
+    public void setNivelGradoActualNombre(String nivelGradoActualNombre) {
+        this.nivelGradoActualNombre = nivelGradoActualNombre;
+    }
+
+    public Integer getNivelUltimoGrado() {
+        return nivelUltimoGrado;
+    }
+
+    public void setNivelUltimoGrado(Integer nivelUltimoGrado) {
+        this.nivelUltimoGrado = nivelUltimoGrado;
+    }
+
+    public Integer getNivelGradoActual() {
+        return nivelGradoActual;
+    }
+
+    public void setNivelGradoActual(Integer nivelGradoActual) {
+        this.nivelGradoActual = nivelGradoActual;
+    }
+
+    public String getNombreUltimoGrado() {
+        return nombreUltimoGrado;
+    }
+
+    public void setNombreUltimoGrado(String nombreUltimoGrado) {
+        this.nombreUltimoGrado = nombreUltimoGrado;
+    }
+
+    public String getNombreGradoActual() {
+        return nombreGradoActual;
+    }
+
+    public void setNombreGradoActual(String nombreGradoActual) {
+        this.nombreGradoActual = nombreGradoActual;
     }
 
     public Integer getId() {

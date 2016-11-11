@@ -5,6 +5,10 @@
  */
 package gt.org.isis.model;
 
+import gt.org.isis.model.enums.Estado;
+import gt.org.isis.model.enums.EstadoCivil;
+import gt.org.isis.model.enums.Pueblo;
+import gt.org.isis.model.enums.Sexo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -53,16 +57,16 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String otrosApellidos;
     @Column(name = "apellido_casada", length = 100)
     private String apellidoCasada;
-    @Column(name = "estado_civil", length = 50)
-    private String estadoCivil;
+    @Column(name = "estado_civil")
+    private EstadoCivil estadoCivil;
     @Column(length = 50)
-    private String sexo;
+    private Sexo sexo;
     @Basic(optional = false)
     @Column(name = "fk_nacionalidad", nullable = false)
-    private int fkNacionalidad;
+    private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
-    private int fkProfesion;
+    private String fkProfesion;
     @Column(name = "limitaciones_fisicas", length = 2147483647)
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
@@ -75,22 +79,22 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private Date fechaNacimiento;
     @Column(name = "fk_municipio_nacimiento")
     private Integer fkMunicipioNacimiento;
-    @Column(name = "nac_no_libro", length = 50)
+    @Column(name = "nac_no_libro")
     private String nacNoLibro;
-    @Column(name = "nac_no_folio", length = 50)
+    @Column(name = "nac_no_folio")
     private String nacNoFolio;
-    @Column(name = "nac_no_partida", length = 50)
+    @Column(name = "nac_no_partida")
     private String nacNoPartida;
-    @Column(name = "fk_pueblo", length = 50)
-    private String fkPueblo;
-    @Column(name = "fk_comunidad_linguistica", length = 50)
-    private String fkComunidadLinguistica;
-    @Column(length = 2147483647)
+    @Column(name = "fk_pueblo")
+    private Pueblo fkPueblo;
+    @Column(name = "fk_comunidad_linguistica")
+    private Integer fkComunidadLinguistica;
+    @Column
     private String mrz;
-    @Column(name = "no_cedula", length = 50)
+    @Column(name = "no_cedula")
     private String noCedula;
     @Column(length = 50)
-    private String estado;
+    private Estado estado;
     @Column(name = "fk_municipio_cedula")
     private Integer fkMunicipioCedula;
     @Column(name = "fk_municipio_vecindad")
@@ -99,20 +103,24 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private Boolean huellaManoDer;
     @Column(name = "huella_mano_izq")
     private Boolean huellaManoIzq;
-    @Column(name = "huella_dedo_der", length = 50)
+    @Column(name = "huella_dedo_der")
     private String huellaDedoDer;
-    @Column(name = "huella_dedo_izq", length = 50)
+    @Column(name = "huella_dedo_izq")
     private String huellaDedoIzq;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Basic(optional = false)
-    @Column(name = "creado_por", nullable = false, length = 50)
+    @Column(name = "creado_por", nullable = false)
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
     private Persona fkPersona;
+    @Column(name = "edad", nullable = false)
+    private Integer edad;
+    @Column(name = "foto")
+    private String foto;
 
     public HistoricoPersona() {
     }
@@ -121,15 +129,52 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public HistoricoPersona(Integer id, String primerNombre, String primerApellido, int fkNacionalidad, int fkProfesion, Date fechaNacimiento, Date fechaCreacion, String creadoPor) {
-        this.id = id;
-        this.primerNombre = primerNombre;
-        this.primerApellido = primerApellido;
-        this.fkNacionalidad = fkNacionalidad;
-        this.fkProfesion = fkProfesion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.creadoPor = creadoPor;
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Pueblo getFkPueblo() {
+        return fkPueblo;
+    }
+
+    public void setFkPueblo(Pueblo fkPueblo) {
+        this.fkPueblo = fkPueblo;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
+
+    public EstadoCivil getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -196,22 +241,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.apellidoCasada = apellidoCasada;
     }
 
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
     public int getFkNacionalidad() {
         return fkNacionalidad;
     }
@@ -220,11 +249,11 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public int getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(int fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 
@@ -292,19 +321,11 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.nacNoPartida = nacNoPartida;
     }
 
-    public String getFkPueblo() {
-        return fkPueblo;
-    }
-
-    public void setFkPueblo(String fkPueblo) {
-        this.fkPueblo = fkPueblo;
-    }
-
-    public String getFkComunidadLinguistica() {
+    public Integer getFkComunidadLinguistica() {
         return fkComunidadLinguistica;
     }
 
-    public void setFkComunidadLinguistica(String fkComunidadLinguistica) {
+    public void setFkComunidadLinguistica(Integer fkComunidadLinguistica) {
         this.fkComunidadLinguistica = fkComunidadLinguistica;
     }
 
@@ -322,14 +343,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
 
     public void setNoCedula(String noCedula) {
         this.noCedula = noCedula;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public Integer getFkMunicipioCedula() {

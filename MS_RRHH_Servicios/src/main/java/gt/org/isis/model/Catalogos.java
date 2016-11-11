@@ -5,6 +5,7 @@
  */
 package gt.org.isis.model;
 
+import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -35,8 +36,8 @@ public class Catalogos implements Serializable {
     private String valor;
     @Column(length = 50)
     private String tipo;
-    @Column(length = 50)
-    private String estado;
+//    @Column(length = 50)
+//    private Estado estado;
     @Column(name = "codigo_padre")
     private Integer codigoPadre;
     @Basic(optional = false)
@@ -88,14 +89,13 @@ public class Catalogos implements Serializable {
         this.tipo = tipo;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
+//    public Estado getEstado() {
+//        return estado;
+//    }
+//
+//    public void setEstado(Estado estado) {
+//        this.estado = estado;
+//    }
     public Integer getCodigoPadre() {
         return codigoPadre;
     }

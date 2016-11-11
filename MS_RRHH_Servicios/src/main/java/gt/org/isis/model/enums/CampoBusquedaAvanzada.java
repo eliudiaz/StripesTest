@@ -16,6 +16,7 @@ public enum CampoBusquedaAvanzada {
 
     UNIDAD_EJECUTORA("unidad_ejecutora"),
     PUESTO_NOMINAL("puesto_nominal"),
+    PUESTO_FUNCIONAL("puesto_funcional"),
     REGLON("renglon"),
     CLASIFICACION_SERVICIO("clasificacion_servicio"),
     ANIO_INGRESO("anio_ingreso");

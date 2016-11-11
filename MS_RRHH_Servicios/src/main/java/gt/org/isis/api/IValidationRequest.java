@@ -12,5 +12,7 @@ package gt.org.isis.api;
  */
 public interface IValidationRequest<T> {
 
-    public void validate(T parameter, ValidationRequestContext ctx);
+    public abstract void checkType(T parameter, ValidationRequestContext ctx);
+
+    public abstract void validate(T parameter, ValidationRequestContext ctx);
 }

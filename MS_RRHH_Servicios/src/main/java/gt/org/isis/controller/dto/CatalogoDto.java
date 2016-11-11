@@ -5,6 +5,7 @@
  */
 package gt.org.isis.controller.dto;
 
+import gt.org.isis.model.enums.Estado;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ public class CatalogoDto {
     private Integer id;
     private String valor;
     private String tipo;
-    private String estado;
+    private Estado estado;
     private Integer codigoPadre;
     private Date fechaCreacion;
     private String creadoPor;
@@ -47,11 +48,11 @@ public class CatalogoDto {
         this.tipo = tipo;
     }
 
-    public String getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

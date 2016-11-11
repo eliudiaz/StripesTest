@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class PersonaDto {
 
     private String cui;
+    private String foto;
     @NotNull
     private String primerNombre;
     @NotNull
@@ -39,17 +40,17 @@ public class PersonaDto {
     @NotNull
     private Integer fkNacionalidad;
     @NotNull
-    private Integer fkProfesion;
+    private String fkProfesion;
     @NotNull
     private String limitacionesFisicas;
     @NotNull
     private Boolean sabeLeer;
     @NotNull
     private Boolean sabeEscribir;
-    @NotNull
+//    @NotNull
     private Date fechaNacimiento;
-    @NotNull
-    private Integer fkMunicipioNacimiento;
+    private Integer edad;
+
     @NotNull
     private String nacNoLibro;
     @NotNull
@@ -59,16 +60,17 @@ public class PersonaDto {
     @NotNull
     private Pueblo fkPueblo;
     @NotNull
-    private String fkComunidadLinguistica;
+    private Integer fkComunidadLinguistica;
     @NotNull
     private String mrz;
     @NotNull
     private String noCedula;
-    @NotNull
     private Estado estado;
-    @NotNull
+    //    @NotNull
+    private Integer fkMunicipioNacimiento;
+//    @NotNull
     private Integer fkMunicipioCedula;
-    @NotNull
+//    @NotNull
     private Integer fkMunicipioVecindad;
     @NotNull
     private Boolean huellaManoDer;
@@ -91,6 +93,29 @@ public class PersonaDto {
     @NotNull
     @NotEmpty
     private List<EstudioSaludDto> estudiosSalud;
+
+    public PersonaDto() {
+    }
+
+    public PersonaDto(String cui) {
+        this.cui = cui;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
 
     public RegistroLaboralDto getRegistroLaboral() {
         return registroLaboral;
@@ -228,11 +253,11 @@ public class PersonaDto {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public Integer getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(Integer fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 
@@ -308,11 +333,11 @@ public class PersonaDto {
         this.fkPueblo = fkPueblo;
     }
 
-    public String getFkComunidadLinguistica() {
+    public Integer getFkComunidadLinguistica() {
         return fkComunidadLinguistica;
     }
 
-    public void setFkComunidadLinguistica(String fkComunidadLinguistica) {
+    public void setFkComunidadLinguistica(Integer fkComunidadLinguistica) {
         this.fkComunidadLinguistica = fkComunidadLinguistica;
     }
 

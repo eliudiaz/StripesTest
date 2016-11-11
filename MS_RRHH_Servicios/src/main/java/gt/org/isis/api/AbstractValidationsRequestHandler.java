@@ -22,18 +22,17 @@ public abstract class AbstractValidationsRequestHandler<T, Q> extends AbstractRe
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @Autowired(required = false)
-    private List<IValidationRequest> validations;
+    private List<IValidationRequest<T>> validations;
 
     @Override
-    public void after(T request, Q response) {
-        super.after(request, response);
+    public void before(T r) {
+        super.before(r);
         if (validations != null) {
+            LOG.info("validaciones a implementar: " + validations.size());
             ValidationRequestContext ctx = new ValidationRequestContext();
             for (IValidationRequest v : validations) {
-                v.validate(response, ctx);
+                v.checkType(r, ctx);
             }
         }
-
     }
-
 }

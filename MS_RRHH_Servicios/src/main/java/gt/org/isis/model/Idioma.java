@@ -37,8 +37,6 @@ public class Idioma implements Serializable, CustomEntity {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    @Column(length = 50)
-    private String estado;
     @Basic(optional = false)
     @Column(name = "fk_idioma", nullable = false)
     private int fkIdioma;
@@ -77,14 +75,6 @@ public class Idioma implements Serializable, CustomEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
     }
 
     public int getFkIdioma() {

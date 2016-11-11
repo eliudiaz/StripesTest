@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public class IdiomaDto {
 

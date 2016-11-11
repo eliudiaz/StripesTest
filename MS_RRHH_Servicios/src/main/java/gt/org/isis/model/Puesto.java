@@ -32,7 +32,7 @@ import javax.persistence.TemporalType;
 @Table(schema = "public", name = "puesto")
 @NamedQueries({
     @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p")})
-public class Puesto implements Serializable {
+public class Puesto implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,8 +40,8 @@ public class Puesto implements Serializable {
     @Basic(optional = false)
     @Column(nullable = false)
     private Integer id;
-    @Column(name = "puesto_funcional", length = 50)
-    private String puestoFuncional;
+    @Column(name = "fk_puesto_funcional")
+    private Integer fkPuestoFuncional;
     @Column(length = 50)
     @Enumerated(EnumType.STRING)
     private TipoPuesto tipo;
@@ -49,16 +49,18 @@ public class Puesto implements Serializable {
     private Integer fkPuestoNominal;
     @Column(name = "fk_comunidad")
     private Integer fkComunidad;
+    @Column(name = "fk_clasificacin_servicio")
+    private Integer fkClasificacionServicio;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Column(name = "creado_por", length = 50)
+    @Column(name = "creado_por")
     private String creadoPor;
     @Column(name = "fecha_ultimo_cambio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por", length = 50)
+    @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
     @JoinColumn(name = "fk_registro_laboral", referencedColumnName = "id")
     @ManyToOne
@@ -77,6 +79,14 @@ public class Puesto implements Serializable {
         this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
+    public Integer getFkClasificacionServicio() {
+        return fkClasificacionServicio;
+    }
+
+    public void setFkClasificacionServicio(Integer fkClasificacionServicio) {
+        this.fkClasificacionServicio = fkClasificacionServicio;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -85,12 +95,12 @@ public class Puesto implements Serializable {
         this.id = id;
     }
 
-    public String getPuestoFuncional() {
-        return puestoFuncional;
+    public Integer getFkPuestoFuncional() {
+        return fkPuestoFuncional;
     }
 
-    public void setPuestoFuncional(String puestoFuncional) {
-        this.puestoFuncional = puestoFuncional;
+    public void setFkPuestoFuncional(Integer fkPuestoFuncional) {
+        this.fkPuestoFuncional = fkPuestoFuncional;
     }
 
     public TipoPuesto getTipo() {

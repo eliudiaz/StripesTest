@@ -6,11 +6,11 @@
 package gt.org.isis.controller.usuarios.handlers;
 
 import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
-import gt.org.isis.model.Persona;
-import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
+import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
@@ -39,27 +39,47 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
     PersonasRepository personas;
 
     @Override
-    public UsuarioDto execute(final UsuarioDto request) {
+    public UsuarioDto execute(final UsuarioDto rq) {
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
-                return cb.equal(root.get("id"), request.getUsuario());
+                return cb.equal(root.get("id"), rq.getUsuario());
             }
         });
-        if (!ls.isEmpty()) {
-            Usuario r = ls.get(0); //usuarios.findOne(request.getUsuario());
-            Persona p = personas.findOne(request.getCui());
-            Role rr = roles.findOne(request.getRoleId());
-            UsuarioDtoConverter bc = new UsuarioDtoConverter();
-            r.setClave(new String(DigestUtils.md5Digest(request.getClave().getBytes())));
-//            r.setFkPersona(p);
-            r.setFkRole(rr);
-
-            usuarios.save(r);
-            return bc.toDTO(r);
-        } else {
-            throw new RuntimeException("user not found!");
+        if (ls.isEmpty()) {
+            throw ExceptionsManager.newValidationException("usuario_no_existe",
+                    new String[]{"usuario,El usuario no existe!"});
         }
+        UsuarioDtoConverter bc = new UsuarioDtoConverter();
+        Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
+
+        if (dbUser.getFkRole() == null
+                || dbUser.getFkRole().getId() != rq.getRoleId()) {
+            dbUser.setFkRole(roles.findOne(rq.getRoleId()));
+        }
+        if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(rq.getCui())) {
+            dbUser.setFkPersona(personas.findOne(rq.getCui()));
+        }
+        String newPass;
+        if (!dbUser.getClave().equalsIgnoreCase(newPass
+                = new String(DigestUtils.md5Digest(rq.getClave().getBytes())))) {
+            if (rq.getClave().equalsIgnoreCase(rq.getConfirmacionClave())) {
+                dbUser.setClave(newPass);
+            } else {
+                throw ExceptionsManager.newValidationException("clave_invalida",
+                        new String[]{"clave,Clave y confirmacion no coinciden!"});
+            }
+        }
+
+        EntitiesHelper.setDateUpdateRef(dbUser);
+        dbUser.setNombres(rq.getNombres());
+        dbUser.setApellidos(rq.getApellidos());
+        dbUser.setEstado(rq.getEstado());
+
+        usuarios.save(dbUser);
+
+        return bc.toDTO(dbUser);
+
     }
 
 }

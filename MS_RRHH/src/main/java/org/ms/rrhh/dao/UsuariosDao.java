@@ -5,15 +5,18 @@
  */
 package org.ms.rrhh.dao;
 
-import org.ms.rrhh.api.dao.impl.CrudRepositoryImpl;
-import org.ms.rrhh.domain.model.Usuario;
-import org.springframework.stereotype.Repository;
+import org.ms.rrhh.dao.dto.UsuarioDto;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author eliud
  */
-@Repository
-public class UsuariosDao extends CrudRepositoryImpl<Usuario> {
+@Service
+public class UsuariosDao {
+
+    public UsuarioDto doLogin(String username) {
+        return null;
+    }
 
 }

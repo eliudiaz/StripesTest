@@ -8,11 +8,10 @@ package gt.org.isis.controller.catalogos.puestos.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
-import gt.org.isis.controller.dto.CatalogoDto;
 import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.controller.dto.PuestoDto;
-import gt.org.isis.converters.CatalogosDtoConverter;
-import gt.org.isis.model.Catalogos;
+import gt.org.isis.converters.PuestosDtoConverter;
+import gt.org.isis.model.Puestos;
 import gt.org.isis.repository.PuestosRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +34,10 @@ public class PuestosBuscarTodosHandler extends AbstractRequestHandler<CatalogosR
     public List<PuestoDto> execute(CatalogosRequestDto request) {
         return new ArrayList<PuestoDto>(Collections2
                 .transform(catalogos.findAll(spec.build(request)),
-                        new Function<Catalogos, CatalogoDto>() {
+                        new Function<Puestos, PuestoDto>() {
                     @Override
-                    public CatalogoDto apply(Catalogos r) {
-                        return new CatalogosDtoConverter().toDTO(r);
+                    public PuestoDto apply(Puestos r) {
+                        return new PuestosDtoConverter().toDTO(r);
                     }
                 }));
     }

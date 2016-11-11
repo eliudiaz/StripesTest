@@ -6,7 +6,7 @@
 package gt.org.isis.controller.personas.handlers.validations;
 
 import gt.org.isis.api.C;
-import gt.org.isis.api.IValidationRequest;
+import gt.org.isis.api.GenericValidationRequest;
 import gt.org.isis.api.ValidationRequestContext;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
@@ -14,14 +14,13 @@ import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.repository.AreasGeografRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author edcrakcne
  */
 //@Component
-public class MunicipiosValidation implements IValidationRequest<PersonaDto> {
+public class MunicipiosValidation extends GenericValidationRequest<PersonaDto> {
 
     @Autowired
     AreasGeografRepository areasRepo;
@@ -43,7 +42,7 @@ public class MunicipiosValidation implements IValidationRequest<PersonaDto> {
                     .newValidationException(cause,
                             new String[]{String.format(errNullMunicipio, campo)});
         }
-        if (ag.getCodigoPadre() == null || !ag.getTipo().equalsIgnoreCase(C.CAT_TIPO_MUNICIPIOS)) {
+        if (ag.getCodigoPadre() == null || !ag.getTipo().equalsIgnoreCase(C.CAT_AG_TIPO_MUNICIPIOS)) {
             throw ExceptionsManager.newValidationException(cause,
                     new String[]{String.format(errWrongMunicipio, campo)});
         }

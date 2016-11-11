@@ -6,6 +6,7 @@
 package gt.org.isis.controller.dto;
 
 import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -14,11 +15,22 @@ import java.util.Date;
 public class EstudioSaludDto {
 
     private Integer id;
+    @NotNull
     private Integer anioEstudio;
+    @NotNull
+    private Integer fkEstudioSalud;
     private Date fechaCreacion;
     private String creadoPor;
     private Date fechaUltimoCambio;
     private String ultimoCambioPor;
+
+    public Integer getFkEstudioSalud() {
+        return fkEstudioSalud;
+    }
+
+    public void setFkEstudioSalud(Integer fkEstudioSalud) {
+        this.fkEstudioSalud = fkEstudioSalud;
+    }
 
     public Integer getId() {
         return id;
