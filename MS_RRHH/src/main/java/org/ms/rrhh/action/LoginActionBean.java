@@ -49,7 +49,14 @@ public class LoginActionBean extends BaseActionBean {
     }
 
     public Resolution login() {
-        UsuarioDto usuario = usuariosRepo.doLogin(username);
+
+        UsuarioDto usuario;
+        try {
+            usuario = usuariosRepo.doLogin(username, password);
+        } catch (Exception e) {
+            getContext().getValidationErrors().add("username", new SimpleError(e.getMessage(), new Object[]{}));
+            return getContext().getSourcePageResolution();
+        }
         ValidationError error = new SimpleError("Error usuario invalido", new Object[]{});//new LocalizableError("usernameDoesNotExist");
         if (usuario == null) {
             getContext().getValidationErrors().add("username", error);
