@@ -8,6 +8,7 @@ package gt.org.isis.controller.usuarios.handlers;
 import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.UsuarioLoginDto;
+import gt.org.isis.converters.RoleDtoConverter;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -21,7 +22,7 @@ import org.springframework.util.DigestUtils;
  * @author edcracken
  */
 @Service
-public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Boolean> {
+public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, UsuarioLoginDto> {
 
     @Autowired
     RolesRepository roles;
@@ -31,7 +32,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Bool
     PersonasRepository personas;
 
     @Override
-    public Boolean execute(final UsuarioLoginDto request) {
+    public UsuarioLoginDto execute(final UsuarioLoginDto request) {
         if (request.getUsuario() == null) {
             throw ExceptionsManager.newValidationException("invalid_user",
                     new String[]{"usuario,Usuario es requerido!"});
@@ -48,7 +49,8 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Bool
         if (!r.getClave().equalsIgnoreCase(clave)) {
             throw usuarioInvalido;
         }
-        return Boolean.TRUE;
+        request.setRole(new RoleDtoConverter().toDTO(r.getFkRole()));
+        return request;
     }
 
 }

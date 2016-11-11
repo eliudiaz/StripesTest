@@ -8,10 +8,19 @@ package gt.org.isis.converters;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.utils.BeansConverter;
+import java.util.List;
 
 /**
  *
  * @author edcracken
  */
 public class RoleDtoConverter extends BeansConverter<Role, RoleDto> {
+
+    @Override
+    public RoleDto toDTO(Role iA) {
+        RoleDto toDTO = super.toDTO(iA);
+        toDTO.setAccesos(new AccesoDtoConverter().toDTO((List) iA.getAccesoRoleCollection()));
+        return toDTO;
+    }
+
 }

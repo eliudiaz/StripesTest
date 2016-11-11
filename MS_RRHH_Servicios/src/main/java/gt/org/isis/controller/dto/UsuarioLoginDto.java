@@ -18,6 +18,15 @@ public class UsuarioLoginDto {
 
     @NotNull
     private String clave;
+    private RoleDto role;
+
+    public RoleDto getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDto role) {
+        this.role = role;
+    }
 
     public String getUsuario() {
         return usuario;
