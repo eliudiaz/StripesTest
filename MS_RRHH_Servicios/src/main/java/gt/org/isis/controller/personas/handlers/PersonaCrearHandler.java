@@ -8,6 +8,7 @@ package gt.org.isis.controller.personas.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractValidationsRequestHandler;
+import gt.org.isis.api.C;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
@@ -20,6 +21,8 @@ import gt.org.isis.converters.PersonaDtoConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.converters.RegistroLaboralPuestosConverter;
+import gt.org.isis.model.AreaGeografica;
+import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
 import gt.org.isis.model.Idioma;
@@ -31,13 +34,20 @@ import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.PersonasRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,6 +61,23 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     PersonasRepository repo;
     @Autowired
     PersonaDtoConverter converter;
+    @Autowired
+    AreasGeografRepository areasRepo;
+
+    private AreaGeografica getAreaByNombreAndTipo(final String nombre, final String tipo) {
+        List<AreaGeografica> all = areasRepo.findAll(new Specification<AreaGeografica>() {
+            @Override
+            public Predicate toPredicate(Root<AreaGeografica> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                return cb.equal(root.get(AreaGeografica_.tipo), tipo);
+            }
+        });
+        for (AreaGeografica ag : all) {
+            if (ag.getValor().contains(nombre) || ag.getValor().startsWith(nombre) || ag.getValor().endsWith(nombre)) {
+                return ag;
+            }
+        }
+        return all.get(0);
+    }
 
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
@@ -62,6 +89,20 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         p.setEdad(Years.yearsBetween(LocalDate.fromDateFields(p.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
         EntitiesHelper.setDateCreateRef(p);
+
+        if (r.getFkMunicipioCedulaNombre() != null && !r.getFkMunicipioCedulaNombre().isEmpty()) {
+            p.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        }
+        if (r.getFkMunicipioNacimientoNombre() != null && !r.getFkMunicipioNacimientoNombre().isEmpty()) {
+            p.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        }
+        if (r.getFkMunicipioVecindadNombre() != null && !r.getFkMunicipioVecindadNombre().isEmpty()) {
+            p.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        }
+
         final Persona pp = repo.saveAndFlush(p);
 
         p.setIdiomaCollection(new ArrayList<Idioma>());

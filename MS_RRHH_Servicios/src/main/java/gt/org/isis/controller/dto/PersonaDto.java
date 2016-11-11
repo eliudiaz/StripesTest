@@ -50,8 +50,7 @@ public class PersonaDto {
     @NotNull
     private Date fechaNacimiento;
     private Integer edad;
-    @NotNull
-    private Integer fkMunicipioNacimiento;
+
     @NotNull
     private String nacNoLibro;
     @NotNull
@@ -67,9 +66,11 @@ public class PersonaDto {
     @NotNull
     private String noCedula;
     private Estado estado;
-    @NotNull
+    //    @NotNull
+    private Integer fkMunicipioNacimiento;
+//    @NotNull
     private Integer fkMunicipioCedula;
-    @NotNull
+//    @NotNull
     private Integer fkMunicipioVecindad;
     @NotNull
     private Boolean huellaManoDer;

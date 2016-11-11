@@ -11,4 +11,32 @@ package gt.org.isis.controller.dto;
  */
 public class ReqNuevaPersonaDto extends PersonaDto {
 
+    private String fkMunicipioNacimientoNombre;
+    private String fkMunicipioCedulaNombre;
+    private String fkMunicipioVecindadNombre;
+
+    public String getFkMunicipioNacimientoNombre() {
+        return fkMunicipioNacimientoNombre;
+    }
+
+    public void setFkMunicipioNacimientoNombre(String fkMunicipioNacimientoNombre) {
+        this.fkMunicipioNacimientoNombre = fkMunicipioNacimientoNombre;
+    }
+
+    public String getFkMunicipioCedulaNombre() {
+        return fkMunicipioCedulaNombre;
+    }
+
+    public void setFkMunicipioCedulaNombre(String fkMunicipioCedulaNombre) {
+        this.fkMunicipioCedulaNombre = fkMunicipioCedulaNombre;
+    }
+
+    public String getFkMunicipioVecindadNombre() {
+        return fkMunicipioVecindadNombre;
+    }
+
+    public void setFkMunicipioVecindadNombre(String fkMunicipioVecindadNombre) {
+        this.fkMunicipioVecindadNombre = fkMunicipioVecindadNombre;
+    }
+
 }
