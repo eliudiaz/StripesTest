@@ -13,6 +13,8 @@ public class SystemActionBeanContext extends ActionBeanContext {
 
     /**
      * Gets the currently logged in user, or null if no-one is logged in.
+     *
+     * @return
      */
     public UsuarioDto getUser() {
         return (UsuarioDto) getRequest().getSession().getAttribute("user");
@@ -20,6 +22,8 @@ public class SystemActionBeanContext extends ActionBeanContext {
 
     /**
      * Sets the currently logged in user.
+     *
+     * @param currentUser
      */
     public void setUser(UsuarioDto currentUser) {
         getRequest().getSession().setAttribute("user", currentUser);
