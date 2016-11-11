@@ -39,14 +39,12 @@ public class DpiReaderListenerController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/pull",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/pull")
     public HttpEntity pull(@RequestParam("session") String session) {
         System.out.println(">> pulling >> session >> " + session);
         if (CARDS.containsKey(session)) {
-            return new ResponseEntity(CARDS.get(session), HttpStatus.OK);
+            PersonaDPIDto pd = CARDS.remove(session);
+            return new ResponseEntity(pd, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
