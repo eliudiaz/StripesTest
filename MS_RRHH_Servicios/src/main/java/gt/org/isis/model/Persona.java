@@ -66,7 +66,7 @@ public class Persona implements Serializable, CustomEntity {
     private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
-    private Integer fkProfesion;
+    private String fkProfesion;
     @Column(name = "limitaciones_fisicas")
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
@@ -152,17 +152,6 @@ public class Persona implements Serializable, CustomEntity {
 
     public Persona(String cui) {
         this.cui = cui;
-    }
-
-    public Persona(String cui, String primerNombre, String primerApellido, Integer fkNacionalidad, Integer fkProfesion, Date fechaNacimiento, Date fechaCreacion, String creadoPor) {
-        this.cui = cui;
-        this.primerNombre = primerNombre;
-        this.primerApellido = primerApellido;
-        this.fkNacionalidad = fkNacionalidad;
-        this.fkProfesion = fkProfesion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.creadoPor = creadoPor;
     }
 
     public String getFoto() {
@@ -289,11 +278,11 @@ public class Persona implements Serializable, CustomEntity {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public Integer getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(Integer fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 

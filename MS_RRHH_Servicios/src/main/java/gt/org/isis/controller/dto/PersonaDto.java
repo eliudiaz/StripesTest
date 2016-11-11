@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class PersonaDto {
 
     private String cui;
+    private String foto;
     @NotNull
     private String primerNombre;
     @NotNull
@@ -39,7 +40,7 @@ public class PersonaDto {
     @NotNull
     private Integer fkNacionalidad;
     @NotNull
-    private Integer fkProfesion;
+    private String fkProfesion;
     @NotNull
     private String limitacionesFisicas;
     @NotNull
@@ -97,6 +98,14 @@ public class PersonaDto {
 
     public PersonaDto(String cui) {
         this.cui = cui;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public Integer getEdad() {
@@ -243,11 +252,11 @@ public class PersonaDto {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public Integer getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(Integer fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 

@@ -34,7 +34,7 @@ public class BuscarTodos {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/todos", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity getPersona(@RequestParam("cui") String cui) {
-        return new ResponseEntity<List<PersonaDto>>(handler.handle(new PersonaDto(cui)), HttpStatus.OK);
+    public HttpEntity getPersona() {
+        return new ResponseEntity<List<PersonaDto>>(handler.handle(null), HttpStatus.OK);
     }
 }
