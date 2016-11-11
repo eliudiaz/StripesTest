@@ -36,14 +36,18 @@ import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.PersonasRepository;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +83,16 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return all.get(0);
     }
 
+    private Date parseFechaNacTexto(String text) {
+        try {
+            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy");
+            return sd.parse(text);
+        } catch (ParseException ex) {
+            ex.printStackTrace(System.err);
+            return new DateTime().plusYears(-18).toDate();
+        }
+    }
+
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
         final Persona p = converter.toEntity(r);
@@ -86,6 +100,9 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         p.setEstado(Estado.ACTIVO);
         p.setCui(r.getCui());
         p.setCreadoPor("admin");
+        if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
+            p.setFechaNacimiento(parseFechaNacTexto(r.getFechaNacimientoTexto()));
+        }
         p.setEdad(Years.yearsBetween(LocalDate.fromDateFields(p.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
         EntitiesHelper.setDateCreateRef(p);

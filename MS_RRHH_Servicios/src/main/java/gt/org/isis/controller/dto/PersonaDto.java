@@ -47,7 +47,7 @@ public class PersonaDto {
     private Boolean sabeLeer;
     @NotNull
     private Boolean sabeEscribir;
-    @NotNull
+//    @NotNull
     private Date fechaNacimiento;
     private Integer edad;
 

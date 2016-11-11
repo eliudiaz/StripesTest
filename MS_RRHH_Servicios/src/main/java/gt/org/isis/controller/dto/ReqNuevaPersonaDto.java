@@ -14,6 +14,15 @@ public class ReqNuevaPersonaDto extends PersonaDto {
     private String fkMunicipioNacimientoNombre;
     private String fkMunicipioCedulaNombre;
     private String fkMunicipioVecindadNombre;
+    private String fechaNacimientoTexto;
+
+    public String getFechaNacimientoTexto() {
+        return fechaNacimientoTexto;
+    }
+
+    public void setFechaNacimientoTexto(String fechaNacimientoTexto) {
+        this.fechaNacimientoTexto = fechaNacimientoTexto;
+    }
 
     public String getFkMunicipioNacimientoNombre() {
         return fkMunicipioNacimientoNombre;
