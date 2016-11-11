@@ -26,7 +26,7 @@ public class CreaExistePersonaValidation extends GenericValidationRequest<ReqNue
 
     @Override
     public void validate(final ReqNuevaPersonaDto persona, ValidationRequestContext ctx) {
-        if (!repo.findByCui(persona.getCui().trim().toLowerCase()).isEmpty()) {
+        if (repo.findOne(persona.getCui().trim().toLowerCase()) != null) {
             throw ExceptionsManager.newValidationException("persona_existe",
                     Arrays.asList("cui_persona,Persona con CUI ya existe!")
                             .toArray(new String[1]));

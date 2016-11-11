@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.usuarios;
 
-import gt.org.isis.controller.dto.UsuarioDto;
+import gt.org.isis.controller.dto.UsuarioLoginDto;
 import gt.org.isis.controller.usuarios.handlers.LoginUsHandler;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class LoginUsuario {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
-    public HttpEntity crear(@RequestBody @Valid UsuarioDto usuario) {
+    public HttpEntity crear(@RequestBody @Valid UsuarioLoginDto usuario) {
         handler.handle(usuario);
         return new ResponseEntity(HttpStatus.OK);
     }

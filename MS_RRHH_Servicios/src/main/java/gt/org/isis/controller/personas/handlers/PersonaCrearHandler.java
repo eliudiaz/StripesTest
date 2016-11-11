@@ -55,12 +55,15 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
         final Persona p = converter.toEntity(r);
+
         p.setEstado(Estado.ACTIVO);
         p.setCui(r.getCui());
         p.setCreadoPor("admin");
         p.setEdad(Years.yearsBetween(LocalDate.fromDateFields(p.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
         EntitiesHelper.setDateCreateRef(p);
+        repo.saveAndFlush(p);
+
         p.setIdiomaCollection(new ArrayList<Idioma>());
         p.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
                 new Function<IdiomaDto, Idioma>() {
@@ -133,7 +136,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         lr.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(lr);
 
-        repo.save(p);
+        repo.saveAndFlush(p);
         return true;
     }
 
