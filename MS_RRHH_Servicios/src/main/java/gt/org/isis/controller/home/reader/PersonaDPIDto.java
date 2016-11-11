@@ -11,6 +11,7 @@ package gt.org.isis.controller.home.reader;
  */
 public class PersonaDPIDto {
 
+    private String session;
     private String lblPicture; //base64
     private String txtApellido1;
     private String txtApellido2;
@@ -20,7 +21,7 @@ public class PersonaDPIDto {
     private String txtFecVencimiento; // 8ABR2023
     private String txtNombre1;
     private String txtNombre2;
-    private String txtOtrosNombres; // 
+    private String txtOtrosNombres; //
     private String txtMRZ2_1;
     private String txtMRZ2_2;
     private String txtGenero;
@@ -28,7 +29,7 @@ public class PersonaDPIDto {
     private String txtNacionalidad;
     private String txtNumSerie;
     private String txtProfesion;
-    private String txtLimitaciones; // 
+    private String txtLimitaciones; //
     private boolean chkOficialActivo; // Oficial Activo ; // valor: false
     private boolean chkSabeLeer; // Sabe Leer ; // valor: true
     private boolean chkSabeEscribir; // Sabe Escribir ; // valor: true
@@ -54,6 +55,14 @@ public class PersonaDPIDto {
     private String txtCedulaNumero;
     private String txtCedulaMunicipio;
     private String txtCedulaDepto;
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
 
     public String getLblPicture() {
         return lblPicture;

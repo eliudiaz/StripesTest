@@ -123,6 +123,8 @@ public class Persona implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
+    @Column(name = "foto")
+    private String foto;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Idioma> idiomaCollection;
@@ -161,6 +163,14 @@ public class Persona implements Serializable, CustomEntity {
         this.fechaNacimiento = fechaNacimiento;
         this.fechaCreacion = fechaCreacion;
         this.creadoPor = creadoPor;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public Date getFechaUltimoCambio() {

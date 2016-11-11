@@ -66,7 +66,7 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
-    private Integer fkProfesion;
+    private String fkProfesion;
     @Column(name = "limitaciones_fisicas", length = 2147483647)
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
@@ -119,6 +119,8 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private Persona fkPersona;
     @Column(name = "edad", nullable = false)
     private Integer edad;
+    @Column(name = "foto")
+    private String foto;
 
     public HistoricoPersona() {
     }
@@ -127,15 +129,20 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public HistoricoPersona(Integer id, String primerNombre, String primerApellido, int fkNacionalidad, int fkProfesion, Date fechaNacimiento, Date fechaCreacion, String creadoPor) {
-        this.id = id;
-        this.primerNombre = primerNombre;
-        this.primerApellido = primerApellido;
-        this.fkNacionalidad = fkNacionalidad;
-        this.fkProfesion = fkProfesion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.creadoPor = creadoPor;
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Pueblo getFkPueblo() {
+        return fkPueblo;
+    }
+
+    public void setFkPueblo(Pueblo fkPueblo) {
+        this.fkPueblo = fkPueblo;
     }
 
     public Integer getEdad() {
@@ -242,11 +249,11 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.fkNacionalidad = fkNacionalidad;
     }
 
-    public int getFkProfesion() {
+    public String getFkProfesion() {
         return fkProfesion;
     }
 
-    public void setFkProfesion(int fkProfesion) {
+    public void setFkProfesion(String fkProfesion) {
         this.fkProfesion = fkProfesion;
     }
 
