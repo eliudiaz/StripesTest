@@ -1,0 +1,31 @@
+<style type="text/css" media="screen">
+	.md-primary-bg{
+		    background-color: #075993 !important;
+	}
+</style>
+<header class="headerNew">
+</header>
+
+<div class="contentBase">
+	<article>
+		<h1 style=" padding: 0;    margin: 0;"> Roles: </h1> 
+	</article>
+	
+	<div layout style="margin-bottom: 15px;">
+		<div flex="70">
+			<input type="text" ng-model="gridOptions.quickFilterText" placeholder="Buscar..." style="width: 80%; margin-right: 5px; height: 35px; margin-top: 17px; border: 2px solid #9E9E9E;"/>
+	    	<i class="ion-search" style="font-size: 22px;"></i>
+		</div>
+		<div flex="30" style="text-align: right;">
+			<button ng-click="nuevo()" class="md-accent md-raised md-hue-1 md-button md-default-theme md-ink-ripple" type="button"><span class="ng-scope">Nuevo (+)</span><div class="md-ripple-container"></div></button>
+
+			<button ng-click="edit()" class=" 
+	md-yellow-800-bg md-accent md-raised md-hue-1 md-button md-default-theme md-ink-ripple" type="button"><span class="ng-scope">Editar</span><div class="md-ripple-container"></div></button>
+
+		</div>	
+	</div>	
+	<div style="">
+		<div id="myGrid" ag-grid="gridOptions" style="height: 400px; text-align: left; width: 100%; " class="ag-blue"></div>
+	</div>
+
+</div>

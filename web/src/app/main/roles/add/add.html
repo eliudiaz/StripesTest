@@ -1,0 +1,61 @@
+<style type="text/css" media="screen">
+	.md-primary-bg{
+		    background-color: #075993 !important;
+	}
+</style>
+<header class="headerNew">
+</header>
+
+<div class="contentBase">
+	<article>
+		<h1 style=" padding: 0;    margin: 0;"> Nuevo Rol: </h1> 
+	</article>
+	 <button class="btn btn-primary show-custom" ng-click="customTemplateScope()">Custom template and scope</button>
+     <script type="text/ng-template" id="custom_template.html">
+        <div class="ui-notification custom-template">
+            <h3>{{nTitle}}</h3>
+            <div class="message" ng-bind-html="message"></div>
+            <div class="message">
+                <ul>
+                    <li ng-repeat="el in nElements">{{el}}</li>
+                </ul>
+            </div>
+            <div class="message">
+                <a class="btn btn-small btn-primary close-notification" ng-click="nClick()">Click me</a>
+            </div>
+        </div>
+    </script>
+	<div style=" width: 100%; margin: 0 auto; border: 1px solid; padding: 15px; margin-bottom: 25px;">
+		<form name="basicForm" class="md-inline-form" novalidate>
+	        <div class="form-title"></div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                  <input type="text" name="nombre" ng-model="vm.basicForm.nombre"
+                           placeholder="Nombre" required>
+                    <div ng-messages="basicForm.nombre.$error" ng-show="basicForm.nombre.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>nombre es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex="80">
+                  <label>Accesos</label>
+                    <oi-select oi-options="item.valor for item in shopArr track by item.id"
+                    ng-model="bundle"
+                    multiple
+                    placeholder="Select" required></oi-select>
+                </md-input-container>
+                
+            </div>
+           
+            <md-button ng-click="save()" type="button" class="md-raised md-accent" aria-label="Submit"
+                       ng-disabled="basicForm.$invalid || basicForm.$pristine">
+                Guardar
+            </md-button>
+                </form>
+	</div>
+
+</div>

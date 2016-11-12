@@ -1,0 +1,28 @@
+.boxP{
+	width: 150px;
+    height: 75px;
+    background: #000;
+    text-align: center;
+    padding-top: 46px;
+    line-height: 1;
+    overflow: hidden;
+    float: left;
+    margin-left: 15px;
+        padding-left: 5px;
+    padding-right: 5px;
+    -webkit-transition: all .6s;
+        -moz-transition: all .6s;
+        -ms-transition: all .6s;
+        -o-transition: all .6s;
+        transition: all .6s;
+}
+
+.boxP:hover{
+	background:transparent;
+	-webkit-transition: all .6s;
+        -moz-transition: all .6s;
+        -ms-transition: all .6s;
+        -o-transition: all .6s;
+        transition: all .6s;
+
+}

@@ -1,0 +1,47 @@
+<style type="text/css" media="screen">
+	.md-primary-bg{
+		    background-color: #075993 !important;
+	}
+</style>
+<header class="headerNew">
+</header>
+
+<div class="contentBase">
+	<article>
+		<h1 style=" padding: 0;    margin: 0;"> Nuevo Acceso: </h1> 
+	</article>
+	
+	<div style=" width: 100%; margin: 0 auto; border: 1px solid; padding: 15px; margin-bottom: 25px;">
+		<form name="basicForm" class="md-inline-form" novalidate>
+	        <div class="form-title"></div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                    <input type="text" name="valor" ng-model="vm.basicForm.valor"
+                           placeholder="Valor" required>
+                    <div ng-messages="basicForm.valor.$error" ng-show="basicForm.valor.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>valor es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <input type="text" name="tipo" ng-model="vm.basicForm.tipo"
+                           placeholder="Tipo" required>
+                    <div ng-messages="basicForm.tipo.$error" ng-show="basicForm.tipo.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>tipo es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+            
+                    <md-button ng-click="save()" type="button" class="md-raised md-accent" aria-label="Submit"
+                               ng-disabled="basicForm.$invalid || basicForm.$pristine">
+                        Guardar
+                    </md-button>
+                </form>
+	</div>
+
+</div>
