@@ -10,6 +10,7 @@ import gt.org.isis.api.ValidationRequestContext;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
 import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import gt.org.isis.controller.dto.PersonaDto;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -27,7 +28,8 @@ public class CUIPersonaValidation<T extends PersonaDto> extends GenericValidatio
         }
 
         try {
-            Integer.valueOf(persona.getCui());
+
+            System.out.println(new BigInteger(persona.getCui()));
         } catch (NumberFormatException e) {
             ex.getErrors().add(new ValidationError("cui", "CUI no lleva letras"));
         }
