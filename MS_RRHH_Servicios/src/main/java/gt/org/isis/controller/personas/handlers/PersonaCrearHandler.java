@@ -53,6 +53,8 @@ import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -93,6 +95,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
         final Persona p = converter.toEntity(r);

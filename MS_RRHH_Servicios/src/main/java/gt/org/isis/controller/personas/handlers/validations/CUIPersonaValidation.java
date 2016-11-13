@@ -28,7 +28,6 @@ public class CUIPersonaValidation<T extends PersonaDto> extends GenericValidatio
         }
 
         try {
-
             System.out.println(new BigInteger(persona.getCui()));
         } catch (NumberFormatException e) {
             ex.getErrors().add(new ValidationError("cui", "CUI no lleva letras"));
