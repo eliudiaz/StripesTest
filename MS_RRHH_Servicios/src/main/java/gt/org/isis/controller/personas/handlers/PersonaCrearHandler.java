@@ -122,8 +122,8 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
         final Persona pp = repo.saveAndFlush(p);
 
-        p.setIdiomaCollection(new ArrayList<Idioma>());
-        p.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
+        pp.setIdiomaCollection(new ArrayList<Idioma>());
+        pp.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
                 new Function<IdiomaDto, Idioma>() {
             @Override
             public Idioma apply(IdiomaDto f) {
@@ -136,7 +136,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }));
 
         RegistroAcademico ra;
-        p.setRegistroAcademicoCollection(
+        pp.setRegistroAcademicoCollection(
                 Arrays.asList(
                         ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico())));
         ra.setFkPersona(pp);
@@ -146,7 +146,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
         final RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
-        p.setRegistroLaboralCollection(
+        pp.setRegistroLaboralCollection(
                 Arrays.asList(rl)
         );
         rl.setEstado(EstadoVariable.ACTUAL);
@@ -165,8 +165,8 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         })));
         EntitiesHelper.setDateCreateRef(rl);
 
-        p.setEstudioSaludCollection(new ArrayList());
-        p.getEstudioSaludCollection().addAll(
+        pp.setEstudioSaludCollection(new ArrayList());
+        pp.getEstudioSaludCollection().addAll(
                 Collections2.transform(r.getEstudiosSalud(),
                         new Function<EstudioSaludDto, EstudioSalud>() {
                     @Override
@@ -179,14 +179,14 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     }
                 }));
         Dpi dpi;
-        p.setDpiCollection(Arrays.asList(dpi = new DpiDtoConverter().toEntity(r.getDpi())));
+        pp.setDpiCollection(Arrays.asList(dpi = new DpiDtoConverter().toEntity(r.getDpi())));
         dpi.setFkPersona(pp);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
 
         LugarResidencia lr;
-        p.setLugarResidenciaCollection(Arrays.asList(
+        pp.setLugarResidenciaCollection(Arrays.asList(
                 lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia())
         ));
         lr.setFkPersona(pp);
