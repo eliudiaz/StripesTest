@@ -5,7 +5,9 @@
  */
 package gt.org.isis.api.misc;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import gt.org.isis.api.misc.exceptions.BaseException;
+import gt.org.isis.api.misc.exceptions.ext.MalformedJsonException;
 import gt.org.isis.api.misc.exceptions.ext.UnknownException;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
 import gt.org.isis.api.misc.exceptions.ext.ValidationException;
@@ -39,6 +41,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     public GlobalExceptionHandler() {
         super();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Object> handleJsonMappingException(JsonMappingException ex) {
+        System.out.println("JsonMappingexception exception has been thrown >> " + ex);
+        return handleException(new MalformedJsonException(ex));
     }
 
     @ExceptionHandler(RuntimeException.class)
