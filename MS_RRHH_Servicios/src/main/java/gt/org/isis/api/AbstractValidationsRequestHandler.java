@@ -10,6 +10,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 /**
  *
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <T>
  * @param <Q>
  */
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public abstract class AbstractValidationsRequestHandler<T, Q> extends AbstractRequestHandler<T, Q> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);

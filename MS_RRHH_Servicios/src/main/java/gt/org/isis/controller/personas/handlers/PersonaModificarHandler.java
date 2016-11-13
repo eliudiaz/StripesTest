@@ -74,7 +74,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Autowired
     LugarResidenciaRepository lrRepository;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
@@ -91,7 +90,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return true;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void guardaEstudiosSalud(Persona p, PersonaDto r) {
         estudiosRepo.deleteInBatch(p.getEstudioSaludCollection());
 
@@ -103,7 +101,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void guardaIdiomas(Persona p, PersonaDto r) {
         idiomasRepo.deleteInBatch(p.getIdiomaCollection());
         for (IdiomaDto t : r.getIdiomas()) {
@@ -114,7 +111,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void crearHistorico(Persona p) {
         HistoricoPersona hp = new PersonaHistorialConverter()
                 .toEntity(new PersonaDtoConverter().toDTO(p));
@@ -125,7 +121,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         historicoRepo.save(hp);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void actualizaRegistroAcademico(Persona p, PersonaDto r) {
         rAcaRepository.archivarRegitro(p.getCui());
         RegistroAcademico ra = new RegistroAcademicoConverter()
@@ -137,7 +132,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         rAcaRepository.save(ra);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void actualizaRegistroLaboral(Persona p, PersonaDto r) {
         rLabRepository.archivarRegitro(p.getCui());
         final RegistroLaboral rl = new RegistroLaboralConverter()
@@ -163,7 +157,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         rLabRepository.save(rl);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void actualizaDpi(Persona p, PersonaDto r) {
         dpiRepository.archivarRegitro(p.getCui());
         Dpi ra = new DpiDtoConverter()
@@ -175,7 +168,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         dpiRepository.save(ra);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void actualizaLugarResidencia(Persona p, PersonaDto r) {
         lrRepository.archivarRegitro(p.getCui());
         LugarResidencia ra = new LugarResidenciaDtoConverter()
