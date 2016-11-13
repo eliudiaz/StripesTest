@@ -16,7 +16,7 @@
 
 <%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
 
-<s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Welcome">
+<s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Sistema RRHH">
     <s:layout-component name="body">
         <link rel="stylesheet" type="text/css" href="${contextPath}/css/style.css">
         <header class="headerNew">

@@ -1,0 +1,47 @@
+<style type="text/css" media="screen">
+	.md-primary-bg{
+		    background-color: #075993 !important;
+	}
+</style>
+<header class="headerNew">
+</header>
+
+<div class="contentBase">
+	<article>
+		<h1 style=" padding: 0;    margin: 0;"> Nuevo Rol: </h1> 
+	</article>
+	
+	<div style=" width: 100%; margin: 0 auto; border: 1px solid; padding: 15px; margin-bottom: 25px;">
+		<form name="basicForm" class="md-inline-form" novalidate>
+	        <div class="form-title"></div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                  <label>CUI</label>
+                  <md-select ng-model="vm.basicForm.cui" required>
+                    <md-option><em>Ninguno</em></md-option>
+                    <md-option ng-repeat="p in usuario" ng-value="p.name">
+                      {{p.name}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                <md-input-container flex>
+                  <label>Roles</label>
+                  <md-select ng-model="vm.basicForm.rol" required>
+                    <md-option><em>Ninguno</em></md-option>
+                    <md-option ng-repeat="r in roles" ng-value="r.id">
+                      {{r.name}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+                
+            
+            </div>
+           
+            <md-button ng-click="save()" type="button" class="md-raised md-accent" aria-label="Submit"
+                       ng-disabled="basicForm.$invalid || basicForm.$pristine">
+                Guardar
+            </md-button>
+                </form>
+	</div>
+
+</div>

@@ -5,70 +5,22 @@
  */
 package org.ms.rrhh.dao.dto;
 
-import java.util.Date;
-import javax.validation.constraints.NotNull;
-import org.ms.rrhh.dao.dto.enums.Estado;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author edcracken
  */
+@XmlRootElement
 public class UsuarioDto {
 
     private String usuario;
-    @NotNull
     private String correo;
-    private Boolean superUsuario;
-    @NotNull
-    private Estado estado;
-    @NotNull
     private String nombres;
-    @NotNull
     private String apellidos;
-    @NotNull
     private String clave;
-    @NotNull
-    private String confirmacionClave;
-    @NotNull
-    private String cui;
-    @NotNull
-    private Integer roleId;
     private PersonaDto persona;
-    private Date fechaCreacion;
-    private String creadoPor;
-    private Date fechaUltimoCambio;
-    private String ultimoCambioPor;
-
-    public UsuarioDto(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public UsuarioDto() {
-    }
-
-    public PersonaDto getPersona() {
-        return persona;
-    }
-
-    public void setPersona(PersonaDto persona) {
-        this.persona = persona;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getCui() {
-        return cui;
-    }
-
-    public void setCui(String cui) {
-        this.cui = cui;
-    }
+    private RoleDto role;
 
     public String getUsuario() {
         return usuario;
@@ -84,22 +36,6 @@ public class UsuarioDto {
 
     public void setCorreo(String correo) {
         this.correo = correo;
-    }
-
-    public Boolean getSuperUsuario() {
-        return superUsuario;
-    }
-
-    public void setSuperUsuario(Boolean superUsuario) {
-        this.superUsuario = superUsuario;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 
     public String getNombres() {
@@ -126,44 +62,87 @@ public class UsuarioDto {
         this.clave = clave;
     }
 
-    public String getConfirmacionClave() {
-        return confirmacionClave;
+    public PersonaDto getPersona() {
+        return persona;
     }
 
-    public void setConfirmacionClave(String confirmacionClave) {
-        this.confirmacionClave = confirmacionClave;
+    public void setPersona(PersonaDto persona) {
+        this.persona = persona;
     }
 
-    public Date getFechaCreacion() {
-        return fechaCreacion;
+    public RoleDto getRole() {
+        return role;
     }
 
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+    public void setRole(RoleDto role) {
+        this.role = role;
     }
 
-    public String getCreadoPor() {
-        return creadoPor;
+    public UsuarioDto() {
     }
 
-    public void setCreadoPor(String creadoPor) {
-        this.creadoPor = creadoPor;
+    private UsuarioDto(Builder builder) {
+        this.usuario = builder.usuario;
+        this.correo = builder.correo;
+        this.nombres = builder.nombres;
+        this.apellidos = builder.apellidos;
+        this.clave = builder.clave;
+        this.persona = builder.persona;
+        this.role = builder.role;
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
+    public static class Builder {
 
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
+        private String usuario;
+        private String correo;
+        private String nombres;
+        private String apellidos;
+        private String clave;
+        private PersonaDto persona;
+        private RoleDto role;
 
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
+        public Builder withUsuario(String usuario) {
+            this.usuario = usuario;
+            return this;
+        }
+
+        public Builder withCorreo(String correo) {
+            this.correo = correo;
+            return this;
+        }
+
+        public Builder withNombres(String nombres) {
+            this.nombres = nombres;
+            return this;
+        }
+
+        public Builder withApellidos(String apellidos) {
+            this.apellidos = apellidos;
+            return this;
+        }
+
+        public Builder withClave(String clave) {
+            this.clave = clave;
+            return this;
+        }
+
+        public Builder withPersona(PersonaDto persona) {
+            this.persona = persona;
+            return this;
+        }
+
+        public Builder withRole(RoleDto role) {
+            this.role = role;
+            return this;
+        }
+
+        public UsuarioDto build() {
+            return new UsuarioDto(this);
+        }
     }
 
 }

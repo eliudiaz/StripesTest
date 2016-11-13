@@ -1,0 +1,115 @@
+<style type="text/css" media="screen">
+	.md-primary-bg{
+		    background-color: #075993 !important;
+	}
+</style>
+<header class="headerNew">
+</header>
+
+<div class="contentBase">
+	<article>
+		<h1 style=" padding: 0;    margin: 0;"> Nuevo Usuario: </h1> 
+	</article>
+	
+	<div style=" width: 100%; margin: 0 auto; border: 1px solid; padding: 15px; margin-bottom: 25px;">
+		<form name="basicForm" class="md-inline-form" novalidate>
+	        <div class="form-title"></div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                    <input type="text" name="nombre" ng-model="vm.basicForm.nombre"
+                           placeholder="Nombres" required>
+                    <div ng-messages="basicForm.nombre.$error" ng-show="basicForm.nombre.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>Nombre es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <input type="text" name="apellido" ng-model="vm.basicForm.apellido"
+                           placeholder="Apellidos" required>
+                    <div ng-messages="basicForm.apellido.$error" ng-show="basicForm.apellido.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>Apellidos es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                    <input type="text" name="cui" ng-model="vm.basicForm.cui"
+                           placeholder="CUI" required>
+                    <div ng-messages="basicForm.cui.$error" ng-show="basicForm.cui.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>CUI es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <input type="text" name="usuario" ng-model="vm.basicForm.usuario"
+                           placeholder="Usuario" required>
+                    <div ng-messages="basicForm.usuario.$error" ng-show="basicForm.usuario.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>usuario es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                
+            
+            </div>
+
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                    <input type="password" name="password" ng-model="vm.basicForm.password"
+                           placeholder="Password" required>
+                    <div ng-messages="basicForm.password.$error" ng-show="basicForm.password.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>Password es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <input type="password" name="password2" ng-model="vm.basicForm.password2"
+                           placeholder="Confirmar Password" required>
+                    <div ng-messages="basicForm.password2.$error" ng-show="basicForm.password2.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>Confirmar Password es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" layout-gt-sm="row">
+                <md-input-container flex>
+                    <input type="text" name="correo" ng-model="vm.basicForm.correo"
+                           placeholder="Correo" required>
+                    <div ng-messages="basicForm.correo.$error" ng-show="basicForm.correo.$touched"
+                         role="alert">
+                        <div ng-message="required">
+                            <span>Correo es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Rol</label>
+                   <md-select ng-model="vm.formWizard.rol" required>
+                    <md-option><em>Ninguno</em></md-option>
+                    <md-option ng-repeat="state in departamento" ng-value="state.id">
+                      {{state.nombre}}
+                    </md-option>
+                  </md-select>
+                </md-input-container>
+            </div>
+           
+                    <md-button ng-click="save()" type="button" class="md-raised md-accent" aria-label="Submit"
+                               ng-disabled="basicForm.$invalid || basicForm.$pristine">
+                        Guardar
+                    </md-button>
+                </form>
+	</div>
+
+</div>

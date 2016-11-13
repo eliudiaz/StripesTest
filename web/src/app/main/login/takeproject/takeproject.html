@@ -1,0 +1,11 @@
+<section class="setContent">
+    <h1>Proyectos</h1>
+    <label style="margin: 15px; display: block;">Selecciona el proyecto sobre el cual deseas trabajar:</label>
+    <div>
+        <ul>
+            <li class="boxP" ng-repeat="p in listP" ng-click="takeP(p.id)">
+                {{p.name}}
+            </li>
+        </ul>
+    </div>
+</section>
