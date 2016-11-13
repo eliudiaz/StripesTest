@@ -61,6 +61,10 @@ public class CriteriaBuilderPersona {
     }
 
     public Predicate build() {
+        if (normal.getCui() != null) {
+            criteria.add(cb.equal(rootPersona.get(Persona_.cui),
+                    normal.getCui()));
+        }
         if (normal.getPrimerNombre() != null) {
             criteria.add(cb.like(rootPersona.get(Persona_.primerNombre),
                     likeExpr(normal.getPrimerNombre())));

@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
  */
 public class BusquedaNormalDto {
 
+    private String cui;
     private String primerNombre;
     private String segundoNombre;
     private String primerApellido;
@@ -29,6 +30,14 @@ public class BusquedaNormalDto {
     private String direccion;
     private Pueblo pueblo;
     private Pageable pageable;
+
+    public String getCui() {
+        return cui;
+    }
+
+    public void setCui(String cui) {
+        this.cui = cui;
+    }
 
     public Pageable getPageable() {
         return pageable;
