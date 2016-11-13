@@ -76,7 +76,7 @@ public class BusquedaAvanzadaHandler
                         Puesto_.fkPuestoNominal));
             }
             personas.addAll(EntitiesHelper
-                    .getPersonas((List<PersonaChildEntity>) Collections2.transform(
+                    .getPersonas(new ArrayList<PersonaChildEntity>(Collections2.transform(
                             puestosRepo
                                     .findAll(new ManySpecificationHandler<Puesto>(puestoSpecs)),
                             new Function<Puesto, RegistroLaboral>() {
@@ -84,27 +84,27 @@ public class BusquedaAvanzadaHandler
                         public RegistroLaboral apply(Puesto f) {
                             return f.getFkRegistroLaboral();
                         }
-                    })));
+                    }))));
 
             if (filtro.getCampo().equals(CampoBusquedaAvanzada.ANIO_INGRESO)) {
                 personas.addAll(EntitiesHelper
                         .getPersonas(rLaboralRepo
                                 .findAll(new RegistroLaboralQSpec(filtro))));
             }
-            if (filtro.getCampo().equals(CampoBusquedaAvanzada.REGLON)) {
-                personas.addAll(EntitiesHelper.getPersonas(puestosRepo
-                        .findAll(new PuestoQSpec(
-                                (List<Integer>) Collections2
-                                        .transform(puestosRepo.findAll(
-                                                new PuestosPorPadreQSpec(Integer.valueOf(filtro.getValor1()),
-                                                        TipoPuestosCatalogo.PUESTO_NOMINAL)),
-                                                new Function<Puestos, Integer>() {
-                                            @Override
-                                            public Integer apply(Puestos f) {
-                                                return f.getId();
-                                            }
-                                        }), filtro))));
-            }
+//            if (filtro.getCampo().equals(CampoBusquedaAvanzada.REGLON)) {
+//                personas.addAll(EntitiesHelper.getPersonas(puestosRepo
+//                        .findAll(new PuestoQSpec(
+//                                (List<Integer>) Collections2
+//                                        .transform(puestosRepo.findAll(
+//                                                new PuestosPorPadreQSpec(Integer.valueOf(filtro.getValor1()),
+//                                                        TipoPuestosCatalogo.PUESTO_NOMINAL)),
+//                                                new Function<Puestos, Integer>() {
+//                                            @Override
+//                                            public Integer apply(Puestos f) {
+//                                                return f.getId();
+//                                            }
+//                                        }), filtro))));
+//            }
 
         }
         return new PersonaDtoConverter().toDTO(personas);
