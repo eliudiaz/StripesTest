@@ -11,140 +11,32 @@ package gt.org.isis.controller.dto;
  */
 public class GetPersonaDto extends PersonaDto {
 
-    private String fkMunicioNacNombre;
-    private Integer fkPaisNac;
-    private String fkPaisNacNombre;
-    private Integer fkDepartamentoNac;
-    private String fkDepartamentoNacNombre;
-    private String fkMunicioVecindadNombre;
-    private Integer fkPaisVecindad;
-    private String fkPaisVecindadNombre;
-    private Integer fkDepartamentoVecindad;
-    private String fkDepartamentoVecindadNombre;
-    private String fkMunicioCedulaNombre;
-    private Integer fkPaisCedula;
-    private String fkPaisCedulaNombre;
-    private Integer fkDepartamentoCedula;
-    private String fkDepartamentoCedulaNombre;
+    private RefAreaGeograficaDto refNacimiento;
+    private RefAreaGeograficaDto refVecindad;
+    private RefAreaGeograficaDto refCedula;
 
-    public String getFkMunicioNacNombre() {
-        return fkMunicioNacNombre;
+    public RefAreaGeograficaDto getRefNacimiento() {
+        return refNacimiento;
     }
 
-    public void setFkMunicioNacNombre(String fkMunicioNacNombre) {
-        this.fkMunicioNacNombre = fkMunicioNacNombre;
+    public void setRefNacimiento(RefAreaGeograficaDto refNacimiento) {
+        this.refNacimiento = refNacimiento;
     }
 
-    public String getFkMunicioVecindadNombre() {
-        return fkMunicioVecindadNombre;
+    public RefAreaGeograficaDto getRefVecindad() {
+        return refVecindad;
     }
 
-    public void setFkMunicioVecindadNombre(String fkMunicioVecindadNombre) {
-        this.fkMunicioVecindadNombre = fkMunicioVecindadNombre;
+    public void setRefVecindad(RefAreaGeograficaDto refVecindad) {
+        this.refVecindad = refVecindad;
     }
 
-    public String getFkMunicioCedulaNombre() {
-        return fkMunicioCedulaNombre;
+    public RefAreaGeograficaDto getRefCedula() {
+        return refCedula;
     }
 
-    public void setFkMunicioCedulaNombre(String fkMunicioCedulaNombre) {
-        this.fkMunicioCedulaNombre = fkMunicioCedulaNombre;
-    }
-
-    public Integer getFkPaisNac() {
-        return fkPaisNac;
-    }
-
-    public void setFkPaisNac(Integer fkPaisNac) {
-        this.fkPaisNac = fkPaisNac;
-    }
-
-    public String getFkPaisNacNombre() {
-        return fkPaisNacNombre;
-    }
-
-    public void setFkPaisNacNombre(String fkPaisNacNombre) {
-        this.fkPaisNacNombre = fkPaisNacNombre;
-    }
-
-    public Integer getFkDepartamentoNac() {
-        return fkDepartamentoNac;
-    }
-
-    public void setFkDepartamentoNac(Integer fkDepartamentoNac) {
-        this.fkDepartamentoNac = fkDepartamentoNac;
-    }
-
-    public String getFkDepartamentoNacNombre() {
-        return fkDepartamentoNacNombre;
-    }
-
-    public void setFkDepartamentoNacNombre(String fkDepartamentoNacNombre) {
-        this.fkDepartamentoNacNombre = fkDepartamentoNacNombre;
-    }
-
-    public Integer getFkPaisVecindad() {
-        return fkPaisVecindad;
-    }
-
-    public void setFkPaisVecindad(Integer fkPaisVecindad) {
-        this.fkPaisVecindad = fkPaisVecindad;
-    }
-
-    public String getFkPaisVecindadNombre() {
-        return fkPaisVecindadNombre;
-    }
-
-    public void setFkPaisVecindadNombre(String fkPaisVecindadNombre) {
-        this.fkPaisVecindadNombre = fkPaisVecindadNombre;
-    }
-
-    public Integer getFkDepartamentoVecindad() {
-        return fkDepartamentoVecindad;
-    }
-
-    public void setFkDepartamentoVecindad(Integer fkDepartamentoVecindad) {
-        this.fkDepartamentoVecindad = fkDepartamentoVecindad;
-    }
-
-    public String getFkDepartamentoVecindadNombre() {
-        return fkDepartamentoVecindadNombre;
-    }
-
-    public void setFkDepartamentoVecindadNombre(String fkDepartamentoVecindadNombre) {
-        this.fkDepartamentoVecindadNombre = fkDepartamentoVecindadNombre;
-    }
-
-    public Integer getFkPaisCedula() {
-        return fkPaisCedula;
-    }
-
-    public void setFkPaisCedula(Integer fkPaisCedula) {
-        this.fkPaisCedula = fkPaisCedula;
-    }
-
-    public String getFkPaisCedulaNombre() {
-        return fkPaisCedulaNombre;
-    }
-
-    public void setFkPaisCedulaNombre(String fkPaisCedulaNombre) {
-        this.fkPaisCedulaNombre = fkPaisCedulaNombre;
-    }
-
-    public Integer getFkDepartamentoCedula() {
-        return fkDepartamentoCedula;
-    }
-
-    public void setFkDepartamentoCedula(Integer fkDepartamentoCedula) {
-        this.fkDepartamentoCedula = fkDepartamentoCedula;
-    }
-
-    public String getFkDepartamentoCedulaNombre() {
-        return fkDepartamentoCedulaNombre;
-    }
-
-    public void setFkDepartamentoCedulaNombre(String fkDepartamentoCedulaNombre) {
-        this.fkDepartamentoCedulaNombre = fkDepartamentoCedulaNombre;
+    public void setRefCedula(RefAreaGeograficaDto refCedula) {
+        this.refCedula = refCedula;
     }
 
 }
