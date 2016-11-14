@@ -82,6 +82,10 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
+        BeanUtils.copyProperties(r, p);
+        p.setEdad(EntitiesHelper.getAge(r.getFechaNacimiento()));
+        p.setUltimoCambioPor("admin");
+        p = repo.save(p);
         crearHistorico(p);
         guardaIdiomas(p, r);
         guardaEstudiosSalud(p, r);
@@ -89,9 +93,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         actualizaRegistroLaboral(p, r);
         actualizaDpi(p, r);
         actualizaLugarResidencia(p, r);
-        BeanUtils.copyProperties(r, p);
-        p.setEdad(EntitiesHelper.getAge(r.getFechaNacimiento()));
-        repo.save(p);
+
         return true;
     }
 
