@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author eliud
  */
 @Service
-public class BuscarTodosHandler extends AbstractRequestHandler<Object, List<PersonaDto>> {
+public class PersonaBuscarTodosHandler extends AbstractRequestHandler<Object, List<PersonaDto>> {
 
     @Autowired
     PersonasRepository personas;

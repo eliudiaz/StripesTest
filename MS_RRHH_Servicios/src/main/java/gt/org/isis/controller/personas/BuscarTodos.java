@@ -6,7 +6,7 @@
 package gt.org.isis.controller.personas;
 
 import gt.org.isis.controller.dto.PersonaDto;
-import gt.org.isis.controller.personas.handlers.BuscarTodosHandler;
+import gt.org.isis.controller.personas.handlers.PersonaBuscarTodosHandler;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BuscarTodos {
 
     @Autowired
-    BuscarTodosHandler handler;
+    PersonaBuscarTodosHandler handler;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/todos", method = RequestMethod.GET,

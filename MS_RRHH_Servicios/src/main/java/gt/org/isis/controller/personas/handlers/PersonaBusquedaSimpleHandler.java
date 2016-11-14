@@ -52,7 +52,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class BusquedaSimpleHandler extends AbstractRequestHandler<PersonaDto, PersonaDto> {
+public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<PersonaDto, PersonaDto> {
 
     @Autowired
     PersonasRepository repo;
