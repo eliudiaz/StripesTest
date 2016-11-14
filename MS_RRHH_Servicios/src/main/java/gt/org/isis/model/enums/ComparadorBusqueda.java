@@ -16,7 +16,8 @@ public enum ComparadorBusqueda {
 
     IGUAL("igual"),
     DIFERENTE("diferente"),
-    //    TODOS("todos"),
+    MAYOR("mayor"),
+    MENOR("menor"),
     ENTRE("entre");
 
     private String value;
