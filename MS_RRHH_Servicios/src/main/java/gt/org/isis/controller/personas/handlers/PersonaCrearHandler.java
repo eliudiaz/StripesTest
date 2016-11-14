@@ -38,6 +38,7 @@ import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
 import gt.org.isis.repository.IdiomaRepository;
+import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.RegistroAcademicoRepository;
@@ -175,6 +176,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(currentPersona);
         rl.setCreadoPor(currentPersona.getCreadoPor());
+        EntitiesHelper.setDateCreateRef(rl);
         final RegistroLaboral rl2 = regLaboralRepo.save(rl);
 
         puestoRepo.save(
@@ -189,7 +191,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                         return ps;
                     }
                 }));
-        EntitiesHelper.setDateCreateRef(rl);
+
         return this;
     }
 
@@ -226,6 +228,8 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         dpiRepo.save(dpi);
         return this;
     }
+    @Autowired
+    LugarResidenciaRepository lugaresRepo;
 
     private PersonaCrearHandler saveLugarResidencia(ReqNuevaPersonaDto r) {
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
@@ -233,6 +237,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         lr.setEstado(EstadoVariable.ACTUAL);
         lr.setCreadoPor(currentPersona.getCreadoPor());
         EntitiesHelper.setDateCreateRef(lr);
+        lugaresRepo.save(lr);
         return this;
     }
 
