@@ -6,13 +6,8 @@
 package gt.org.isis.controller.accesos.handlers;
 
 import gt.org.isis.api.jpa.SpecificationBuilder;
-import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.model.Acceso;
 import gt.org.isis.model.Acceso_;
-import gt.org.isis.model.Catalogos;
-import gt.org.isis.model.Catalogos_;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
