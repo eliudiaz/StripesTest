@@ -16,6 +16,7 @@ import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RefAreaGeograficaDto;
+import gt.org.isis.controller.dto.RefUnidadNotificadora;
 import gt.org.isis.controller.dto.RegistroAcademicoDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
@@ -27,7 +28,6 @@ import gt.org.isis.converters.LugarResidenciaDtoConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.model.AreaGeografica;
-import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
@@ -35,6 +35,7 @@ import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
 import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
+import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
@@ -59,19 +60,50 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     AreasGeografRepository areasRepo;
     @Autowired
-    UnidadNotificadoraRepository unidadEjeRepo;
+    UnidadNotificadoraRepository unidadNotificadora;
     @Autowired
     CatalogosRepository catalogosRepo;
 
-    private RefAreaGeograficaDto buildRef(AreaGeografica pais, AreaGeografica depto, AreaGeografica muni) {
-        RefAreaGeograficaDto ref = new RefAreaGeograficaDto();
-        ref.setFkMunicio(muni.getId());
-        ref.setFkMunicioNombre(muni.getValor());
-        ref.setFkDepartamento(depto.getId());
-        ref.setFkDepartamentoNombre(depto.getValor());
-        ref.setFkPais(pais.getId());
-        ref.setFkPaisNombre(pais.getValor());
+    private RefUnidadNotificadora buildByComunidad(Integer fkComunidad) {
+        RefUnidadNotificadora ref = new RefUnidadNotificadora();
+        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidad);
+        ref.setFkComunidad(fkComunidad);
+        ref.setNombreComunidad(un.getValor());
+
+        un = unidadNotificadora.findOne(un.getCodigoPadre());
+        if (un != null) {
+            ref.setFkLugarEspecifico(un.getId());
+            ref.setNombreLugarEspecifico(un.getValor());
+
+            un = unidadNotificadora.findOne(un.getCodigoPadre());
+            if (un != null) {
+                ref.setFkDistrito(un.getId());
+                ref.setNombreDistrito(un.getValor());
+            }
+        }
         return ref;
+    }
+
+    private RefAreaGeograficaDto buildByMunicipio(Integer fkMunicipio) {
+        RefAreaGeograficaDto refArea = new RefAreaGeograficaDto();
+        AreaGeografica ag = areasRepo.findOne(fkMunicipio);
+        refArea.setFkMunicio(ag.getId());
+        refArea.setFkMunicioNombre(ag.getValor());
+
+        ag = areasRepo.findOne(ag.getCodigoPadre());
+        if (ag != null) {
+
+            refArea.setFkDepartamento(ag.getId());
+            refArea.setFkDepartamentoNombre(ag.getValor());
+
+            ag = areasRepo.findOne(ag.getCodigoPadre());
+            if (ag != null) {
+                refArea.setFkPais(ag.getId());
+                refArea.setFkPaisNombre(ag.getValor());
+            }
+
+        }
+        return refArea;
     }
 
     @Override
@@ -86,46 +118,10 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 }
             }).iterator().next()));
         }
-        //datos cedula
-        AreaGeografica muni = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        dto.getFkMunicipioCedula()));
 
-        AreaGeografica depto = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        muni.getCodigoPadre()));
-
-        AreaGeografica pais = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        depto.getCodigoPadre()));
-
-        dto.setRefCedula(buildRef(pais, depto, muni));
-
-        //datos nacimiento
-        muni = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        dto.getFkMunicipioNacimiento()));
-        if (muni != null) {
-            depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    muni.getCodigoPadre()));
-
-            pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    depto.getCodigoPadre()));
-            dto.setRefNacimiento(buildRef(pais, depto, muni));
-        }
-
-        //datos vecindad
-        muni = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        dto.getFkMunicipioVecindad()));
-        if (muni != null) {
-            depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    muni.getCodigoPadre()));
-
-            pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    depto.getCodigoPadre()));
-            dto.setRefVecindad(buildRef(pais, depto, muni));
-        }
+        dto.setRefCedula(buildByMunicipio(dto.getFkMunicipioCedula()));
+        dto.setRefNacimiento(buildByMunicipio(dto.getFkMunicipioNacimiento()));
+        dto.setRefVecindad(buildByMunicipio(dto.getFkMunicipioVecindad()));
 
         //registro laboral
         RegistroLaboralDto currentRL = null;
@@ -179,18 +175,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 }
             }).iterator().next());
         }
-        //datos nacimiento
-        muni = (AreaGeografica) areasRepo
-                .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                        dto.getLugarResidencia().getFkMunicipio()));
-        if (muni != null) {
-            depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    muni.getCodigoPadre()));
-
-            pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                    depto.getCodigoPadre()));
-            dto.getLugarResidencia().setRefLugarResidencia(buildRef(pais, depto, muni));
-        }
+        dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
 
         return dto;
     }
@@ -220,7 +205,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         c = puestosRepo.findOne(c.getCodigoPadre());
         reg.setFkPuestoNominalRenglon(c.getId());
         reg.setNombrePuestoNominalRenglon(c.getValor());
-
+        reg.setRefUnidadNotificadora(buildByComunidad(reg.getFkComunidad()));
         Catalogos cat = catalogosRepo.findOne(reg.getFkPuestoFuncional());
         reg.setNombrePuestoFuncional(cat.getValor());
     }

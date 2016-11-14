@@ -21,8 +21,17 @@ public class RegistroLaboralPuestoDto {
     private Integer fkPuestoNominalRenglon;
     private String nombrePuestoNominalRenglon;
     private Integer fkComunidad;
+    private RefUnidadNotificadora refUnidadNotificadora;
     private Integer fkClasificacionServicio;
     private String nombreClasificacionServicio;
+
+    public RefUnidadNotificadora getRefUnidadNotificadora() {
+        return refUnidadNotificadora;
+    }
+
+    public void setRefUnidadNotificadora(RefUnidadNotificadora refUnidadNotificadora) {
+        this.refUnidadNotificadora = refUnidadNotificadora;
+    }
 
     public Integer getFkPuestoNominalRenglon() {
         return fkPuestoNominalRenglon;
