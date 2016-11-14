@@ -11,12 +11,30 @@ package gt.org.isis.controller.dto;
  */
 public class RefUnidadNotificadoraDto {
 
+    private Integer fkUnidadEjecutora;
+    private String fkUnidadEjecutoraNombre;
     private Integer fkComunidad;
     private String nombreComunidad;
     private Integer fkLugarEspecifico;
     private String nombreLugarEspecifico;
     private Integer fkDistrito;
     private String nombreDistrito;
+
+    public Integer getFkUnidadEjecutora() {
+        return fkUnidadEjecutora;
+    }
+
+    public void setFkUnidadEjecutora(Integer fkUnidadEjecutora) {
+        this.fkUnidadEjecutora = fkUnidadEjecutora;
+    }
+
+    public String getFkUnidadEjecutoraNombre() {
+        return fkUnidadEjecutoraNombre;
+    }
+
+    public void setFkUnidadEjecutoraNombre(String fkUnidadEjecutoraNombre) {
+        this.fkUnidadEjecutoraNombre = fkUnidadEjecutoraNombre;
+    }
 
     public Integer getFkComunidad() {
         return fkComunidad;

@@ -36,6 +36,7 @@ import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
 import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
+import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.repository.AreasGeografRepository;
@@ -43,6 +44,7 @@ import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.IdiomaRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestosRepository;
+import gt.org.isis.repository.UnidadEjecutoraRepository;
 import gt.org.isis.repository.UnidadNotificadoraRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,8 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     UnidadNotificadoraRepository unidadNotificadora;
     @Autowired
     CatalogosRepository catalogosRepo;
+    @Autowired
+    UnidadEjecutoraRepository ueRepo;
 
     private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidad) {
         RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
@@ -80,6 +84,10 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             if (!isNull(un)) {
                 ref.setFkDistrito(un.getId());
                 ref.setNombreDistrito(un.getValor());
+
+                UnidadEjecutora ue = ueRepo.findOne(un.getCodigoPadre());
+                ref.setFkUnidadEjecutora(ue.getId());
+                ref.setFkUnidadEjecutoraNombre(ue.getNombre());
             }
         }
         return ref;
