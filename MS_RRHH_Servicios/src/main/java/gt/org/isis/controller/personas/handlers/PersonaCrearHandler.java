@@ -39,7 +39,6 @@ import gt.org.isis.repository.PersonasRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,14 +50,19 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author edcracken
  */
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNuevaPersonaDto, Boolean> {
 
     @Autowired
@@ -93,6 +97,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
         final Persona p = converter.toEntity(r);
@@ -120,7 +125,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
 
-        final Persona pp = repo.saveAndFlush(p);
+        final Persona pp = repo.save(p);
 
         pp.setIdiomaCollection(new ArrayList<Idioma>());
         pp.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
@@ -136,9 +141,8 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }));
 
         RegistroAcademico ra;
-        pp.setRegistroAcademicoCollection(
-                Arrays.asList(
-                        ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico())));
+        pp.setRegistroAcademicoCollection(new ArrayList<RegistroAcademico>());
+        pp.getRegistroAcademicoCollection().add(ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico()));
         ra.setFkPersona(pp);
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setCreadoPor(p.getCreadoPor());
@@ -146,9 +150,8 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
         final RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
-        pp.setRegistroLaboralCollection(
-                Arrays.asList(rl)
-        );
+        pp.setRegistroLaboralCollection(new ArrayList<RegistroLaboral>());
+        pp.getRegistroLaboralCollection().add(rl);
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(pp);
         rl.setCreadoPor(p.getCreadoPor());
@@ -179,22 +182,24 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     }
                 }));
         Dpi dpi;
-        pp.setDpiCollection(Arrays.asList(dpi = new DpiDtoConverter().toEntity(r.getDpi())));
+        pp.setDpiCollection(new ArrayList());
+        pp.getDpiCollection().add(dpi = new DpiDtoConverter().toEntity(r.getDpi()));
         dpi.setFkPersona(pp);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
 
         LugarResidencia lr;
-        pp.setLugarResidenciaCollection(Arrays.asList(
+        pp.setLugarResidenciaCollection(new ArrayList());
+        pp.getLugarResidenciaCollection().add(
                 lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia())
-        ));
+        );
         lr.setFkPersona(pp);
         lr.setEstado(EstadoVariable.ACTUAL);
         lr.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(lr);
 
-        repo.saveAndFlush(pp);
+        repo.save(pp);
         return true;
     }
 
