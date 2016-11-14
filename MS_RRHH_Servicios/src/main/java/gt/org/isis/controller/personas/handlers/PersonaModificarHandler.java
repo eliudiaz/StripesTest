@@ -39,6 +39,7 @@ import gt.org.isis.repository.HIstoricoPersonasRepository;
 import gt.org.isis.repository.IdiomaRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
+import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.RegistroAcademicoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         hp.setFkPersona(p);
         hp.setEdad(p.getEdad());
         EntitiesHelper.setDateCreateRef(hp);
-        hp.setCreadoPor("admin");
+        hp.setCreadoPor(p.getUltimoCambioPor());
         historicoRepo.save(hp);
     }
 
@@ -131,21 +132,25 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                 .toEntity(r.getRegistroAcademico());
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
-        ra.setCreadoPor(p.getCreadoPor());
+        ra.setCreadoPor(p.getUltimoCambioPor());
         EntitiesHelper.setDateCreateRef(ra);
         rAcaRepository.save(ra);
     }
 
-    private void actualizaRegistroLaboral(Persona p, PersonaDto r) {
+    @Autowired
+    PuestoRepository puestoRepo;
+
+    private void actualizaRegistroLaboral(final Persona p, PersonaDto r) {
         rLabRepository.archivarRegitro(p.getCui());
         final RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(p);
-        rl.setCreadoPor(p.getCreadoPor());
+        rl.setCreadoPor(p.getUltimoCambioPor());
         EntitiesHelper.setDateCreateRef(rl);
+        rLabRepository.save(rl);
 
-        rl.setPuestoCollection(new ArrayList<Puesto>(Collections2
+        puestoRepo.save(Collections2
                 .transform(r.getRegistroLaboral().getPuestos(),
                         new Function<RegistroLaboralPuestoDto, Puesto>() {
                     @Override
@@ -153,12 +158,11 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                         Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
                         ps.setFkRegistroLaboral(rl);
                         EntitiesHelper.setDateCreateRef(ps);
-                        ps.setCreadoPor("admin");
+                        ps.setCreadoPor(p.getUltimoCambioPor());
                         return ps;
                     }
-                })));
+                }));
 
-        rLabRepository.save(rl);
     }
 
     private void actualizaDpi(Persona p, PersonaDto r) {
@@ -167,7 +171,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                 .toEntity(r.getDpi());
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
-        ra.setCreadoPor(p.getCreadoPor());
+        ra.setCreadoPor(p.getUltimoCambioPor());
         EntitiesHelper.setDateCreateRef(ra);
         dpiRepository.save(ra);
     }
@@ -178,7 +182,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                 .toEntity(r.getLugarResidencia());
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
-        ra.setCreadoPor(p.getCreadoPor());
+        ra.setCreadoPor(p.getUltimoCambioPor());
         EntitiesHelper.setDateCreateRef(ra);
         lrRepository.save(ra);
     }

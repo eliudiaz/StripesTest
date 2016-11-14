@@ -104,7 +104,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }
     }
 
-    private PersonaCrearHandler savePersona(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaPersonaDatos(ReqNuevaPersonaDto r) {
         currentPersona = converter.toEntity(r);
 
         currentPersona.setEstado(Estado.ACTIVO);
@@ -136,7 +136,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     IdiomaRepository idiomasRepo;
 
-    private PersonaCrearHandler saveIdiomas(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaIdiomas(ReqNuevaPersonaDto r) {
         idiomasRepo.save(
                 Collections2.transform(r.getIdiomas(),
                         new Function<IdiomaDto, Idioma>() {
@@ -155,7 +155,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     RegistroAcademicoRepository regAcadRepo;
 
-    private PersonaCrearHandler saveRegAcademico(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaRegAcademico(ReqNuevaPersonaDto r) {
         RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
         ra.setFkPersona(currentPersona);
         ra.setCreadoPor(currentPersona.getCreadoPor());
@@ -170,7 +170,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     PuestoRepository puestoRepo;
 
-    private PersonaCrearHandler saveRegLaboral(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaRegLaboral(ReqNuevaPersonaDto r) {
         RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
         rl.setEstado(EstadoVariable.ACTUAL);
@@ -198,7 +198,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     EstudiosSaludRepository estudiosRepo;
 
-    private PersonaCrearHandler saveEstudiosSalud(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaEstudiosSalud(ReqNuevaPersonaDto r) {
         estudiosRepo.save(
                 Collections2.transform(r.getEstudiosSalud(),
                         new Function<EstudioSaludDto, EstudioSalud>() {
@@ -218,7 +218,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     DpiRepository dpiRepo;
 
-    private PersonaCrearHandler saveDpi(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
         Dpi dpi = new DpiDtoConverter().toEntity(r.getDpi());
         dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
@@ -231,7 +231,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Autowired
     LugarResidenciaRepository lugaresRepo;
 
-    private PersonaCrearHandler saveLugarResidencia(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardaLugarResidencia(ReqNuevaPersonaDto r) {
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
         lr.setFkPersona(currentPersona);
         lr.setEstado(EstadoVariable.ACTUAL);
@@ -245,13 +245,13 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
         this
-                .savePersona(r)
-                .saveIdiomas(r)
-                .saveRegAcademico(r)
-                .saveRegLaboral(r)
-                .saveEstudiosSalud(r)
-                .saveDpi(r)
-                .saveLugarResidencia(r);
+                .guardaPersonaDatos(r)
+                .guardaIdiomas(r)
+                .guardaRegAcademico(r)
+                .guardaRegLaboral(r)
+                .guardaEstudiosSalud(r)
+                .guardaDpi(r)
+                .guardaLugarResidencia(r);
 
         return true;
     }
