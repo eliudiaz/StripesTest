@@ -21,15 +21,15 @@ public class RegistroLaboralPuestoDto {
     private Integer fkPuestoNominalRenglon;
     private String nombrePuestoNominalRenglon;
     private Integer fkComunidad;
-    private RefUnidadNotificadora refUnidadNotificadora;
+    private RefUnidadNotificadoraDto refUnidadNotificadora;
     private Integer fkClasificacionServicio;
     private String nombreClasificacionServicio;
 
-    public RefUnidadNotificadora getRefUnidadNotificadora() {
+    public RefUnidadNotificadoraDto getRefUnidadNotificadora() {
         return refUnidadNotificadora;
     }
 
-    public void setRefUnidadNotificadora(RefUnidadNotificadora refUnidadNotificadora) {
+    public void setRefUnidadNotificadora(RefUnidadNotificadoraDto refUnidadNotificadora) {
         this.refUnidadNotificadora = refUnidadNotificadora;
     }
 

@@ -16,7 +16,7 @@ import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RefAreaGeograficaDto;
-import gt.org.isis.controller.dto.RefUnidadNotificadora;
+import gt.org.isis.controller.dto.RefUnidadNotificadoraDto;
 import gt.org.isis.controller.dto.RegistroAcademicoDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
@@ -64,19 +64,19 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     CatalogosRepository catalogosRepo;
 
-    private RefUnidadNotificadora buildByComunidad(Integer fkComunidad) {
-        RefUnidadNotificadora ref = new RefUnidadNotificadora();
+    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidad) {
+        RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
         UnidadNotificadora un = unidadNotificadora.findOne(fkComunidad);
         ref.setFkComunidad(fkComunidad);
         ref.setNombreComunidad(un.getValor());
 
         un = unidadNotificadora.findOne(un.getCodigoPadre());
-        if (un != null) {
+        if (!isNull(un)) {
             ref.setFkLugarEspecifico(un.getId());
             ref.setNombreLugarEspecifico(un.getValor());
 
             un = unidadNotificadora.findOne(un.getCodigoPadre());
-            if (un != null) {
+            if (!isNull(un)) {
                 ref.setFkDistrito(un.getId());
                 ref.setNombreDistrito(un.getValor());
             }
@@ -91,13 +91,13 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         refArea.setFkMunicioNombre(ag.getValor());
 
         ag = areasRepo.findOne(ag.getCodigoPadre());
-        if (ag != null) {
+        if (!isNull(ag)) {
 
             refArea.setFkDepartamento(ag.getId());
             refArea.setFkDepartamentoNombre(ag.getValor());
 
             ag = areasRepo.findOne(ag.getCodigoPadre());
-            if (ag != null) {
+            if (!isNull(ag)) {
                 refArea.setFkPais(ag.getId());
                 refArea.setFkPaisNombre(ag.getValor());
             }
@@ -208,6 +208,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         reg.setRefUnidadNotificadora(buildByComunidad(reg.getFkComunidad()));
         Catalogos cat = catalogosRepo.findOne(reg.getFkPuestoFuncional());
         reg.setNombrePuestoFuncional(cat.getValor());
+
     }
 
     private void fillRegistroRA(RegistroAcademicoDto reg) {

@@ -9,7 +9,7 @@ package gt.org.isis.controller.dto;
  *
  * @author eliud
  */
-public class RefUnidadNotificadora {
+public class RefUnidadNotificadoraDto {
 
     private Integer fkComunidad;
     private String nombreComunidad;
