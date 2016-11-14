@@ -19,13 +19,21 @@ public class LugarResidenciaDto {
     private Integer id;
     @NotNull
     private Integer fkMunicipio;
-    private String nombreMunicipio;
+    private RefAreaGeograficaDto refLugarResidencia;
     @NotNull
     private String direccion;
     private EstadoVariable estado;
     private Date fechaCreacion;
     private String creadoPor;
     private List<LugarResidenciaDto> historial;
+
+    public RefAreaGeograficaDto getRefLugarResidencia() {
+        return refLugarResidencia;
+    }
+
+    public void setRefLugarResidencia(RefAreaGeograficaDto refLugarResidencia) {
+        this.refLugarResidencia = refLugarResidencia;
+    }
 
     public List<LugarResidenciaDto> getHistorial() {
         return historial;
@@ -49,14 +57,6 @@ public class LugarResidenciaDto {
 
     public void setFkMunicipio(Integer fkMunicipio) {
         this.fkMunicipio = fkMunicipio;
-    }
-
-    public String getNombreMunicipio() {
-        return nombreMunicipio;
-    }
-
-    public void setNombreMunicipio(String nombreMunicipio) {
-        this.nombreMunicipio = nombreMunicipio;
     }
 
     public EstadoVariable getEstado() {

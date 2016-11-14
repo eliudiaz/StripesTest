@@ -19,10 +19,19 @@ public class EstudioSaludDto {
     private Integer anioEstudio;
     @NotNull
     private Integer fkEstudioSalud;
+    private String nombre;
     private Date fechaCreacion;
     private String creadoPor;
     private Date fechaUltimoCambio;
     private String ultimoCambioPor;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public Integer getFkEstudioSalud() {
         return fkEstudioSalud;

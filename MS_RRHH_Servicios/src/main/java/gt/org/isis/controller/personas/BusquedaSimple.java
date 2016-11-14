@@ -6,7 +6,7 @@
 package gt.org.isis.controller.personas;
 
 import gt.org.isis.controller.dto.PersonaDto;
-import gt.org.isis.controller.personas.handlers.PersonaBuscarHandler;
+import gt.org.isis.controller.personas.handlers.BusquedaSimpleHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BusquedaSimple {
 
     @Autowired
-    PersonaBuscarHandler handler;
+    BusquedaSimpleHandler handler;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/get", method = RequestMethod.GET,
