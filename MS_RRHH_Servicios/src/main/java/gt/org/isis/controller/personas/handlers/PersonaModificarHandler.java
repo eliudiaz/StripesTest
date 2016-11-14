@@ -44,6 +44,8 @@ import gt.org.isis.repository.RegistroLaboralRepository;
 import java.util.ArrayList;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author edcracken
  */
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonaModificarHandler extends AbstractValidationsRequestHandler<ReqModPersonaDto, Boolean> {
 
     @Autowired
@@ -74,6 +77,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Autowired
     LugarResidenciaRepository lrRepository;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
