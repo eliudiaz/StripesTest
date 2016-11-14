@@ -16,6 +16,7 @@ import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RefAreaGeograficaDto;
+import gt.org.isis.controller.dto.RefClasificacionServiciDto;
 import gt.org.isis.controller.dto.RefUnidadNotificadoraDto;
 import gt.org.isis.controller.dto.RegistroAcademicoDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;
@@ -198,14 +199,32 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     private PuestosRepository puestosRepo;
 
+    private RefClasificacionServiciDto buildByClasificacionServicio(Integer fkClasificacionServicio) {
+        RefClasificacionServiciDto refClasificacion = new RefClasificacionServiciDto();
+        Catalogos c = catalogosRepo.findOne(fkClasificacionServicio);
+        refClasificacion.setFkAreaServicio(c.getId());
+        refClasificacion.setFkAreaServicioNombre(c.getValor());
+
+        c = catalogosRepo.findOne(c.getCodigoPadre());
+        if (c != null) {
+            refClasificacion.setFkClasificacionServicio(c.getId());
+            refClasificacion.setFkClasificacionServicioNombre(c.getValor());
+        }
+        return refClasificacion;
+    }
+
     private void fillRegistroPuesto(RegistroLaboralPuestoDto reg) {
 
-        Puestos c = puestosRepo.findOne(reg.getFkPuestoNominal());
-        reg.setNombrePuestoNominal(c.getValor());
-        c = puestosRepo.findOne(c.getCodigoPadre());
-        reg.setFkPuestoNominalRenglon(c.getId());
-        reg.setNombrePuestoNominalRenglon(c.getValor());
+        reg.setRefClasificacionServicio(buildByClasificacionServicio(reg.getFkClasificacionServicio()));
         reg.setRefUnidadNotificadora(buildByComunidad(reg.getFkComunidad()));
+
+        Puestos catPuestos = puestosRepo.findOne(reg.getFkPuestoNominal());
+        reg.setNombrePuestoNominal(catPuestos.getValor());
+
+        catPuestos = puestosRepo.findOne(catPuestos.getCodigoPadre());
+        reg.setFkPuestoNominalRenglon(catPuestos.getId());
+        reg.setNombrePuestoNominalRenglon(catPuestos.getValor());
+
         Catalogos cat = catalogosRepo.findOne(reg.getFkPuestoFuncional());
         reg.setNombrePuestoFuncional(cat.getValor());
 

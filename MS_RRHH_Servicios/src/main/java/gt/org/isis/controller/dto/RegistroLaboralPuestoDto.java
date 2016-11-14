@@ -23,7 +23,15 @@ public class RegistroLaboralPuestoDto {
     private Integer fkComunidad;
     private RefUnidadNotificadoraDto refUnidadNotificadora;
     private Integer fkClasificacionServicio;
-    private String nombreClasificacionServicio;
+    private RefClasificacionServiciDto refClasificacionServicio;
+
+    public RefClasificacionServiciDto getRefClasificacionServicio() {
+        return refClasificacionServicio;
+    }
+
+    public void setRefClasificacionServicio(RefClasificacionServiciDto refClasificacionServicio) {
+        this.refClasificacionServicio = refClasificacionServicio;
+    }
 
     public RefUnidadNotificadoraDto getRefUnidadNotificadora() {
         return refUnidadNotificadora;
@@ -63,14 +71,6 @@ public class RegistroLaboralPuestoDto {
 
     public void setNombrePuestoNominal(String nombrePuestoNominal) {
         this.nombrePuestoNominal = nombrePuestoNominal;
-    }
-
-    public String getNombreClasificacionServicio() {
-        return nombreClasificacionServicio;
-    }
-
-    public void setNombreClasificacionServicio(String nombreClasificacionServicio) {
-        this.nombreClasificacionServicio = nombreClasificacionServicio;
     }
 
     public Integer getFkPuestoFuncional() {
