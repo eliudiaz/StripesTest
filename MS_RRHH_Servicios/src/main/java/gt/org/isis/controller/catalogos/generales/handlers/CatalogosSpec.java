@@ -31,13 +31,14 @@ public class CatalogosSpec implements SpecificationBuilder<CatalogosRequestDto, 
             @Override
             public Predicate toPredicate(Root<Catalogos> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<Predicate>();
+                predicates.add(cb.like(cb.lower(root.get(Catalogos_.tipo)),
+                        param.getTipo().toLowerCase()));
                 if (param.getCodigoPadre() != null) {
                     predicates.add(cb.equal(root.get(Catalogos_.codigoPadre), param.getCodigoPadre()));
+                } else {
+                    predicates.add(cb.isNull(root.get(Catalogos_.codigoPadre)));
                 }
-                if (param.getTipo() != null) {
-                    predicates.add(cb.like(cb.lower(root.get(Catalogos_.tipo)),
-                            param.getTipo().toLowerCase()));
-                }
+
                 if (param.getValor() != null) {
                     predicates.add(cb.like(cb.lower(root.get(Catalogos_.valor)),
                             param.getValor().toLowerCase()));

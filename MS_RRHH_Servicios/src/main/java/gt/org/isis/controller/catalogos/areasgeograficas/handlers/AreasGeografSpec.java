@@ -9,6 +9,7 @@ import gt.org.isis.api.jpa.SpecificationBuilder;
 import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
+import gt.org.isis.model.Puestos_;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -33,6 +34,8 @@ public class AreasGeografSpec implements SpecificationBuilder<CatalogosRequestDt
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 if (param.getCodigoPadre() != null) {
                     predicates.add(cb.equal(root.get(AreaGeografica_.codigoPadre), param.getCodigoPadre()));
+                } else {
+                    predicates.add(cb.isNull(root.get(AreaGeografica_.codigoPadre)));
                 }
                 if (param.getTipo() != null) {
                     predicates.add(cb.like(cb.lower(root.get(AreaGeografica_.tipo)),

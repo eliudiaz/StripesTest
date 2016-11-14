@@ -5,16 +5,22 @@
  */
 package gt.org.isis.controller.personas.handlers;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.SingularAttrSpecificationBased;
 import gt.org.isis.controller.dto.GetPersonaDto;
+import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RefAreaGeograficaDto;
 import gt.org.isis.controller.dto.RegistroAcademicoDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
+import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.GetPersonaDtoConverter;
+import gt.org.isis.converters.IdiomaDtoConverter;
+import gt.org.isis.converters.LugarResidenciaDtoConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.model.AreaGeografica;
@@ -88,23 +94,27 @@ public class PersonaBuscarHandler extends AbstractRequestHandler<PersonaDto, Per
         muni = (AreaGeografica) areasRepo
                 .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
                         dto.getFkMunicipioNacimiento()));
-        depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                muni.getCodigoPadre()));
+        if (muni != null) {
+            depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
+                    muni.getCodigoPadre()));
 
-        pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                depto.getCodigoPadre()));
-        dto.setRefNacimiento(buildRef(pais, depto, muni));
+            pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
+                    depto.getCodigoPadre()));
+            dto.setRefNacimiento(buildRef(pais, depto, muni));
+        }
 
         //datos vecindad
         muni = (AreaGeografica) areasRepo
                 .findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
                         dto.getFkMunicipioVecindad()));
-        depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                muni.getCodigoPadre()));
+        if (muni != null) {
+            depto = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
+                    muni.getCodigoPadre()));
 
-        pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
-                depto.getCodigoPadre()));
-        dto.setRefVecindad(buildRef(pais, depto, muni));
+            pais = (AreaGeografica) areasRepo.findOne(new SingularAttrSpecificationBased<AreaGeografica>(AreaGeografica_.id,
+                    depto.getCodigoPadre()));
+            dto.setRefVecindad(buildRef(pais, depto, muni));
+        }
 
         //registro laboral
         RegistroLaboralDto currentRL = null;
@@ -142,6 +152,17 @@ public class PersonaBuscarHandler extends AbstractRequestHandler<PersonaDto, Per
             currentRA = !hisRA.isEmpty() ? hisRA.get(0) : null;
         }
         dto.setRegistroAcademico(currentRA);
+        dto.setIdiomas(new IdiomaDtoConverter().toDTO((List) p.getIdiomaCollection()));
+        dto.setEstudiosSalud(new EstudiosSaludConverter().toDTO((List) p.getEstudioSaludCollection()));
+        if (p.getLugarResidenciaCollection() != null && !p.getLugarResidenciaCollection().isEmpty()) {
+            dto.setLugarResidencia((LugarResidenciaDto) Collections2.filter(new LugarResidenciaDtoConverter().toDTO((List) p.getLugarResidenciaCollection()),
+                    new Predicate<LugarResidenciaDto>() {
+                @Override
+                public boolean apply(LugarResidenciaDto t) {
+                    return t.getEstado().equals(EstadoVariable.ACTUAL);
+                }
+            }).iterator().next());
+        }
         return dto;
     }
 
@@ -164,10 +185,14 @@ public class PersonaBuscarHandler extends AbstractRequestHandler<PersonaDto, Per
         Catalogos c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getUltimoGrado()));
         reg.setNombreUltimoGrado(c.getValor());
+
         c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-        reg.setNivelUltimoGrado(c.getId());
-        reg.setNivelUltimoGradoNombre(c.getValor());
+        if (c != null) {
+            reg.setNivelUltimoGrado(c.getId());
+
+            reg.setNivelUltimoGradoNombre(c.getValor());
+        }
         if (reg.getEstudiaActualmente()) {
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
@@ -175,8 +200,11 @@ public class PersonaBuscarHandler extends AbstractRequestHandler<PersonaDto, Per
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            reg.setNivelGradoActual(c.getId());
-            reg.setNivelGradoActualNombre(c.getValor());
+            if (c != null) {
+                reg.setNivelGradoActual(c.getId());
+
+                reg.setNivelGradoActualNombre(c.getValor());
+            }
         }
     }
 

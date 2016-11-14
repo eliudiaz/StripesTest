@@ -33,6 +33,8 @@ public class UnidadesNotifSpec implements SpecificationBuilder<CatalogosRequestD
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 if (param.getCodigoPadre() != null) {
                     predicates.add(cb.equal(root.get(UnidadNotificadora_.codigoPadre), param.getCodigoPadre()));
+                } else {
+                    predicates.add(cb.isNull(root.get(UnidadNotificadora_.codigoPadre)));
                 }
                 if (param.getTipo() != null) {
                     predicates.add(cb.equal(root.get(UnidadNotificadora_.tipo), param.getTipo()));

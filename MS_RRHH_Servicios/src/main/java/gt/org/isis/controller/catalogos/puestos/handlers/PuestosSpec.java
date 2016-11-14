@@ -31,8 +31,11 @@ public class PuestosSpec implements SpecificationBuilder<CatalogosRequestDto, Pu
             @Override
             public Predicate toPredicate(Root<Puestos> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<Predicate>();
+
                 if (param.getCodigoPadre() != null) {
                     predicates.add(cb.equal(root.get(Puestos_.codigoPadre), param.getCodigoPadre()));
+                } else {
+                    predicates.add(cb.isNull(root.get(Puestos_.codigoPadre)));
                 }
 
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
