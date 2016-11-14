@@ -49,6 +49,8 @@ import gt.org.isis.repository.UnidadNotificadoraRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,6 +58,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<PersonaDto, PersonaDto> {
 
     @Autowired
