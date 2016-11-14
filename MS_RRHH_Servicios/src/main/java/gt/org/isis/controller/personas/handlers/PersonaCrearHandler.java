@@ -35,10 +35,15 @@ import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.AreasGeografRepository;
+import gt.org.isis.repository.DpiRepository;
+import gt.org.isis.repository.EstudiosSaludRepository;
+import gt.org.isis.repository.IdiomaRepository;
 import gt.org.isis.repository.PersonasRepository;
+import gt.org.isis.repository.PuestoRepository;
+import gt.org.isis.repository.RegistroAcademicoRepository;
+import gt.org.isis.repository.RegistroLaboralRepository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +76,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     PersonaDtoConverter converter;
     @Autowired
     AreasGeografRepository areasRepo;
+    private Persona currentPersona;
 
     private AreaGeografica getAreaByNombreAndTipo(final String nombre, final String tipo) {
         List<AreaGeografica> all = areasRepo.findAll(new Specification<AreaGeografica>() {
@@ -97,109 +103,151 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Override
-    public Boolean execute(ReqNuevaPersonaDto r) {
-        final Persona p = converter.toEntity(r);
+    private PersonaCrearHandler savePersona(ReqNuevaPersonaDto r) {
+        currentPersona = converter.toEntity(r);
 
-        p.setEstado(Estado.ACTIVO);
-        p.setCui(r.getCui());
-        p.setCreadoPor("admin");
+        currentPersona.setEstado(Estado.ACTIVO);
+        currentPersona.setCui(r.getCui());
+        currentPersona.setCreadoPor("admin");
         if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
-            p.setFechaNacimiento(parseFechaNacTexto(r.getFechaNacimientoTexto()));
+            currentPersona.setFechaNacimiento(parseFechaNacTexto(r.getFechaNacimientoTexto()));
         }
-        p.setEdad(Years.yearsBetween(LocalDate.fromDateFields(p.getFechaNacimiento()),
+        currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
-        EntitiesHelper.setDateCreateRef(p);
+        EntitiesHelper.setDateCreateRef(currentPersona);
 
         if (r.getFkMunicipioCedulaNombre() != null && !r.getFkMunicipioCedulaNombre().isEmpty()) {
-            p.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
+            currentPersona.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
         if (r.getFkMunicipioNacimientoNombre() != null && !r.getFkMunicipioNacimientoNombre().isEmpty()) {
-            p.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
+            currentPersona.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
         if (r.getFkMunicipioVecindadNombre() != null && !r.getFkMunicipioVecindadNombre().isEmpty()) {
-            p.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
+            currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
+        currentPersona = repo.save(currentPersona);
+        return this;
+    }
 
-        final Persona pp = repo.save(p);
+    @Autowired
+    IdiomaRepository idiomasRepo;
 
-        pp.setIdiomaCollection(new ArrayList<Idioma>());
-        pp.getIdiomaCollection().addAll(Collections2.transform(r.getIdiomas(),
-                new Function<IdiomaDto, Idioma>() {
-            @Override
-            public Idioma apply(IdiomaDto f) {
-                Idioma i = new IdiomaDtoConverter().toEntity(f);
-                i.setFkPersona(pp);
-                i.setCreadoPor(p.getCreadoPor());
-                EntitiesHelper.setDateCreateRef(i);
-                return i;
-            }
-        }));
+    private PersonaCrearHandler saveIdiomas(ReqNuevaPersonaDto r) {
+        idiomasRepo.save(
+                Collections2.transform(r.getIdiomas(),
+                        new Function<IdiomaDto, Idioma>() {
+                    @Override
+                    public Idioma apply(IdiomaDto f) {
+                        Idioma i = new IdiomaDtoConverter().toEntity(f);
+                        i.setFkPersona(currentPersona);
+                        i.setCreadoPor(currentPersona.getCreadoPor());
+                        EntitiesHelper.setDateCreateRef(i);
+                        return i;
+                    }
+                }));
 
-        RegistroAcademico ra;
-        pp.setRegistroAcademicoCollection(new ArrayList<RegistroAcademico>());
-        pp.getRegistroAcademicoCollection().add(ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico()));
-        ra.setFkPersona(pp);
+        return this;
+    }
+    @Autowired
+    RegistroAcademicoRepository regAcadRepo;
+
+    private PersonaCrearHandler saveRegAcademico(ReqNuevaPersonaDto r) {
+        RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
+        ra.setFkPersona(currentPersona);
+        ra.setCreadoPor(currentPersona.getCreadoPor());
         ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setCreadoPor(p.getCreadoPor());
         EntitiesHelper.setDateCreateRef(ra);
+        regAcadRepo.save(ra);
 
-        final RegistroLaboral rl = new RegistroLaboralConverter()
+        return this;
+    }
+    @Autowired
+    RegistroLaboralRepository regLaboralRepo;
+    @Autowired
+    PuestoRepository puestoRepo;
+
+    private PersonaCrearHandler saveRegLaboral(ReqNuevaPersonaDto r) {
+        RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
-        pp.setRegistroLaboralCollection(new ArrayList<RegistroLaboral>());
-        pp.getRegistroLaboralCollection().add(rl);
         rl.setEstado(EstadoVariable.ACTUAL);
-        rl.setFkPersona(pp);
-        rl.setCreadoPor(p.getCreadoPor());
-        rl.setPuestoCollection(new ArrayList<Puesto>(Collections2.transform(r.getRegistroLaboral().getPuestos(),
-                new Function<RegistroLaboralPuestoDto, Puesto>() {
-            @Override
-            public Puesto apply(RegistroLaboralPuestoDto f) {
-                Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
-                ps.setFkRegistroLaboral(rl);
-                EntitiesHelper.setDateCreateRef(ps);
-                ps.setCreadoPor("admin");
-                return ps;
-            }
-        })));
-        EntitiesHelper.setDateCreateRef(rl);
+        rl.setFkPersona(currentPersona);
+        rl.setCreadoPor(currentPersona.getCreadoPor());
+        final RegistroLaboral rl2 = regLaboralRepo.save(rl);
 
-        pp.setEstudioSaludCollection(new ArrayList());
-        pp.getEstudioSaludCollection().addAll(
+        puestoRepo.save(
+                Collections2.transform(r.getRegistroLaboral().getPuestos(),
+                        new Function<RegistroLaboralPuestoDto, Puesto>() {
+                    @Override
+                    public Puesto apply(RegistroLaboralPuestoDto f) {
+                        Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
+                        ps.setFkRegistroLaboral(rl2);
+                        EntitiesHelper.setDateCreateRef(ps);
+                        ps.setCreadoPor(rl2.getCreadoPor());
+                        return ps;
+                    }
+                }));
+        EntitiesHelper.setDateCreateRef(rl);
+        return this;
+    }
+
+    @Autowired
+    EstudiosSaludRepository estudiosRepo;
+
+    private PersonaCrearHandler saveEstudiosSalud(ReqNuevaPersonaDto r) {
+        estudiosRepo.save(
                 Collections2.transform(r.getEstudiosSalud(),
                         new Function<EstudioSaludDto, EstudioSalud>() {
                     @Override
                     public EstudioSalud apply(EstudioSaludDto f) {
                         EstudioSalud es = new EstudiosSaludConverter()
                                 .toEntity(f);
-                        es.setFkPersona(pp);
-                        es.setCreadoPor(p.getCreadoPor());
+                        es.setFkPersona(currentPersona);
+                        es.setCreadoPor(currentPersona.getCreadoPor());
                         return es;
                     }
                 }));
-        Dpi dpi;
-        pp.setDpiCollection(new ArrayList());
-        pp.getDpiCollection().add(dpi = new DpiDtoConverter().toEntity(r.getDpi()));
-        dpi.setFkPersona(pp);
+
+        return this;
+    }
+
+    @Autowired
+    DpiRepository dpiRepo;
+
+    private PersonaCrearHandler saveDpi(ReqNuevaPersonaDto r) {
+        Dpi dpi = new DpiDtoConverter().toEntity(r.getDpi());
+        dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
-        dpi.setCreadoPor(p.getCreadoPor());
+        dpi.setCreadoPor(currentPersona.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
 
-        LugarResidencia lr;
-        pp.setLugarResidenciaCollection(new ArrayList());
-        pp.getLugarResidenciaCollection().add(
-                lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia())
-        );
-        lr.setFkPersona(pp);
-        lr.setEstado(EstadoVariable.ACTUAL);
-        lr.setCreadoPor(p.getCreadoPor());
-        EntitiesHelper.setDateCreateRef(lr);
+        dpiRepo.save(dpi);
+        return this;
+    }
 
-        repo.save(pp);
+    private PersonaCrearHandler saveLugarResidencia(ReqNuevaPersonaDto r) {
+        LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
+        lr.setFkPersona(currentPersona);
+        lr.setEstado(EstadoVariable.ACTUAL);
+        lr.setCreadoPor(currentPersona.getCreadoPor());
+        EntitiesHelper.setDateCreateRef(lr);
+        return this;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public Boolean execute(ReqNuevaPersonaDto r) {
+        this
+                .savePersona(r)
+                .saveIdiomas(r)
+                .saveRegAcademico(r)
+                .saveRegLaboral(r)
+                .saveEstudiosSalud(r)
+                .saveDpi(r)
+                .saveLugarResidencia(r);
+
         return true;
     }
 
