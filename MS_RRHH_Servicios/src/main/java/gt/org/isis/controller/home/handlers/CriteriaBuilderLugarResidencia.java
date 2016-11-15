@@ -5,11 +5,13 @@
  */
 package gt.org.isis.controller.home.handlers;
 
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.model.LugarResidencia;
 import gt.org.isis.model.LugarResidencia_;
 import gt.org.isis.model.enums.EstadoVariable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,11 +27,17 @@ public class CriteriaBuilderLugarResidencia {
     private List<Predicate> criteria;
     private BusquedaNormalDto normal;
     private Root<LugarResidencia> rootLugar;
+    private Collection<Integer> munisList;
     private CriteriaQuery<?> cq;
     private CriteriaBuilder cb;
 
     public CriteriaBuilderLugarResidencia withCq(CriteriaQuery cq) {
         this.cq = cq;
+        return this;
+    }
+
+    public CriteriaBuilderLugarResidencia withMunisList(Collection<Integer> munisLs) {
+        this.munisList = munisLs;
         return this;
     }
 
@@ -67,6 +75,10 @@ public class CriteriaBuilderLugarResidencia {
                     likeExpr(normal.getDireccion())
             ));
         }
+        if (!isNull(this.munisList)) {
+            criteria.add(rootLugar.get(LugarResidencia_.fkMunicipio).in(munisList));
+        }
+
         if (normal.getMunicipio() != null) {
             criteria.add(cb.equal(
                     rootLugar.get(LugarResidencia_.fkMunicipio),
