@@ -75,7 +75,7 @@ public class CriteriaBuilderLugarResidencia {
                     likeExpr(normal.getDireccion())
             ));
         }
-        if (!isNull(this.munisList)) {
+        if (!isNull(this.munisList) && !this.munisList.isEmpty()) {
             criteria.add(rootLugar.get(LugarResidencia_.fkMunicipio).in(munisList));
         }
 
