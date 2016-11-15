@@ -17,13 +17,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
 
 /**
  *
  * @author eliud
  */
 @Entity
-@Table(name = "usuario_roles", catalog = "rrhh", schema = "public")
+@Table(name = "usuario_roles", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "UsuarioRoles.findAll", query = "SELECT u FROM UsuarioRoles u")})
 public class UsuarioRoles implements Serializable {
@@ -86,10 +87,7 @@ public class UsuarioRoles implements Serializable {
             return false;
         }
         UsuarioRoles other = (UsuarioRoles) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

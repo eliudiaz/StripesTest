@@ -13,7 +13,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -33,9 +34,6 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")})
 public class Role implements Serializable, CustomEntity {
-
-    @OneToMany(mappedBy = "fkRole")
-    private Collection<UsuarioRoles> usuarioRolesCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,10 +56,14 @@ public class Role implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fkRole", fetch = FetchType.EAGER)
-    private Collection<AccesoRole> accesoRoleCollection;
+    @Fetch(FetchMode.SELECT)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRole")
-    private Collection<Usuario> usuarioCollection;
+    private Collection<AccesoRole> accesoRoleCollection;
+    @Fetch(FetchMode.SELECT)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRole")
+    private Collection<UsuarioRoles> usuarioRolesCollection;
 
     public Role() {
     }
@@ -130,14 +132,6 @@ public class Role implements Serializable, CustomEntity {
 
     public void setAccesoRoleCollection(Collection<AccesoRole> accesoRoleCollection) {
         this.accesoRoleCollection = accesoRoleCollection;
-    }
-
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
     }
 
     public Estado getEstado() {

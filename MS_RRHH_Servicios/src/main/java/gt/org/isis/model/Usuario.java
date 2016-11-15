@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -66,7 +68,7 @@ public class Usuario implements Serializable, CustomEntity {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne(optional = false)
     private Persona fkPersona;
-
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkUsuario")
     private Collection<UsuarioRoles> usuarioRolesCollection;
 
