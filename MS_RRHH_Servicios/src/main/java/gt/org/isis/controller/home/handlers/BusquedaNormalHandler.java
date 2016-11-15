@@ -64,19 +64,20 @@ public class BusquedaNormalHandler extends AbstractValidationsRequestHandler<Bus
         if (!isNull(request.getDireccion())
                 || !isNull(request.getDepartamento())
                 || !isNull(request.getMunicipio())) {
-            Collection<Integer> munisLs;
+            final Collection<Integer> munisLs = new ArrayList();
             if (!isNull(request.getDepartamento()) && isNull(request.getMunicipio())) {
-                munisLs = Collections2.transform(catsRepo.findAll(new Specification() {
+                munisLs.addAll(Collections2.transform(catsRepo.findAll(new Specification() {
                     @Override
                     public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
-                        return cb.in(root.get(Catalogos_.codigoPadre));
+                        return cb.equal(root.get(Catalogos_.codigoPadre),
+                                request.getDepartamento());
                     }
                 }), new Function<Catalogos, Integer>() {
                     @Override
                     public Integer apply(Catalogos f) {
                         return f.getId();
                     }
-                });
+                }));
             }
             (s1 = (s1 == null ? new ArrayList<Persona>() : s1))
                     .addAll(Collections2.transform(lugarRepo.findAll(new Specification<LugarResidencia>() {
