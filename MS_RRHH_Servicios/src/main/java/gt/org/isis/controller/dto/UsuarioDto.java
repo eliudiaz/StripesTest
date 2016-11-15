@@ -7,7 +7,9 @@ package gt.org.isis.controller.dto;
 
 import gt.org.isis.model.enums.Estado;
 import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -32,7 +34,8 @@ public class UsuarioDto {
     @NotNull
     private String cui;
     @NotNull
-    private Integer roleId;
+    @NotEmpty
+    private List<RoleDto> roles;
     private PersonaDto persona;
     private Date fechaCreacion;
     private String creadoPor;
@@ -54,12 +57,12 @@ public class UsuarioDto {
         this.persona = persona;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public List<RoleDto> getRoles() {
+        return roles;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
     }
 
     public String getCui() {

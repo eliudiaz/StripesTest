@@ -66,9 +66,6 @@ public class Usuario implements Serializable, CustomEntity {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne(optional = false)
     private Persona fkPersona;
-    @JoinColumn(name = "fk_role", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Role fkRole;
 
     @OneToMany(mappedBy = "fkUsuario")
     private Collection<UsuarioRoles> usuarioRolesCollection;
@@ -188,14 +185,6 @@ public class Usuario implements Serializable, CustomEntity {
 
     public void setFkPersona(Persona fkPersona) {
         this.fkPersona = fkPersona;
-    }
-
-    public Role getFkRole() {
-        return fkRole;
-    }
-
-    public void setFkRole(Role fkRole) {
-        this.fkRole = fkRole;
     }
 
     @Override

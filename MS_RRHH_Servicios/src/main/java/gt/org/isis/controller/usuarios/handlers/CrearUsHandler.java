@@ -5,10 +5,12 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
-import com.google.common.base.Optional;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
+import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
 import gt.org.isis.model.Persona;
@@ -18,6 +20,8 @@ import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -57,16 +61,24 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
             throw ExceptionsManager.newValidationException("already_exits",
                     new String[]{"usuario,Usuario ya existe!"});
         }
-        Role role = roles.findOne(request.getRoleId());
-        if (isNull(role)) {
-            throw ExceptionsManager.newValidationException("invalid_role",
-                    new String[]{"role,Role es invalido o no existe"});
-        }
+
+        List<Role> lsRoles = new ArrayList<Role>(Collections2.transform(request.getRoles(), new Function<RoleDto, Role>() {
+            @Override
+            public Role apply(RoleDto f) {
+                Role role = roles.findOne(f.getId());
+                if (isNull(role)) {
+                    throw ExceptionsManager.newValidationException("invalid_role",
+                            new String[]{"role,Role es invalido o no existe"});
+                }
+                return role;
+            }
+        }));
+
         UsuarioDtoConverter bc;
         final Usuario r = (bc = new UsuarioDtoConverter()).toEntity(request);
         r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
-        r.setFkRole(role);
+        r.setUsuarioRolesCollection((Collection) lsRoles);
         r.setId(request.getUsuario());
         EntitiesHelper.setDateCreateRef(r);
         r.setCreadoPor("test");
