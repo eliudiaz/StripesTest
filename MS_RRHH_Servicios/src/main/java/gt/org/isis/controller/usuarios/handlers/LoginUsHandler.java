@@ -5,11 +5,15 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
+import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioLoginDto;
 import gt.org.isis.converters.RoleDtoConverter;
 import gt.org.isis.model.Usuario;
+import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -60,7 +64,12 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
-        request.setRole(new RoleDtoConverter().toDTO((List) r.getUsuarioRolesCollection()));
+        request.setRoles((List) Collections2.transform(r.getUsuarioRolesCollection(), new Function<UsuarioRoles, RoleDto>() {
+            @Override
+            public RoleDto apply(UsuarioRoles f) {
+                return new RoleDtoConverter().toDTO(f.getFkRole());
+            }
+        }));
         request.setClave("");
         return request;
     }

@@ -19,14 +19,14 @@ public class UsuarioLoginDto {
 
     @NotNull
     private String clave;
-    private List<RoleDto> role;
+    private List<RoleDto> roles;
 
-    public List<RoleDto> getRole() {
-        return role;
+    public List<RoleDto> getRoles() {
+        return roles;
     }
 
-    public void setRole(List<RoleDto> role) {
-        this.role = role;
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
     }
 
     public String getUsuario() {
