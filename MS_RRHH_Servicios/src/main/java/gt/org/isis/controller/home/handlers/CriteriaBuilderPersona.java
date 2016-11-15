@@ -85,6 +85,10 @@ public class CriteriaBuilderPersona {
             criteria.add(cb.equal(rootPersona.get(Persona_.sexo),
                     normal.getSexo()));
         }
+        if (normal.getPueblo() != null) {
+            criteria.add(cb.equal(rootPersona.get(Persona_.fkPueblo),
+                    normal.getPueblo()));
+        }
         if (normal.getFechaNacInicio() != null && normal.getFechaNacFin() != null) {
             criteria.add(cb.and(cb.greaterThanOrEqualTo(rootPersona.get(Persona_.fechaNacimiento),
                     normal.getFechaNacInicio()),
