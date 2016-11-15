@@ -24,6 +24,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,6 +36,19 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "HistoricoPersona.findAll", query = "SELECT h FROM HistoricoPersona h")})
 public class HistoricoPersona implements Serializable, CustomEntity {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fk_nacionalidad", nullable = false)
+    private Integer fkNacionalidad;
+    @Size(max = 50)
+    @Column(name = "fk_pueblo", length = 50)
+    private Pueblo fkPueblo;
+    @Size(max = 50)
+    @Column(name = "fk_comunidad_linguistica", length = 50)
+    private Integer fkComunidadLinguistica;
+    @Column(name = "edad", nullable = false)
+    private Integer edad;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -57,13 +72,8 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String otrosApellidos;
     @Column(name = "apellido_casada", length = 100)
     private String apellidoCasada;
-    @Column(name = "estado_civil")
-    private EstadoCivil estadoCivil;
     @Column(length = 50)
     private Sexo sexo;
-    @Basic(optional = false)
-    @Column(name = "fk_nacionalidad", nullable = false)
-    private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
     private String fkProfesion;
@@ -85,10 +95,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String nacNoFolio;
     @Column(name = "nac_no_partida")
     private String nacNoPartida;
-    @Column(name = "fk_pueblo")
-    private Pueblo fkPueblo;
-    @Column(name = "fk_comunidad_linguistica")
-    private Integer fkComunidadLinguistica;
     @Column
     private String mrz;
     @Column(name = "no_cedula")
@@ -117,10 +123,18 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
     private Persona fkPersona;
-    @Column(name = "edad", nullable = false)
-    private Integer edad;
     @Column(name = "foto")
     private String foto;
+    @Column(name = "estado_civil")
+    private EstadoCivil estadoCivil;
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
 
     public HistoricoPersona() {
     }
@@ -143,14 +157,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
 
     public void setFkPueblo(Pueblo fkPueblo) {
         this.fkPueblo = fkPueblo;
-    }
-
-    public Integer getEdad() {
-        return edad;
-    }
-
-    public void setEdad(Integer edad) {
-        this.edad = edad;
     }
 
     public EstadoCivil getEstadoCivil() {

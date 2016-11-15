@@ -7,15 +7,19 @@ package gt.org.isis.model;
 
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,6 +44,7 @@ public class Usuario implements Serializable, CustomEntity {
     @Column(name = "super_usuario")
     private Boolean superUsuario;
     @Column
+    @Enumerated(EnumType.STRING)
     private Estado estado;
     @Column
     private String nombres;
@@ -65,6 +70,9 @@ public class Usuario implements Serializable, CustomEntity {
     @ManyToOne(optional = false)
     private Role fkRole;
 
+    @OneToMany(mappedBy = "fkUsuario")
+    private Collection<UsuarioRoles> usuarioRolesCollection;
+
     public Usuario() {
     }
 
@@ -76,6 +84,14 @@ public class Usuario implements Serializable, CustomEntity {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public Collection<UsuarioRoles> getUsuarioRolesCollection() {
+        return usuarioRolesCollection;
+    }
+
+    public void setUsuarioRolesCollection(Collection<UsuarioRoles> usuarioRolesCollection) {
+        this.usuarioRolesCollection = usuarioRolesCollection;
     }
 
     public String getId() {

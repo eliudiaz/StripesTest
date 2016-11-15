@@ -5,49 +5,38 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
  *
- * @author edcracken
+ * @author eliud
  */
 @Entity
-@Table(name = "role", schema = "public")
+@Table(name = "historico_estudio_salud", catalog = "rrhh", schema = "public")
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")})
-public class Role implements Serializable, CustomEntity {
-
-    @OneToMany(mappedBy = "fkRole")
-    private Collection<UsuarioRoles> usuarioRolesCollection;
+    @NamedQuery(name = "HistoricoEstudioSalud.findAll", query = "SELECT h FROM HistoricoEstudioSalud h")})
+public class HistoricoEstudioSalud implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column
-    private String nombre;
-    @Column
-    private Estado estado;
-    @Basic(optional = false)
+    @Column(name = "anio_estudio")
+    private Integer anioEstudio;
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -58,22 +47,22 @@ public class Role implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "fkRole", fetch = FetchType.EAGER)
-    private Collection<AccesoRole> accesoRoleCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRole")
-    private Collection<Usuario> usuarioCollection;
+    @Column(name = "fk_estudio_salud")
+    private Integer fkEstudioSalud;
+    @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
+    @ManyToOne(optional = false)
+    private Persona fkPersona;
 
-    public Role() {
+    public HistoricoEstudioSalud() {
     }
 
-    public Role(Integer id) {
+    public HistoricoEstudioSalud(Integer id) {
         this.id = id;
     }
 
-    public Role(Integer id, Date fechaCreacion, Date fechaUltimoCambio) {
+    public HistoricoEstudioSalud(Integer id, Date fechaCreacion) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
-        this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
     public Integer getId() {
@@ -84,12 +73,12 @@ public class Role implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Integer getAnioEstudio() {
+        return anioEstudio;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setAnioEstudio(Integer anioEstudio) {
+        this.anioEstudio = anioEstudio;
     }
 
     public Date getFechaCreacion() {
@@ -124,28 +113,20 @@ public class Role implements Serializable, CustomEntity {
         this.ultimoCambioPor = ultimoCambioPor;
     }
 
-    public Collection<AccesoRole> getAccesoRoleCollection() {
-        return accesoRoleCollection;
+    public Integer getFkEstudioSalud() {
+        return fkEstudioSalud;
     }
 
-    public void setAccesoRoleCollection(Collection<AccesoRole> accesoRoleCollection) {
-        this.accesoRoleCollection = accesoRoleCollection;
+    public void setFkEstudioSalud(Integer fkEstudioSalud) {
+        this.fkEstudioSalud = fkEstudioSalud;
     }
 
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
+    public Persona getFkPersona() {
+        return fkPersona;
     }
 
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setFkPersona(Persona fkPersona) {
+        this.fkPersona = fkPersona;
     }
 
     @Override
@@ -158,10 +139,10 @@ public class Role implements Serializable, CustomEntity {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof HistoricoEstudioSalud)) {
             return false;
         }
-        Role other = (Role) object;
+        HistoricoEstudioSalud other = (HistoricoEstudioSalud) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -170,15 +151,7 @@ public class Role implements Serializable, CustomEntity {
 
     @Override
     public String toString() {
-        return "org.ms.rrhh.domain.model.Role[ id=" + id + " ]";
-    }
-
-    public Collection<UsuarioRoles> getUsuarioRolesCollection() {
-        return usuarioRolesCollection;
-    }
-
-    public void setUsuarioRolesCollection(Collection<UsuarioRoles> usuarioRolesCollection) {
-        this.usuarioRolesCollection = usuarioRolesCollection;
+        return "gt.org.isis.model.HistoricoEstudioSalud[ id=" + id + " ]";
     }
 
 }
