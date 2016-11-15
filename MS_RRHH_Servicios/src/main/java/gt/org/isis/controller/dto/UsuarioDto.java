@@ -41,6 +41,15 @@ public class UsuarioDto {
     private String creadoPor;
     private Date fechaUltimoCambio;
     private String ultimoCambioPor;
+    private boolean root;
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
+    }
 
     public UsuarioDto(String usuario) {
         this.usuario = usuario;

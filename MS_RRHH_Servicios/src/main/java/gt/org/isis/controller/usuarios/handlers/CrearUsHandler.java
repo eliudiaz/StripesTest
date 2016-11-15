@@ -88,23 +88,25 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
                     }
                 }));
         r.setUsuarioRolesCollection((Collection) lsRoles);
+        RuntimeException re = ExceptionsManager.newValidationException("cui_persona",
+                new String[]{"persona_invalida,CUI asignado a usuario no existe o es invalido!"});
+
+        if (!request.isRoot() && (request.getCui() == null || request.getCui().length() < 13)) {
+            throw re;
+        }
+        if (!request.isRoot()) {
+            Persona persona = personas.findOne(request.getCui());
+
+            if (persona == null) {
+                throw re;
+            }
+            r.setFkPersona(persona);
+        }
 
         UsuarioDto us = bc.toDTO(usuarios.save(r));
         us.setClave(null);
         us.setConfirmacionClave(null);
 
-        RuntimeException re = ExceptionsManager.newValidationException("cui_persona",
-                new String[]{"persona_invalida,CUI asignado a usuario no existe o es invalido!"});
-        if (request.getCui().length() < 13) {
-            throw re;
-        }
-
-        Persona persona = personas.findOne(request.getCui());
-
-        if (persona == null) {
-            throw re;
-        }
-        r.setFkPersona(persona);
         return us;
     }
 
