@@ -1,7 +1,7 @@
 package org.ms.rrhh.action.ext;
 
 import net.sourceforge.stripes.action.ActionBeanContext;
-import org.ms.rrhh.domain.model.Usuario;
+import org.ms.rrhh.dao.dto.UsuarioDto;
 
 /**
  * ActionBeanContext subclass for the Bugzooky application that manages where
@@ -13,15 +13,19 @@ public class SystemActionBeanContext extends ActionBeanContext {
 
     /**
      * Gets the currently logged in user, or null if no-one is logged in.
+     *
+     * @return
      */
-    public Usuario getUser() {
-        return (Usuario) getRequest().getSession().getAttribute("user");
+    public UsuarioDto getUser() {
+        return (UsuarioDto) getRequest().getSession().getAttribute("user");
     }
 
     /**
      * Sets the currently logged in user.
+     *
+     * @param currentUser
      */
-    public void setUser(Usuario currentUser) {
+    public void setUser(UsuarioDto currentUser) {
         getRequest().getSession().setAttribute("user", currentUser);
     }
 

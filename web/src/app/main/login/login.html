@@ -1,0 +1,49 @@
+
+
+<div id="login" class="flex-scrollable" layout="column" ms-scroll>
+<header class="headerNew">
+</header>
+    <div id="login-form-wrapper" layout="column" layout-align="center center">
+        <div id="login-form" class="md-whiteframe-8dp">
+            <div class="title">Ingresar al Sistema</div>
+
+            <form name="loginForm" novalidate>
+                <md-input-container class="md-block" md-no-float>
+                    <input type="text" name="email" ng-model="form.email" placeholder="CUI" required>
+                    <div ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched" role="alert" multiple>
+                        <div ng-message="required">
+                            <span>CUI es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block" md-no-float>
+                    <input type="password" name="password" ng-model="form.password" placeholder="Password"
+                           required>
+                    <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched" role="alert">
+                        <div ng-message="required">
+                            <span>Password es requerido</span>
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <div class="remember-forgot-password" layout="row" layout-xs="column"
+                     layout-align="space-between center">
+                    <md-checkbox class="remember-me" ng-model="data.cb1" aria-label="Remember Me">
+                        <span>Recordarme</span>
+                    </md-checkbox>
+
+                    <a ui-sref="app.pages_auth_forgot-password" class="forgot-password md-accent-color">
+                    Recuperar Password?</a>
+                </div>
+
+                <md-button ng-click="send()" type="button" class="md-raised md-accent" aria-label="LOG IN"
+                           ng-disabled="loginForm.$invalid || loginForm.$pristine"
+                          >
+                    Ingresar
+                </md-button>
+            </form>
+
+            </div>
+    </div>
+</div>
