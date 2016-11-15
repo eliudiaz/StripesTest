@@ -5,11 +5,13 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
+import com.google.common.base.Optional;
 import gt.org.isis.api.AbstractRequestHandler;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
+import gt.org.isis.model.Persona;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.model.utils.EntitiesHelper;
@@ -73,8 +75,18 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         us.setClave(null);
         us.setConfirmacionClave(null);
 
-        //        Persona persona = personas.findOne(request.getCui());
-//        r.setFkPersona(persona);
+        RuntimeException re = ExceptionsManager.newValidationException("cui_persona",
+                new String[]{"persona_invalida,CUI asignado a usuario no existe o es invalido!"});
+        if (request.getCui().length() < 13) {
+            throw re;
+        }
+
+        Persona persona = personas.findOne(request.getCui());
+
+        if (persona == null) {
+            throw re;
+        }
+        r.setFkPersona(persona);
         return us;
     }
 
