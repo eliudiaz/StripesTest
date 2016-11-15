@@ -167,6 +167,7 @@ public class Usuario implements Serializable, CustomEntity {
         return fechaUltimoCambio;
     }
 
+    @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
         this.fechaUltimoCambio = fechaUltimoCambio;
     }

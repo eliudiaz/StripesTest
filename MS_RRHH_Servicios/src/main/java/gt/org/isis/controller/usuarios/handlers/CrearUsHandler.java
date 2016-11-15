@@ -16,6 +16,7 @@ import gt.org.isis.converters.UsuarioDtoConverter;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
+import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -62,26 +63,31 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
                     new String[]{"usuario,Usuario ya existe!"});
         }
 
-        List<Role> lsRoles = new ArrayList<Role>(Collections2.transform(request.getRoles(), new Function<RoleDto, Role>() {
-            @Override
-            public Role apply(RoleDto f) {
-                Role role = roles.findOne(f.getId());
-                if (isNull(role)) {
-                    throw ExceptionsManager.newValidationException("invalid_role",
-                            new String[]{"role,Role es invalido o no existe"});
-                }
-                return role;
-            }
-        }));
-
         UsuarioDtoConverter bc;
         final Usuario r = (bc = new UsuarioDtoConverter()).toEntity(request);
         r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
-        r.setUsuarioRolesCollection((Collection) lsRoles);
         r.setId(request.getUsuario());
         EntitiesHelper.setDateCreateRef(r);
         r.setCreadoPor("test");
+
+        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2
+                .transform(request.getRoles(),
+                        new Function<RoleDto, UsuarioRoles>() {
+                    @Override
+                    public UsuarioRoles apply(RoleDto f) {
+                        Role role = roles.findOne(f.getId());
+                        UsuarioRoles urs = new UsuarioRoles();
+                        urs.setFkRole(role);
+                        urs.setFkUsuario(r);
+                        if (isNull(role)) {
+                            throw ExceptionsManager.newValidationException("invalid_role",
+                                    new String[]{"role,Role es invalido o no existe"});
+                        }
+                        return urs;
+                    }
+                }));
+        r.setUsuarioRolesCollection((Collection) lsRoles);
 
         UsuarioDto us = bc.toDTO(usuarios.save(r));
         us.setClave(null);

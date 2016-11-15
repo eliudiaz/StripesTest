@@ -5,6 +5,7 @@
  */
 package gt.org.isis.controller.dto;
 
+import java.util.List;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,13 +19,13 @@ public class UsuarioLoginDto {
 
     @NotNull
     private String clave;
-    private RoleDto role;
+    private List<RoleDto> role;
 
-    public RoleDto getRole() {
+    public List<RoleDto> getRole() {
         return role;
     }
 
-    public void setRole(RoleDto role) {
+    public void setRole(List<RoleDto> role) {
         this.role = role;
     }
 

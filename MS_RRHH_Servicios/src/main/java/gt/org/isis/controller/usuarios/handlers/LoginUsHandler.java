@@ -60,7 +60,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
-        request.setRole(new RoleDtoConverter().toDTO(r.getFkRole()));
+        request.setRole(new RoleDtoConverter().toDTO((List) r.getUsuarioRolesCollection()));
         request.setClave("");
         return request;
     }

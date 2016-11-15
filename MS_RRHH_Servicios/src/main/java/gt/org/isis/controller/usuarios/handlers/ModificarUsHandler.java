@@ -5,15 +5,22 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
+import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
+import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
+import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -51,12 +58,25 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
                     new String[]{"usuario,El usuario no existe!"});
         }
         UsuarioDtoConverter bc = new UsuarioDtoConverter();
-        Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
+        final Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
+        roles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
 
-        if (dbUser.getFkRole() == null
-                || dbUser.getFkRole().getId() != rq.getRoleId()) {
-            dbUser.setFkRole(roles.findOne(rq.getRoleId()));
-        }
+        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(rq.getRoles(),
+                new Function<RoleDto, UsuarioRoles>() {
+            @Override
+            public UsuarioRoles apply(RoleDto f) {
+                Role role = roles.findOne(f.getId());
+                UsuarioRoles urs = new UsuarioRoles();
+                urs.setFkRole(role);
+                urs.setFkUsuario(dbUser);
+                if (isNull(role)) {
+                    throw ExceptionsManager.newValidationException("invalid_role",
+                            new String[]{"role,Role es invalido o no existe"});
+                }
+                return urs;
+            }
+        }));
+        dbUser.setUsuarioRolesCollection(lsRoles);
         if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(rq.getCui())) {
             dbUser.setFkPersona(personas.findOne(rq.getCui()));
         }
