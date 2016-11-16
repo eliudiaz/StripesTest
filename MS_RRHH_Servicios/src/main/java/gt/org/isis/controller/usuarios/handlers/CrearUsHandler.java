@@ -52,6 +52,18 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
             throw ExceptionsManager.newValidationException("invalid_user",
                     new String[]{"usuario,Usuario es requerido!"});
         }
+        if (request.getClave() == null || request.getClave().isEmpty()) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave no puede ser vacia!"});
+        }
+        if (request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty()) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave confirmacion no puede ser vacia"});
+        }
+        if (!request.getConfirmacionClave().equalsIgnoreCase(request.getClave())) {
+            throw ExceptionsManager.newValidationException("clave_no_coincide",
+                    new String[]{"usuario,Clave confirmacion y clave deben coincidir!"});
+        }
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
@@ -65,6 +77,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
 
         UsuarioDtoConverter bc;
         final Usuario r = (bc = new UsuarioDtoConverter()).toEntity(request);
+
         r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
         r.setId(request.getUsuario());

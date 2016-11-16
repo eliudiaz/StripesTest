@@ -46,22 +46,34 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
     PersonasRepository personas;
 
     @Override
-    public UsuarioDto execute(final UsuarioDto rq) {
+    public UsuarioDto execute(final UsuarioDto request) {
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
-                return cb.equal(root.get("id"), rq.getUsuario());
+                return cb.equal(root.get("id"), request.getUsuario());
             }
         });
         if (ls.isEmpty()) {
             throw ExceptionsManager.newValidationException("usuario_no_existe",
                     new String[]{"usuario,El usuario no existe!"});
         }
+        if (request.getClave() == null || request.getClave().isEmpty()) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave no puede ser vacia!"});
+        }
+        if (request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty()) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave confirmacion no puede ser vacia"});
+        }
+        if (!request.getConfirmacionClave().equalsIgnoreCase(request.getClave())) {
+            throw ExceptionsManager.newValidationException("clave_no_coincide",
+                    new String[]{"usuario,Clave confirmacion y clave deben coincidir!"});
+        }
         UsuarioDtoConverter bc = new UsuarioDtoConverter();
         final Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
         roles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
 
-        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(rq.getRoles(),
+        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(request.getRoles(),
                 new Function<RoleDto, UsuarioRoles>() {
             @Override
             public UsuarioRoles apply(RoleDto f) {
@@ -77,24 +89,16 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             }
         }));
         dbUser.setUsuarioRolesCollection(lsRoles);
-        if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(rq.getCui())) {
-            dbUser.setFkPersona(personas.findOne(rq.getCui()));
+        if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(request.getCui())) {
+            dbUser.setFkPersona(personas.findOne(request.getCui()));
         }
-        String newPass;
-        if (!dbUser.getClave().equalsIgnoreCase(newPass
-                = new String(DigestUtils.md5Digest(rq.getClave().getBytes())))) {
-            if (rq.getClave().equalsIgnoreCase(rq.getConfirmacionClave())) {
-                dbUser.setClave(newPass);
-            } else {
-                throw ExceptionsManager.newValidationException("clave_invalida",
-                        new String[]{"clave,Clave y confirmacion no coinciden!"});
-            }
-        }
+        String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));
+        dbUser.setClave(newPass);
 
         EntitiesHelper.setDateUpdateRef(dbUser);
-        dbUser.setNombres(rq.getNombres());
-        dbUser.setApellidos(rq.getApellidos());
-        dbUser.setEstado(rq.getEstado());
+        dbUser.setNombres(request.getNombres());
+        dbUser.setApellidos(request.getApellidos());
+        dbUser.setEstado(request.getEstado());
 
         usuarios.save(dbUser);
 
