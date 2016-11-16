@@ -19,6 +19,7 @@ import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
+import gt.org.isis.repository.UsuarioRolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,8 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
     @Autowired
     RolesRepository roles;
     @Autowired
+    UsuarioRolesRepository uRoles;
+    @Autowired
     UsuariosRepository usuarios;
     @Autowired
     PersonasRepository personas;
@@ -61,17 +64,16 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             throw ExceptionsManager.newValidationException("clave_vacia",
                     new String[]{"usuario,Clave no puede ser vacia!"});
         }
-        if (request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty()) {
+        if (request.isResetClave() && request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty()) {
             throw ExceptionsManager.newValidationException("clave_vacia",
                     new String[]{"usuario,Clave confirmacion no puede ser vacia"});
         }
-        if (!request.getConfirmacionClave().equalsIgnoreCase(request.getClave())) {
+        if (request.isResetClave() && !request.getConfirmacionClave().equalsIgnoreCase(request.getClave())) {
             throw ExceptionsManager.newValidationException("clave_no_coincide",
                     new String[]{"usuario,Clave confirmacion y clave deben coincidir!"});
         }
         UsuarioDtoConverter bc = new UsuarioDtoConverter();
         final Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
-        roles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
 
         List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(request.getRoles(),
                 new Function<RoleDto, UsuarioRoles>() {
@@ -88,12 +90,17 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
                 return urs;
             }
         }));
-        dbUser.setUsuarioRolesCollection(lsRoles);
+        if (!lsRoles.isEmpty()) {
+            uRoles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
+            dbUser.setUsuarioRolesCollection(lsRoles);
+        }
         if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(request.getCui())) {
             dbUser.setFkPersona(personas.findOne(request.getCui()));
         }
-        String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));
-        dbUser.setClave(newPass);
+        if (request.isResetClave()) {
+            String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));
+            dbUser.setClave(newPass);
+        }
 
         EntitiesHelper.setDateUpdateRef(dbUser);
         dbUser.setNombres(request.getNombres());
