@@ -14,6 +14,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +27,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -41,10 +42,10 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @NotNull
     @Column(name = "fk_nacionalidad", nullable = false)
     private Integer fkNacionalidad;
-    @Size(max = 50)
+    @Enumerated(EnumType.STRING)
     @Column(name = "fk_pueblo", length = 50)
     private Pueblo fkPueblo;
-    @Size(max = 50)
+
     @Column(name = "fk_comunidad_linguistica", length = 50)
     private Integer fkComunidadLinguistica;
     @Column(name = "edad", nullable = false)
@@ -72,7 +73,8 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String otrosApellidos;
     @Column(name = "apellido_casada", length = 100)
     private String apellidoCasada;
-    @Column(length = 50)
+    @Enumerated(EnumType.STRING)
+    @Column
     private Sexo sexo;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
@@ -95,11 +97,11 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String nacNoFolio;
     @Column(name = "nac_no_partida")
     private String nacNoPartida;
-    @Column
+    @Column(name = "mrz")
     private String mrz;
     @Column(name = "no_cedula")
     private String noCedula;
-    @Column(length = 50)
+    @Column
     private Estado estado;
     @Column(name = "fk_municipio_cedula")
     private Integer fkMunicipioCedula;
@@ -125,6 +127,7 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private Persona fkPersona;
     @Column(name = "foto")
     private String foto;
+    @Enumerated(EnumType.STRING)
     @Column(name = "estado_civil")
     private EstadoCivil estadoCivil;
 

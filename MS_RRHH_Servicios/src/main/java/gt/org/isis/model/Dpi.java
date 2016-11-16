@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -43,6 +45,7 @@ public class Dpi implements Serializable, CustomEntity {
     @Column(name = "fecha_vencimiento", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
+    @Enumerated(EnumType.STRING)
     @Column(length = 50)
     private EstadoVariable estado;
     @Basic(optional = false)

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -37,16 +36,5 @@ public class DpiReaderListenerController {
         System.out.println(">> pushing >> session >> " + persona.getSession());
         CARDS.put(persona.getSession(), persona);
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/pull")
-    public HttpEntity pull(@RequestParam("session") String session) {
-        System.out.println(">> pulling >> session >> " + session);
-        if (CARDS.containsKey(session)) {
-            PersonaDPIDto pd = CARDS.remove(session);
-            return new ResponseEntity(pd, HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
     }
 }

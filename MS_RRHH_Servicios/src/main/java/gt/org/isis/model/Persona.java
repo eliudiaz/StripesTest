@@ -23,7 +23,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -35,15 +34,14 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Table(schema = "public", name = "persona")
 public class Persona implements Serializable, CustomEntity {
 
-    @Size(max = 50)
-    @Column(name = "estado_civil", length = 50)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_civil")
     private EstadoCivil estadoCivil;
-
     @Column(name = "edad", nullable = false)
     private Integer edad;
     @Column(name = "fk_nacionalidad", nullable = false)
     private Integer fkNacionalidad;
-    @Size(max = 50)
+    @Enumerated(EnumType.STRING)
     @Column(name = "fk_pueblo", length = 50)
     private Pueblo fkPueblo;
     @Column(name = "fk_comunidad_linguistica")
@@ -70,7 +68,7 @@ public class Persona implements Serializable, CustomEntity {
     private String otrosApellidos;
     @Column(name = "apellido_casada")
     private String apellidoCasada;
-    @Column(length = 50)
+    @Column
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
     @Basic(optional = false)
@@ -94,11 +92,11 @@ public class Persona implements Serializable, CustomEntity {
     private String nacNoFolio;
     @Column(name = "nac_no_partida")
     private String nacNoPartida;
-    @Column(length = 2147483647)
+    @Column
     private String mrz;
     @Column(name = "no_cedula")
     private String noCedula;
-    @Column(length = 50)
+    @Column
     @Enumerated(EnumType.STRING)
     private Estado estado;
     @Column(name = "fk_municipio_cedula")

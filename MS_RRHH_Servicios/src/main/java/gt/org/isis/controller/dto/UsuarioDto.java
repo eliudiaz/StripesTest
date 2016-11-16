@@ -26,11 +26,8 @@ public class UsuarioDto {
     private String nombres;
     @NotNull
     private String apellidos;
-    @NotNull
     private String clave;
-    @NotNull
     private String confirmacionClave;
-    @NotNull
     private String cui;
     private List<RoleDto> roles;
     private PersonaDto persona;
@@ -39,6 +36,15 @@ public class UsuarioDto {
     private Date fechaUltimoCambio;
     private String ultimoCambioPor;
     private boolean root;
+    private boolean resetClave;
+
+    public boolean isResetClave() {
+        return resetClave;
+    }
+
+    public void setResetClave(boolean resetClave) {
+        this.resetClave = resetClave;
+    }
 
     public boolean isRoot() {
         return root;
