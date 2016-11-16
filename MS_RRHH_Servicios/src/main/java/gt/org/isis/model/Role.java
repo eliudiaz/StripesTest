@@ -24,6 +24,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -56,14 +58,10 @@ public class Role implements Serializable, CustomEntity {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @Fetch(FetchMode.SELECT)
-//    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRole")
     private Collection<AccesoRole> accesoRoleCollection;
-    @Fetch(FetchMode.SELECT)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fkRole")
-    private Collection<UsuarioRoles> usuarioRolesCollection;
 
     public Role() {
     }
@@ -165,14 +163,6 @@ public class Role implements Serializable, CustomEntity {
     @Override
     public String toString() {
         return "org.ms.rrhh.domain.model.Role[ id=" + id + " ]";
-    }
-
-    public Collection<UsuarioRoles> getUsuarioRolesCollection() {
-        return usuarioRolesCollection;
-    }
-
-    public void setUsuarioRolesCollection(Collection<UsuarioRoles> usuarioRolesCollection) {
-        this.usuarioRolesCollection = usuarioRolesCollection;
     }
 
 }

@@ -9,7 +9,6 @@ import gt.org.isis.model.enums.Estado;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -33,8 +32,6 @@ public class UsuarioDto {
     private String confirmacionClave;
     @NotNull
     private String cui;
-    @NotNull
-    @NotEmpty
     private List<RoleDto> roles;
     private PersonaDto persona;
     private Date fechaCreacion;

@@ -71,23 +71,25 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         EntitiesHelper.setDateCreateRef(r);
         r.setCreadoPor("test");
 
-        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2
-                .transform(request.getRoles(),
-                        new Function<RoleDto, UsuarioRoles>() {
-                    @Override
-                    public UsuarioRoles apply(RoleDto f) {
-                        Role role = roles.findOne(f.getId());
-                        UsuarioRoles urs = new UsuarioRoles();
-                        urs.setFkRole(role);
-                        urs.setFkUsuario(r);
-                        if (isNull(role)) {
-                            throw ExceptionsManager.newValidationException("invalid_role",
-                                    new String[]{"role,Role es invalido o no existe"});
+        if (request.getRoles() != null && !request.getRoles().isEmpty()) {
+            List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2
+                    .transform(request.getRoles(),
+                            new Function<RoleDto, UsuarioRoles>() {
+                        @Override
+                        public UsuarioRoles apply(RoleDto f) {
+                            Role role = roles.findOne(f.getId());
+                            UsuarioRoles urs = new UsuarioRoles();
+                            urs.setFkRole(role);
+                            urs.setFkUsuario(r);
+                            if (isNull(role)) {
+                                throw ExceptionsManager.newValidationException("invalid_role",
+                                        new String[]{"role,Role es invalido o no existe"});
+                            }
+                            return urs;
                         }
-                        return urs;
-                    }
-                }));
-        r.setUsuarioRolesCollection((Collection) lsRoles);
+                    }));
+            r.setUsuarioRolesCollection((Collection) lsRoles);
+        }
         RuntimeException re = ExceptionsManager.newValidationException("cui_persona",
                 new String[]{"persona_invalida,CUI asignado a usuario no existe o es invalido!"});
 
@@ -104,6 +106,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         }
 
         UsuarioDto us = bc.toDTO(usuarios.save(r));
+        us.setRoot(request.isRoot());
         us.setClave(null);
         us.setConfirmacionClave(null);
 

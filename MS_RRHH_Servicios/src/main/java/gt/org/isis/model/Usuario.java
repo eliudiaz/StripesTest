@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -69,7 +70,7 @@ public class Usuario implements Serializable, CustomEntity {
     @ManyToOne(optional = false)
     private Persona fkPersona;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkUsuario")
+    @OneToMany(mappedBy = "fkUsuario", cascade = CascadeType.ALL)
     private Collection<UsuarioRoles> usuarioRolesCollection;
 
     public Usuario() {

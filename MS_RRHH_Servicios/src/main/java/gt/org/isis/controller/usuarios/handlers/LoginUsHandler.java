@@ -18,6 +18,7 @@ import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -64,7 +65,8 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
-        request.setRoles((List) Collections2.transform(r.getUsuarioRolesCollection(),
+        request.setRoles(new ArrayList<RoleDto>());
+        request.getRoles().addAll(Collections2.transform(r.getUsuarioRolesCollection(),
                 new Function<UsuarioRoles, RoleDto>() {
             @Override
             public RoleDto apply(UsuarioRoles f) {
