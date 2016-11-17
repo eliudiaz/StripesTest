@@ -31,13 +31,15 @@ public class UsuarioDtoConverter extends BeansConverter<Usuario, UsuarioDto> {
         dto.setRoot(iA.getSuperUsuario() != null && iA.getSuperUsuario());
         dto.setUsuario(iA.getId());
         dto.setRoles(new ArrayList<RoleDto>());
-        dto.getRoles().addAll(Collections2.transform(iA.getUsuarioRolesCollection(),
-                new Function<UsuarioRoles, RoleDto>() {
-            @Override
-            public RoleDto apply(UsuarioRoles f) {
-                return new RoleDtoConverter().toDTO(f.getFkRole());
-            }
-        }));
+        if (iA.getUsuarioRolesCollection() != null) {
+            dto.getRoles().addAll(Collections2.transform(iA.getUsuarioRolesCollection(),
+                    new Function<UsuarioRoles, RoleDto>() {
+                @Override
+                public RoleDto apply(UsuarioRoles f) {
+                    return new RoleDtoConverter().toDTO(f.getFkRole());
+                }
+            }));
+        }
         return dto;
     }
 
