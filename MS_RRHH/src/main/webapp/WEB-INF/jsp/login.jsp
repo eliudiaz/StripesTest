@@ -26,9 +26,9 @@
                 <s:errors action="/Login.htm"/>
                 <s:form class="login-form"  action="/Login.htm" focus="username">
                     <!--<input type="text" placeholder="CUI"/>-->
-                    <sdyn:text name="username" value="${user.username}" placeholder="CUI"/>
+                    <sdyn:text name="username" value="${user.username}" placeholder="Usuario"/>
                     <!--<input type="password" placeholder="password"/>-->
-                    <sdyn:password name="password" placeholder="password" />
+                    <sdyn:password name="password" placeholder="Contraseña" />
                     <!--<p class="message"><a href="#">Recuperar Contraseña</a></p>-->
                     <s:hidden name="targetUrl" />
                     <!--<button type="submit" value="login">Ingresar</button>-->

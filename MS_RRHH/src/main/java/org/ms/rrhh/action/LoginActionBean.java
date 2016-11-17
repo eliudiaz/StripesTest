@@ -47,7 +47,11 @@ public class LoginActionBean extends BaseActionBean {
     @DefaultHandler
     @DontValidate
     public Resolution view() {
-        return new ForwardResolution("/WEB-INF/jsp/login.jsp");
+        if (getContext().getRequest().getSession().getAttribute("currentUser") == null) {
+            return new ForwardResolution("/WEB-INF/jsp/login.jsp");
+        } else {
+            return new ForwardResolution(HomeActionBean.class);
+        }
     }
 
     private void setApplicationContext() {
