@@ -15,7 +15,6 @@
 --%>
 
 <%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
-
 <s:layout-definition>
 
     <!doctype html>

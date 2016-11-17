@@ -5,6 +5,8 @@
  */
 package org.ms.rrhh.dao.dto;
 
+import com.google.gson.Gson;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,7 +22,20 @@ public class UsuarioDto {
     private String apellidos;
     private String clave;
     private PersonaDto persona;
-    private RoleDto role;
+    private List<RoleDto> roles;
+
+    public UsuarioDto(String usuario, String clave) {
+        this.usuario = usuario;
+        this.clave = clave;
+    }
+
+    public List<RoleDto> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleDto> roles) {
+        this.roles = roles;
+    }
 
     public String getUsuario() {
         return usuario;
@@ -32,6 +47,11 @@ public class UsuarioDto {
 
     public String getCorreo() {
         return correo;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
     public void setCorreo(String correo) {
@@ -70,14 +90,6 @@ public class UsuarioDto {
         this.persona = persona;
     }
 
-    public RoleDto getRole() {
-        return role;
-    }
-
-    public void setRole(RoleDto role) {
-        this.role = role;
-    }
-
     public UsuarioDto() {
     }
 
@@ -88,7 +100,7 @@ public class UsuarioDto {
         this.apellidos = builder.apellidos;
         this.clave = builder.clave;
         this.persona = builder.persona;
-        this.role = builder.role;
+        this.roles = builder.roles;
     }
 
     public static Builder builder() {
@@ -103,7 +115,7 @@ public class UsuarioDto {
         private String apellidos;
         private String clave;
         private PersonaDto persona;
-        private RoleDto role;
+        private List<RoleDto> roles;
 
         public Builder withUsuario(String usuario) {
             this.usuario = usuario;
@@ -135,8 +147,8 @@ public class UsuarioDto {
             return this;
         }
 
-        public Builder withRole(RoleDto role) {
-            this.role = role;
+        public Builder withRoles(List<RoleDto> roles) {
+            this.roles = roles;
             return this;
         }
 

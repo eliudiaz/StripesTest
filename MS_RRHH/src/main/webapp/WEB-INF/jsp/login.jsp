@@ -29,7 +29,7 @@
                     <sdyn:text name="username" value="${user.username}" placeholder="CUI"/>
                     <!--<input type="password" placeholder="password"/>-->
                     <sdyn:password name="password" placeholder="password" />
-                    <p class="message"><a href="#">Recuperar Contraseña</a></p>
+                    <!--<p class="message"><a href="#">Recuperar Contraseña</a></p>-->
                     <s:hidden name="targetUrl" />
                     <!--<button type="submit" value="login">Ingresar</button>-->
                     <s:submit  name="login" value="Login" />

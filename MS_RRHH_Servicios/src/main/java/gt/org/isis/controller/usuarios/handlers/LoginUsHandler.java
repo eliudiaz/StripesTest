@@ -65,6 +65,10 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
+        request.setNombres(r.getNombres().concat(" ").concat(r.getApellidos()));
+        if (r.getFkPersona() != null) {
+            request.setFoto(r.getFkPersona().getFoto());
+        }
         request.setRoles(new ArrayList<RoleDto>());
         request.getRoles().addAll(Collections2.transform(r.getUsuarioRolesCollection(),
                 new Function<UsuarioRoles, RoleDto>() {
@@ -73,6 +77,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
                 return new RoleDtoConverter().toDTO(f.getFkRole());
             }
         }));
+
         request.setClave("");
         return request;
     }

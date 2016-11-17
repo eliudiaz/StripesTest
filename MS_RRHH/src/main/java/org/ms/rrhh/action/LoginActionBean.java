@@ -15,6 +15,7 @@
  */
 package org.ms.rrhh.action;
 
+import javax.servlet.http.HttpServletRequest;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -27,6 +28,7 @@ import net.sourceforge.stripes.validation.ValidationError;
 import org.ms.rrhh.action.exceptions.StripesValidationException;
 import org.ms.rrhh.dao.UsuariosDao;
 import org.ms.rrhh.dao.dto.UsuarioDto;
+import org.ms.rrhh.utils.C;
 
 @UrlBinding("/Login.htm")
 public class LoginActionBean extends BaseActionBean {
@@ -48,11 +50,29 @@ public class LoginActionBean extends BaseActionBean {
         return new ForwardResolution("/WEB-INF/jsp/login.jsp");
     }
 
-    public Resolution login() {
+    private void setApplicationContext() {
+        HttpServletRequest req = getContext().getRequest();
+        String scheme = req.getScheme();
+        String serverName = req.getServerName();
+        int serverPort = req.getServerPort();
+        String uri = req.getContextPath();
+        String url = scheme + "://" + serverName + ":" + serverPort + uri;
+        req.getSession().setAttribute("applicationPath", url);
+        req.getSession().setAttribute("servicesPath", C.SERVICIOS_CONTEXT == null
+                ? "http://localhost:41825/MS_RRHH_Servicios/" : C.SERVICIOS_CONTEXT);
 
+    }
+
+    public Resolution login() {
         UsuarioDto usuario;
         try {
             usuario = usuariosRepo.doLogin(username, password);
+            if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+                throw new Exception("Usuario no tiene roles asignados");
+            }
+            getContext().getRequest().getSession().setAttribute("currentUser", usuario);
+            setApplicationContext();
+
         } catch (Exception e) {
             if (e instanceof StripesValidationException) {
                 for (ValidationError ve : ((StripesValidationException) e).getErrors()) {

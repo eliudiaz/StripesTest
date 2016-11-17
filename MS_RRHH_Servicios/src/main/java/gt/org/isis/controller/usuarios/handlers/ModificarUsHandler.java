@@ -60,11 +60,11 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             throw ExceptionsManager.newValidationException("usuario_no_existe",
                     new String[]{"usuario,El usuario no existe!"});
         }
-        if (request.getClave() == null || request.getClave().isEmpty()) {
+        if (request.isResetClave() && (request.getClave() == null || request.getClave().isEmpty())) {
             throw ExceptionsManager.newValidationException("clave_vacia",
                     new String[]{"usuario,Clave no puede ser vacia!"});
         }
-        if (request.isResetClave() && request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty()) {
+        if (request.isResetClave() && (request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty())) {
             throw ExceptionsManager.newValidationException("clave_vacia",
                     new String[]{"usuario,Clave confirmacion no puede ser vacia"});
         }

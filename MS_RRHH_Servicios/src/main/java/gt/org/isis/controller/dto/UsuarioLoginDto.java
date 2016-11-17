@@ -16,10 +16,36 @@ public class UsuarioLoginDto {
 
     @NotNull
     private String usuario;
-
     @NotNull
     private String clave;
+    private String nombres;
+    private String foto;
+    private PersonaDto persona;
     private List<RoleDto> roles;
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public PersonaDto getPersona() {
+        return persona;
+    }
+
+    public void setPersona(PersonaDto persona) {
+        this.persona = persona;
+    }
 
     public List<RoleDto> getRoles() {
         return roles;
