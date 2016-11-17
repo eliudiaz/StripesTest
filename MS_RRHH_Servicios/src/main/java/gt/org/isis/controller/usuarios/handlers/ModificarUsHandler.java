@@ -94,8 +94,11 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             uRoles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
             dbUser.setUsuarioRolesCollection(lsRoles);
         }
-        if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(request.getCui())) {
-            dbUser.setFkPersona(personas.findOne(request.getCui()));
+        if (request.getCui() != null && request.getCui().isEmpty()) {
+            if (dbUser.getFkPersona() == null || !dbUser.getFkPersona()
+                    .getCui().equals(request.getCui())) {
+                dbUser.setFkPersona(personas.findOne(request.getCui()));
+            }
         }
         if (request.isResetClave()) {
             String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));

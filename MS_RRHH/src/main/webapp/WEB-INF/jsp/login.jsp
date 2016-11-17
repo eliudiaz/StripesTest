@@ -32,7 +32,7 @@
                     <!--<p class="message"><a href="#">Recuperar Contraseña</a></p>-->
                     <s:hidden name="targetUrl" />
                     <!--<button type="submit" value="login">Ingresar</button>-->
-                    <s:submit  name="login" value="Login" />
+                    <s:submit  name="login" value="Ingresar" />
                 </s:form>
             </div>
         </div>
