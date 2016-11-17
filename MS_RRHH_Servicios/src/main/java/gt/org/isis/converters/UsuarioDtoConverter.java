@@ -23,6 +23,12 @@ public class UsuarioDtoConverter extends BeansConverter<Usuario, UsuarioDto> {
     @Override
     public UsuarioDto toDTO(Usuario iA) {
         UsuarioDto dto = super.toDTO(iA);
+        if (iA.getFkPersona() != null) {
+            //dto.setPersona(new PersonaDtoConverter().toDTO(iA.getFkPersona()));
+            dto.setCui(iA.getFkPersona().getCui());
+        }
+
+        dto.setRoot(iA.getSuperUsuario() != null && iA.getSuperUsuario());
         dto.setUsuario(iA.getId());
         dto.setRoles(new ArrayList<RoleDto>());
         dto.getRoles().addAll(Collections2.transform(iA.getUsuarioRolesCollection(),
