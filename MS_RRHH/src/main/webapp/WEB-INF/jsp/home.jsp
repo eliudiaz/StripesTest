@@ -31,8 +31,9 @@
                 localStorage.setItem("servicesPath",
                         '<c:out value="${sessionScope.servicesPath}"/>');
                 localStorage.setItem("currentUser", JSON.stringify(<%=currentUser%>));
-
-//                window.location = localStorage.getItem("context") + ""
+                setTimeout(function () {
+                    window.location = "${sessionScope.applicationPath}/fuse";
+                }, 300);
             }
     </script>
 </body>
