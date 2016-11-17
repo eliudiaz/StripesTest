@@ -5,8 +5,16 @@
  */
 package ed.cracken.code.servlets;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import ed.cracken.code.managers.IDsManager;
+import ed.cracken.code.servlets.dto.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author eliud
  */
 @WebServlet(name = "EventsHandler", urlPatterns = {"/events"})
-public class EventsHandler extends HttpServlet {
+public class NotificationsHandler extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,26 +42,27 @@ public class EventsHandler extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            //content type must be set to text/event-stream
+            System.out.println("streaming...");
             response.setContentType("text/event-stream");
-            //cache must be set to no-cache
             response.setHeader("Cache-Control", "no-cache");
-            //encoding is set to UTF-8
             response.setCharacterEncoding("UTF-8");
 
             PrintWriter writer = response.getWriter();
-
-            for (int i = 0; i < 10; i++) {
-                System.out.println(i);
-                writer.write("data: " + i + "\n\n");
-                writer.flush();
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            IDsManager manager;
+            if ((manager = (IDsManager) this.getServletContext().getAttribute("idsmanager")) != null) {
+                if (!manager.getIds().isEmpty()) {
+                    String session;
+                    if ((session = request.getParameter("sessionid")) != null) {
+                        Persona p;
+                        if ((p = manager.getIds().get(session)) != null) {
+                            writer.write(new Gson().toJson(p));
+                        }
+                    }
                 }
             }
+            writer.flush();
             writer.close();
+
         } finally {
             out.close();
         }

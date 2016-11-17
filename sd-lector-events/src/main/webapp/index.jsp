@@ -12,7 +12,7 @@
     <body>
         <h1>Hello World!</h1>
         <script type="text/javascript">
-            var sse = $.SSE('http://localhost:8080/dpi-lector-events/search/hang', {
+            var sse = $.SSE('http://localhost:8080/sd-lector-events/events?sessionid=123', {
                 onMessage: function (e) {
                     console.log("Message");
                     console.log(e);

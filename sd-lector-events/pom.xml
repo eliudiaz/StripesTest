@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ed.edcracken</groupId>
-    <artifactId>dpi-lector-events</artifactId>
+    <artifactId>sd-lector-events</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>dpi-lector-events</name>
+    <name>sd-lector-events</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -21,7 +21,17 @@
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
-        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
