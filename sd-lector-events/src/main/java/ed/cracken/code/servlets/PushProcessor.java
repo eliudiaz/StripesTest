@@ -56,7 +56,7 @@ public class PushProcessor extends HttpServlet {
             idsManager = new IDsManager();
             request.getServletContext().setAttribute("idsmanager", idsManager);
         }
-        idsManager.getIds().put(request.getParameter("sessionid"), persona);
+        idsManager.getIds().put(persona.getSession(), persona);
 
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
 

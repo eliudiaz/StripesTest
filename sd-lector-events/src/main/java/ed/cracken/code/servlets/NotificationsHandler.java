@@ -37,7 +37,7 @@ public class NotificationsHandler extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            System.out.println("streaming...");
+            System.out.println("streaming..." + request.getParameter("sessionid"));
             response.setContentType("text/event-stream");
             response.setHeader("Cache-Control", "no-cache");
             response.setCharacterEncoding("UTF-8");
@@ -45,12 +45,15 @@ public class NotificationsHandler extends HttpServlet {
             PrintWriter writer = response.getWriter();
             IDsManager manager;
             if ((manager = (IDsManager) this.getServletContext().getAttribute("idsmanager")) != null) {
+                System.out.println(">> " + manager.getIds().toString());
                 if (!manager.getIds().isEmpty()) {
                     String session;
                     if ((session = request.getParameter("sessionid")) != null) {
                         Persona p;
                         if ((p = manager.getIds().get(session)) != null) {
-                            writer.write(new Gson().toJson(p));
+                            String j;
+                            writer.write(j = new Gson().toJson(p));
+                            System.out.println(">> sending >>" + j);
                         }
                         manager.getIds().remove(session);
                     }
