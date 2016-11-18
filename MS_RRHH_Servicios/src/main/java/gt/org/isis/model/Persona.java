@@ -34,6 +34,19 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Table(schema = "public", name = "persona")
 public class Persona implements Serializable, CustomEntity {
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_civil")
+    private EstadoCivil estadoCivil;
+    @Column(name = "edad", nullable = false)
+    private Integer edad;
+    @Column(name = "fk_nacionalidad", nullable = false)
+    private Integer fkNacionalidad;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fk_pueblo", length = 50)
+    private Pueblo fkPueblo;
+    @Column(name = "fk_comunidad_linguistica")
+    private Integer fkComunidadLinguistica;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -55,15 +68,9 @@ public class Persona implements Serializable, CustomEntity {
     private String otrosApellidos;
     @Column(name = "apellido_casada")
     private String apellidoCasada;
-    @Column(name = "estado_civil")
-    @Enumerated(EnumType.STRING)
-    private EstadoCivil estadoCivil;
-    @Column(length = 50)
+    @Column
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    @Basic(optional = false)
-    @Column(name = "fk_nacionalidad", nullable = false)
-    private Integer fkNacionalidad;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
     private String fkProfesion;
@@ -77,8 +84,6 @@ public class Persona implements Serializable, CustomEntity {
     @Column(name = "fecha_nacimiento", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaNacimiento;
-    @Column(name = "edad")
-    private Integer edad;
     @Column(name = "fk_municipio_nacimiento")
     private Integer fkMunicipioNacimiento;
     @Column(name = "nac_no_libro")
@@ -87,16 +92,11 @@ public class Persona implements Serializable, CustomEntity {
     private String nacNoFolio;
     @Column(name = "nac_no_partida")
     private String nacNoPartida;
-    @Column(name = "fk_pueblo")
-    @Enumerated(EnumType.STRING)
-    private Pueblo fkPueblo;
-    @Column(name = "fk_comunidad_linguistica")
-    private Integer fkComunidadLinguistica;
-    @Column(length = 2147483647)
+    @Column
     private String mrz;
     @Column(name = "no_cedula")
     private String noCedula;
-    @Column(length = 50)
+    @Column
     @Enumerated(EnumType.STRING)
     private Estado estado;
     @Column(name = "fk_municipio_cedula")
@@ -200,14 +200,6 @@ public class Persona implements Serializable, CustomEntity {
 
     public String getPrimerNombre() {
         return primerNombre;
-    }
-
-    public Integer getEdad() {
-        return edad;
-    }
-
-    public void setEdad(Integer edad) {
-        this.edad = edad;
     }
 
     public void setPrimerNombre(String primerNombre) {
@@ -530,6 +522,20 @@ public class Persona implements Serializable, CustomEntity {
     @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
         System.out.println("no");
+    }
+
+    public Persona(String cui, int fkNacionalidad, int edad) {
+        this.cui = cui;
+        this.fkNacionalidad = fkNacionalidad;
+        this.edad = edad;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
 }

@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,8 +38,9 @@ public class Catalogos implements Serializable {
     private String valor;
     @Column(length = 50)
     private String tipo;
-//    @Column(length = 50)
-//    private Estado estado;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 50)
+    private Estado estado;
     @Column(name = "codigo_padre")
     private Integer codigoPadre;
     @Basic(optional = false)
@@ -51,6 +54,14 @@ public class Catalogos implements Serializable {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 
     public Catalogos() {
     }

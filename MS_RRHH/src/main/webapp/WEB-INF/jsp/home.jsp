@@ -13,29 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/jsp/taglibs.jsp" %>
-
-<!--<s:layout-render name="/WEB-INF/jsp/layout.jsp" title="Welcome">
-  <s:layout-component name="body">
-    <p>Congratulations, you've set up a Stripes project!</p>
-    <p>
-      You are running Java version ${actionBean.javaVersion}
-      on the ${actionBean.osName} operating system.
-    </p>
-  </s:layout-component>
-</s:layout-render>-->
 <!doctype html>
 <html>
     <head>
-        <meta http-equiv="refresh" content="0;url=/MS_RRHH/fuse">
+        <!--<meta http-equiv="refresh" content="0;url=/MS_RRHH/fuse">-->
     </head>
     <body>
+    <stripes:useActionBean beanclass="org.ms.rrhh.action.HomeActionBean" var="bean"/>
+    <jsp:useBean id="currentUser"   class="org.ms.rrhh.dao.dto.UsuarioDto" scope="session"></jsp:useBean>
         <script type="text/javascript">
             if (typeof (Storage) !== "undefined") {
                 localStorage.setItem("sessionid", '<c:out value="${pageContext.session.id}"/>');
-                localStorage.setItem("context", '<c:out value="${request.getContextPath()}"/>'
+                localStorage.setItem("context",
+                        '<c:out value="${sessionScope.applicationPath}"/>');
+                localStorage.setItem("servicesPath",
+                        '<c:out value="${sessionScope.servicesPath}"/>');
+                localStorage.setItem("currentUser", JSON.stringify(<%=currentUser%>));
+                setTimeout(function () {
+                    window.location = "${sessionScope.applicationPath}/fuse";
+                }, 300);
             }
-        </script>
-    </body>
+    </script>
+</body>
 </html>

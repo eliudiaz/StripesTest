@@ -5,15 +5,23 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
+import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
+import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
+import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
+import gt.org.isis.repository.UsuarioRolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -34,47 +42,73 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
     @Autowired
     RolesRepository roles;
     @Autowired
+    UsuarioRolesRepository uRoles;
+    @Autowired
     UsuariosRepository usuarios;
     @Autowired
     PersonasRepository personas;
 
     @Override
-    public UsuarioDto execute(final UsuarioDto rq) {
+    public UsuarioDto execute(final UsuarioDto request) {
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
-                return cb.equal(root.get("id"), rq.getUsuario());
+                return cb.equal(root.get("id"), request.getUsuario());
             }
         });
         if (ls.isEmpty()) {
             throw ExceptionsManager.newValidationException("usuario_no_existe",
                     new String[]{"usuario,El usuario no existe!"});
         }
+        if (request.isResetClave() && (request.getClave() == null || request.getClave().isEmpty())) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave no puede ser vacia!"});
+        }
+        if (request.isResetClave() && (request.getConfirmacionClave() == null || request.getConfirmacionClave().isEmpty())) {
+            throw ExceptionsManager.newValidationException("clave_vacia",
+                    new String[]{"usuario,Clave confirmacion no puede ser vacia"});
+        }
+        if (request.isResetClave() && !request.getConfirmacionClave().equalsIgnoreCase(request.getClave())) {
+            throw ExceptionsManager.newValidationException("clave_no_coincide",
+                    new String[]{"usuario,Clave confirmacion y clave deben coincidir!"});
+        }
         UsuarioDtoConverter bc = new UsuarioDtoConverter();
-        Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
+        final Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
 
-        if (dbUser.getFkRole() == null
-                || dbUser.getFkRole().getId() != rq.getRoleId()) {
-            dbUser.setFkRole(roles.findOne(rq.getRoleId()));
-        }
-        if (dbUser.getFkPersona() == null || !dbUser.getFkPersona().getCui().equals(rq.getCui())) {
-            dbUser.setFkPersona(personas.findOne(rq.getCui()));
-        }
-        String newPass;
-        if (!dbUser.getClave().equalsIgnoreCase(newPass
-                = new String(DigestUtils.md5Digest(rq.getClave().getBytes())))) {
-            if (rq.getClave().equalsIgnoreCase(rq.getConfirmacionClave())) {
-                dbUser.setClave(newPass);
-            } else {
-                throw ExceptionsManager.newValidationException("clave_invalida",
-                        new String[]{"clave,Clave y confirmacion no coinciden!"});
+        List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(request.getRoles(),
+                new Function<RoleDto, UsuarioRoles>() {
+            @Override
+            public UsuarioRoles apply(RoleDto f) {
+                Role role = roles.findOne(f.getId());
+                UsuarioRoles urs = new UsuarioRoles();
+                urs.setFkRole(role);
+                urs.setFkUsuario(dbUser);
+                if (isNull(role)) {
+                    throw ExceptionsManager.newValidationException("invalid_role",
+                            new String[]{"role,Role es invalido o no existe"});
+                }
+                return urs;
             }
+        }));
+        if (!lsRoles.isEmpty()) {
+            uRoles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
+            dbUser.setUsuarioRolesCollection(lsRoles);
+        }
+        if (request.getCui() != null && request.getCui().isEmpty()) {
+            if (dbUser.getFkPersona() == null || !dbUser.getFkPersona()
+                    .getCui().equals(request.getCui())) {
+                dbUser.setFkPersona(personas.findOne(request.getCui()));
+            }
+        }
+        if (request.isResetClave()) {
+            String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));
+            dbUser.setClave(newPass);
         }
 
         EntitiesHelper.setDateUpdateRef(dbUser);
-        dbUser.setNombres(rq.getNombres());
-        dbUser.setApellidos(rq.getApellidos());
-        dbUser.setEstado(rq.getEstado());
+        dbUser.setNombres(request.getNombres());
+        dbUser.setApellidos(request.getApellidos());
+        dbUser.setEstado(request.getEstado());
 
         usuarios.save(dbUser);
 

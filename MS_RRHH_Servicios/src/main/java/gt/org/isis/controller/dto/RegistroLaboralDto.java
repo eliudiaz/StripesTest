@@ -23,9 +23,18 @@ public class RegistroLaboralDto {
     private Integer fkExpectativa;
     private Integer fkComunidadComisionado;
     private String nombreComunidadComisionado;
+    private String observaciones;
     @NotNull
     private List<RegistroLaboralPuestoDto> puestos;
     private List<RegistroLaboralDto> historial;
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
 
     public Integer getFkExpectativa() {
         return fkExpectativa;

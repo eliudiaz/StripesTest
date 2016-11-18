@@ -43,6 +43,8 @@ public class UnidadNotificadora implements Serializable {
 //    private Estado estado;
     @Column(name = "codigo_padre")
     private Integer codigoPadre;
+    @Column(name = "tiene_hijos")
+    private Boolean tieneHijos;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -54,6 +56,14 @@ public class UnidadNotificadora implements Serializable {
     private Date fechaUltimoCambio;
     @Column(name = "ultimo_cambio_por", length = 50)
     private String ultimoCambioPor;
+
+    public Boolean getTieneHijos() {
+        return tieneHijos;
+    }
+
+    public void setTieneHijos(Boolean tieneHijos) {
+        this.tieneHijos = tieneHijos;
+    }
 
     public UnidadNotificadora() {
     }

@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,8 +43,9 @@ public class Puestos implements Serializable {
 
     @Column(name = "tipo")
     private String tipo;
-//    @Column(name = "estado")
-//    private Estado estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private Estado estado;
     @Column(name = "codigo_padre")
     private Integer codigoPadre;
     @Basic(optional = false)

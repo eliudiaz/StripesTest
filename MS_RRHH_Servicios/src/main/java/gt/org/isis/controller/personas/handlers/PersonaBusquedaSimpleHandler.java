@@ -131,9 +131,12 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             }).iterator().next()));
         }
 
-        dto.setRefCedula(buildByMunicipio(dto.getFkMunicipioCedula()));
-        dto.setRefNacimiento(buildByMunicipio(dto.getFkMunicipioNacimiento()));
-        dto.setRefVecindad(buildByMunicipio(dto.getFkMunicipioVecindad()));
+        dto.setRefCedula(dto.getFkMunicipioCedula() != null
+                ? buildByMunicipio(dto.getFkMunicipioCedula()) : null);
+        dto.setRefNacimiento(dto.getFkMunicipioNacimiento() != null
+                ? buildByMunicipio(dto.getFkMunicipioNacimiento()) : null);
+        dto.setRefVecindad(dto.getFkMunicipioNacimiento() != null
+                ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
 
         //registro laboral
         RegistroLaboralDto currentRL = null;
@@ -203,7 +206,9 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     private void fillEstudiosSalud(List<EstudioSaludDto> estudios) {
         for (EstudioSaludDto i : estudios) {
-            i.setNombre(catalogosRepo.findOne(i.getFkEstudioSalud()).getValor());
+            if (i.getFkEstudioSalud() != null) {
+                i.setNombre(catalogosRepo.findOne(i.getFkEstudioSalud()).getValor());
+            }
         }
     }
 
@@ -253,7 +258,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
             reg.setNivelUltimoGradoNombre(c.getValor());
         }
-        if (reg.getEstudiaActualmente()) {
+        if (reg.isEstudiaActualmente()) {
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
             reg.setNombreGradoActual(c.getValor());
