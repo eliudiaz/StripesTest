@@ -11,21 +11,6 @@
     </head>
     <body>
         <h1>Hello World!</h1>
-        <script type="text/javascript">
-            var sse = $.SSE('http://localhost:41825/sd-lector-events/Events2?sessionid=123', {
-                onMessage: function (e) {
-                    alert(e);
-                },
-                onError: function (e) {
-                    alert(e)
-                },
-                onOpen: function (e) {
-                    alert(0);
-                }
-            });
-            sse.start();
-
-        </script>
         <script src="http://java.com/js/deployJava.js"></script>
         <script>
             function launch() {
