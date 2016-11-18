@@ -48,19 +48,13 @@ public class RegistroLaboral implements Serializable, CustomEntity, PersonaChild
     @Column(name = "fk_expectativa")
     private Integer fkExpectativa;
     private Boolean comisionado;
+    @Column
+    private String observaciones;
     @Column(name = "fk_comunidad_comisionado")
     private Integer fkComunidadComisionado;
     @Column(length = 50)
     @Enumerated(EnumType.STRING)
     private EstadoVariable estado;
-
-    public EstadoVariable getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoVariable estado) {
-        this.estado = estado;
-    }
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -90,6 +84,22 @@ public class RegistroLaboral implements Serializable, CustomEntity, PersonaChild
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public EstadoVariable getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoVariable estado) {
+        this.estado = estado;
     }
 
     public Integer getId() {

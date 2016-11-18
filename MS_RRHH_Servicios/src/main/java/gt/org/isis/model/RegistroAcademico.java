@@ -42,20 +42,19 @@ public class RegistroAcademico implements Serializable, CustomEntity {
     private Integer id;
     @Basic(optional = false)
     @Column(name = "ultimo_grado", nullable = false)
-    private int ultimoGrado;
+    private Integer ultimoGrado;
     @Column(name = "estudia_actualmente")
     private Boolean estudiaActualmente;
-    @Basic(optional = false)
-    @Column(name = "grado_actual", nullable = false)
-    private int gradoActual;
-    @Column(length = 50)
+    @Column(name = "grado_actual")
+    private Integer gradoActual;
+    @Column
     @Enumerated(EnumType.STRING)
     private EstadoVariable estado;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Column(name = "creado_por", length = 50)
+    @Column(name = "creado_por")
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
@@ -83,11 +82,11 @@ public class RegistroAcademico implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public int getUltimoGrado() {
+    public Integer getUltimoGrado() {
         return ultimoGrado;
     }
 
-    public void setUltimoGrado(int ultimoGrado) {
+    public void setUltimoGrado(Integer ultimoGrado) {
         this.ultimoGrado = ultimoGrado;
     }
 
@@ -99,11 +98,11 @@ public class RegistroAcademico implements Serializable, CustomEntity {
         this.estudiaActualmente = estudiaActualmente;
     }
 
-    public int getGradoActual() {
+    public Integer getGradoActual() {
         return gradoActual;
     }
 
-    public void setGradoActual(int gradoActual) {
+    public void setGradoActual(Integer gradoActual) {
         this.gradoActual = gradoActual;
     }
 

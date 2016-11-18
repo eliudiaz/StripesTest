@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp     spec = "1.0+"
+          codebase = "{{codebase_url}}"
+          href = "{{jnlp_file}}"
+>
+
+    <information>
+        <title>CardReader</title>
+        <vendor>ED.Crkn</vendor>
+    </information>
+
+    <security>
+        <all-permissions/>
+    </security>
+
+    <resources>
+        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="edcracken-lector.jar" main="true"/>
+    </resources>
+
+    <application-desc name="card-reader" main-class="ed.cracken.handlers.SDHandler" />
+
+    <update check="background"/>
+</jnlp>

@@ -7,18 +7,25 @@ package gt.org.isis.model;
 
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -40,6 +47,7 @@ public class Usuario implements Serializable, CustomEntity {
     @Column(name = "super_usuario")
     private Boolean superUsuario;
     @Column
+    @Enumerated(EnumType.STRING)
     private Estado estado;
     @Column
     private String nombres;
@@ -61,9 +69,9 @@ public class Usuario implements Serializable, CustomEntity {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne(optional = false)
     private Persona fkPersona;
-    @JoinColumn(name = "fk_role", referencedColumnName = "id", nullable = false)
-    @ManyToOne(optional = false)
-    private Role fkRole;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkUsuario", cascade = CascadeType.ALL)
+    private Collection<UsuarioRoles> usuarioRolesCollection;
 
     public Usuario() {
     }
@@ -76,6 +84,14 @@ public class Usuario implements Serializable, CustomEntity {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public Collection<UsuarioRoles> getUsuarioRolesCollection() {
+        return usuarioRolesCollection;
+    }
+
+    public void setUsuarioRolesCollection(Collection<UsuarioRoles> usuarioRolesCollection) {
+        this.usuarioRolesCollection = usuarioRolesCollection;
     }
 
     public String getId() {
@@ -154,6 +170,7 @@ public class Usuario implements Serializable, CustomEntity {
         return fechaUltimoCambio;
     }
 
+    @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
         this.fechaUltimoCambio = fechaUltimoCambio;
     }
@@ -172,14 +189,6 @@ public class Usuario implements Serializable, CustomEntity {
 
     public void setFkPersona(Persona fkPersona) {
         this.fkPersona = fkPersona;
-    }
-
-    public Role getFkRole() {
-        return fkRole;
-    }
-
-    public void setFkRole(Role fkRole) {
-        this.fkRole = fkRole;
     }
 
     @Override

@@ -34,7 +34,8 @@ public class BuscarUsTodosHandler
             @Override
             public UsuarioDto apply(Usuario r) {
                 r.setClave("");
-                return new UsuarioDtoConverter().toDTO(r);
+                UsuarioDto u = new UsuarioDtoConverter().toDTO(r);
+                return u;
             }
         }));
     }

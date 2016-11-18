@@ -22,8 +22,7 @@ public class RegistroAcademicoDto {
     private Integer nivelUltimoGrado;
     private String nivelUltimoGradoNombre;
     @NotNull
-    private Boolean estudiaActualmente;
-    @NotNull
+    private boolean estudiaActualmente;
     private Integer gradoActual;
     private String nombreGradoActual;
     private Integer nivelGradoActual;
@@ -96,11 +95,11 @@ public class RegistroAcademicoDto {
         this.ultimoGrado = ultimoGrado;
     }
 
-    public Boolean getEstudiaActualmente() {
+    public boolean isEstudiaActualmente() {
         return estudiaActualmente;
     }
 
-    public void setEstudiaActualmente(Boolean estudiaActualmente) {
+    public void setEstudiaActualmente(boolean estudiaActualmente) {
         this.estudiaActualmente = estudiaActualmente;
     }
 

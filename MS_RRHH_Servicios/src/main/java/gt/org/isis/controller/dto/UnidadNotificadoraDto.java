@@ -11,4 +11,14 @@ package gt.org.isis.controller.dto;
  */
 public class UnidadNotificadoraDto extends CatalogoDto {
 
+    private Boolean tieneHijos;
+
+    public Boolean getTieneHijos() {
+        return tieneHijos;
+    }
+
+    public void setTieneHijos(Boolean tieneHijos) {
+        this.tieneHijos = tieneHijos;
+    }
+
 }
