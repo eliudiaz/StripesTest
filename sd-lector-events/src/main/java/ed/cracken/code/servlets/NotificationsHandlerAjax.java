@@ -54,7 +54,7 @@ public class NotificationsHandlerAjax extends HttpServlet {
                             String j;
                             writer.write(j = new Gson().toJson(p));
                             System.out.println(">> sending >>" + j);
-                            manager.getIds().remove(session);
+                            manager.getIds().clear();
                         } else {
                             response.sendError(HttpServletResponse.SC_NOT_FOUND);
                         }

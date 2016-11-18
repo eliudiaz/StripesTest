@@ -1,0 +1,26 @@
+{
+    "LOGIN_V2": {
+        "INTRO_TITLE": "Análisis de Datos",
+        "INTRO_DESCRIPTION": "Con ",
+        "junla": "JunlaAnalytics_",  
+        "TITLE": "Ingresa con tu cuenta",
+        "DESCRIPTION": "Gestiona tu información de una manera eficaz",
+        "EMAIL": "Usuario",
+        "PASSWORD": "Password",
+        "WS":"Work Space",
+        "REMEMBER_ME": "Recordarme",
+        "FORGOT_PASSWORD": "Olvide mi Password",
+        "LOG_IN": "Ingresar",
+        "OR": "OR",
+        "WITH_GOOGLE": "Log in with Google",
+        "WITH_FACEBOOK": "Log in with Facebook",
+        "DONT_HAVE_ACCOUNT": "No tienes tu Panel de Control?",
+        "CREATE_ACCOUNT": "Crear Panel",
+        "ERRORS": {
+            "EMAIL_REQUIRED": "Usuario es requerido",
+            "workSpace_REQUIRED" : "Work Space es Requerido",
+            "EMAIL_MUST_VALID": "Email no es un valido",
+            "PASSWORD_REQUIRED": "Password es requerido"
+        }
+    }
+}
