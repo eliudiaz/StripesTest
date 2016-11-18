@@ -203,7 +203,9 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     private void fillEstudiosSalud(List<EstudioSaludDto> estudios) {
         for (EstudioSaludDto i : estudios) {
-            i.setNombre(catalogosRepo.findOne(i.getFkEstudioSalud()).getValor());
+            if (i.getFkEstudioSalud() != null) {
+                i.setNombre(catalogosRepo.findOne(i.getFkEstudioSalud()).getValor());
+            }
         }
     }
 
@@ -253,7 +255,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
             reg.setNivelUltimoGradoNombre(c.getValor());
         }
-        if (reg.getEstudiaActualmente()) {
+        if (reg.isEstudiaActualmente()) {
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
             reg.setNombreGradoActual(c.getValor());

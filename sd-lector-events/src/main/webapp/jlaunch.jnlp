@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="http://localhost:41825/sd-lector-events" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>LectorLauncher</title>
+        <vendor>eliud</vendor>
+        <homepage href=""/>
+        <description>LectorLauncher</description>
+        <description kind="short">LectorLauncher</description>
+    </information>
+    <update check="always"/>
+    <security>
+<all-permissions/>
+</security>
+    <resources>
+        <j2se version="1.6+"/>
+        
+    <jar href="EdCrackenSDHandler-1.0-SNAPSHOT-jar-with-dependencies.jar"/>
+	
+   </resources>
+
+    <application-desc name="card-reader" main-class="ed.cracken.handlers.SDHandler" >
+    </application-desc>
+</jnlp>

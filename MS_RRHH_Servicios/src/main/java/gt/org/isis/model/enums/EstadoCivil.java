@@ -17,7 +17,7 @@ public enum EstadoCivil {
     SOLTERO("soltero"),
     CASADO("casado"),
     DIVORCIADO("divorciado"),
-    VIUDO("viudo");
+    VIUDO("viudo"), UNIDO("unido");
 
     private String value;
 

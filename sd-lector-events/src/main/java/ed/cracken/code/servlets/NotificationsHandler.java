@@ -5,16 +5,11 @@
  */
 package ed.cracken.code.servlets;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import ed.cracken.code.managers.IDsManager;
 import ed.cracken.code.servlets.dto.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,6 +52,7 @@ public class NotificationsHandler extends HttpServlet {
                         if ((p = manager.getIds().get(session)) != null) {
                             writer.write(new Gson().toJson(p));
                         }
+                        manager.getIds().remove(session);
                     }
                 }
             }
