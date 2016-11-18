@@ -11,6 +11,7 @@ import ed.cracken.code.servlets.dto.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author eliud //
  */
-//@WebServlet(name = "EventsHandler", urlPatterns = {"/events"})
-public class NotificationsHandler extends HttpServlet {
+@WebServlet(name = "EventsHandler", urlPatterns = {"/events2"})
+public class NotificationsHandlerAjax extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,13 +38,13 @@ public class NotificationsHandler extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             System.out.println("streaming..." + request.getParameter("sessionid"));
-            response.setContentType("text/event-stream");
-            response.setHeader("Cache-Control", "no-cache");
+            response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
             PrintWriter writer = response.getWriter();
             IDsManager manager;
-            if ((manager = (IDsManager) this.getServletContext().getAttribute("idsmanager")) != null) {
+            if ((manager = (IDsManager) this.getServletContext()
+                    .getAttribute("idsmanager")) != null) {
                 System.out.println(">> " + manager.getIds().toString());
                 if (!manager.getIds().isEmpty()) {
                     String session;
@@ -53,15 +54,13 @@ public class NotificationsHandler extends HttpServlet {
                             String j;
                             writer.write(j = new Gson().toJson(p));
                             System.out.println(">> sending >>" + j);
+                            manager.getIds().remove(session);
                         } else {
-                            System.out.println(">> empty ");
-                            writer.write("empty");
+                            response.sendError(HttpServletResponse.SC_NOT_FOUND);
                         }
-                        manager.getIds().remove(session);
                     }
                 } else {
-                    System.out.println(">> empty ");
-                    writer.write("empty");
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
             }
             writer.flush();
