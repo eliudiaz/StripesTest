@@ -53,22 +53,24 @@ public class HistoricoRegistroLaboral implements Serializable {
     @Column(name = "fk_comunidad_comisionado")
     private Integer fkComunidadComisionado;
     @Size(max = 50)
-    @Column(name = "estado", length = 50)
+    @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private Estado estado;
+    @Column
+    private String observaciones;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
     @Size(max = 50)
-    @Column(name = "creado_por", length = 50)
+    @Column(name = "creado_por")
     private String creadoPor;
     @Column(name = "fecha_ultimo_cambio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoCambio;
     @Size(max = 50)
-    @Column(name = "ultimo_cambio_por", length = 50)
+    @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne(optional = false)
@@ -86,6 +88,14 @@ public class HistoricoRegistroLaboral implements Serializable {
     public HistoricoRegistroLaboral(Integer id, Date fechaCreacion) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
     public Integer getId() {
