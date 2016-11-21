@@ -41,27 +41,31 @@ public class NotificationsHandlerAjax extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            PrintWriter writer = response.getWriter();
+            String session;
+            if ((session = request.getParameter("sessionid")) == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             IDsManager manager;
             if ((manager = (IDsManager) this.getServletContext()
-                    .getAttribute("idsmanager")) != null) {
-                System.out.println(">> " + manager.getIds().toString());
-                if (!manager.getIds().isEmpty()) {
-                    String session;
-                    if ((session = request.getParameter("sessionid")) != null) {
-                        Persona p;
-                        if ((p = manager.getIds().get(session)) != null) {
-                            String j;
-                            writer.write(j = new Gson().toJson(p));
-                            System.out.println(">> sending >>" + j);
-                            manager.getIds().clear();
-                        } else {
-                            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                        }
-                    }
-                } else {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                }
+                    .getAttribute("idsmanager")) == null
+                    || manager.getIds().isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            System.out.println(">> " + manager.getIds().toString());
+
+            PrintWriter writer = response.getWriter();
+            Persona p;
+
+            if ((p = manager.getIds().get(session)) == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            } else {
+                String j;
+                writer.write(j = new Gson().toJson(p));
+                System.out.println(">> sending >>" + j);
+                manager.getIds().clear();
             }
             writer.flush();
             writer.close();
