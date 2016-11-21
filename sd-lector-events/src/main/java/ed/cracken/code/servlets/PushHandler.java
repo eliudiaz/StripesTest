@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author eliud
  */
 @WebServlet(name = "PushProcessor", urlPatterns = {"/pushProcessor"})
-public class PushProcessor extends HttpServlet {
+public class PushHandler extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
