@@ -6,13 +6,10 @@
 package ed.cracken.code.servlets;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 import ed.cracken.code.managers.IDsManager;
 import ed.cracken.code.servlets.dto.Persona;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author eliud
+ * @author eliud //
  */
-@WebServlet(name = "PushProcessor", urlPatterns = {"/pushProcessor"})
-public class PushProcessor extends HttpServlet {
+@WebServlet(name = "EventsHandler", urlPatterns = {"/events2"})
+public class PullsHandler extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,29 +34,45 @@ public class PushProcessor extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
-        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-        String json = "";
-        StringBuilder sb = new StringBuilder();
-        while ((json = br.readLine()) != null) {
-            sb.append(json);
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            System.out.println("streaming..." + request.getParameter("sessionid"));
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            String session;
+            if ((session = request.getParameter("sessionid")) == null) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            IDsManager manager;
+            if ((manager = (IDsManager) this.getServletContext()
+                    .getAttribute("idsmanager")) == null
+                    || manager.getIds().isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            System.out.println(">> " + manager.getIds().toString());
+
+            PrintWriter writer = response.getWriter();
+            Persona p;
+
+            if ((p = manager.getIds().get(session)) == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            } else {
+                String j;
+                writer.write(j = new Gson().toJson(p));
+                System.out.println(">> sending >>" + j);
+                manager.getIds().clear();
+            }
+            writer.flush();
+            writer.close();
+
+        } finally {
+            out.close();
         }
-        br.close();
-
-        System.out.println(">> " + sb.toString());
-        JsonReader reader = new JsonReader(new StringReader(sb.toString()));
-        reader.setLenient(true);
-        Persona persona = new Gson().fromJson(reader, Persona.class
-        );
-        IDsManager idsManager;
-        if ((idsManager = (IDsManager) request.getServletContext().getAttribute("idsmanager")) == null) {
-            idsManager = new IDsManager();
-            request.getServletContext().setAttribute("idsmanager", idsManager);
-        }
-        idsManager.getIds().put(persona.getSession(), persona);
-
-        response.setStatus(HttpServletResponse.SC_ACCEPTED);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
