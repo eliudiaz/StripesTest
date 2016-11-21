@@ -5,6 +5,9 @@
  */
 package ed.cracken.code.servlets;
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -20,72 +23,46 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "JnlpGenerator", urlPatterns = {"/jnlp"})
 public class JnlpGenerator extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet JnlpGenerator</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet JnlpGenerator at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
+    private Mustache template;
+    private String jnlpFile;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        MustacheFactory mf = new DefaultMustacheFactory();
+        template = mf.compile(jnlpFile = "lector.jnlp");
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    private String getCurrentPath(HttpServletRequest request) {
+        String uri = request.getScheme() + "://"
+                + // "http" + "://
+                request.getServerName()
+                + // "myhost"
+                ":"
+                + // ":"
+                request.getServerPort()
+                + // "8080"
+                request.getRequestURI()
+                + // "/people"
+                "?"
+                + // "?"
+                request.getQueryString();       // "lastname=Fox&age=30"
+        return uri;
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    protected void doGet(HttpServletRequest req, HttpServletResponse aResponse) throws ServletException, IOException {
+        JnlpModel model = new JnlpModel();
+        model.codeBaseUrl = getCurrentPath(req);
+        model.jnlpFile = this.jnlpFile;
+        model.pushUrl = System.getProperty("SD_PUSH_URL") != null
+                ? System.getProperty("SD_PUSH_URL") : "localhost:41825/MS_RRHH";
+        model.sessionId = req.getParameter("sessionId");
+
+        aResponse.setContentType("application/x-java-jnlp-file");
+        template.execute(new PrintWriter(System.out), model);
+
+        template.execute(aResponse.getWriter(), model);
+
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
