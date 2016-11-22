@@ -161,8 +161,11 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         if (un.getTipo().equals(C.CAT_UN_COMUNIDAD2)) {
             ref.setFkComunidad2(un.getId());
             ref.setNombreComunidad2(un.getValor());
-
-            un = unidadNotificadora.findOne(un.getCodigoPadre());
+            if (!isNull(un.getCodigoPadre())) {
+                un = unidadNotificadora.findOne(un.getCodigoPadre());
+            } else {
+                return ref;
+            }
         }
 
         ref.setFkComunidad(fkComunidadId);
