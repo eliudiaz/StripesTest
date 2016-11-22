@@ -37,7 +37,6 @@ public class PersonaDto {
     private EstadoCivil estadoCivil;
     @NotNull
     private Sexo sexo;
-    @NotNull
     private Integer fkNacionalidad;
     @NotNull
     private String fkProfesion;
@@ -47,7 +46,6 @@ public class PersonaDto {
     private Boolean sabeLeer;
     @NotNull
     private Boolean sabeEscribir;
-//    @NotNull
     private Date fechaNacimiento;
     private Integer edad;
 
@@ -66,11 +64,8 @@ public class PersonaDto {
     @NotNull
     private String noCedula;
     private Estado estado;
-    //    @NotNull
     private Integer fkMunicipioNacimiento;
-//    @NotNull
     private Integer fkMunicipioCedula;
-//    @NotNull
     private Integer fkMunicipioVecindad;
     @NotNull
     private Boolean huellaManoDer;

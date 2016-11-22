@@ -27,9 +27,27 @@ public class RegistroAcademicoDto {
     private String nombreGradoActual;
     private Integer nivelGradoActual;
     private String nivelGradoActualNombre;
+    private Integer carreraGradoActual;
+    private String carreaGradoActualNombre;
     private Date fechaCreacion;
     private String creadoPor;
     private List<RegistroAcademicoDto> historial;
+
+    public Integer getCarreraGradoActual() {
+        return carreraGradoActual;
+    }
+
+    public void setCarreraGradoActual(Integer carreraGradoActual) {
+        this.carreraGradoActual = carreraGradoActual;
+    }
+
+    public String getCarreaGradoActualNombre() {
+        return carreaGradoActualNombre;
+    }
+
+    public void setCarreaGradoActualNombre(String carreaGradoActualNombre) {
+        this.carreaGradoActualNombre = carreaGradoActualNombre;
+    }
 
     public String getNivelUltimoGradoNombre() {
         return nivelUltimoGradoNombre;

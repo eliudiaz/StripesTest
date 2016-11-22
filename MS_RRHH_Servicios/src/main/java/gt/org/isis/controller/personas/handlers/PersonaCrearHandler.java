@@ -129,6 +129,10 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
             currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
+        if (r.getFkNacionalidadNombre() != null && !r.getFkNacionalidadNombre().isEmpty()) {
+            currentPersona.setFkNacionalidad(getAreaByNombreAndTipo(r.getFkNacionalidadNombre(),
+                    C.CAT_GEN_NACIONALIDAD).getId());
+        }
         currentPersona = repo.save(currentPersona);
         return this;
     }
