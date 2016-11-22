@@ -71,6 +71,10 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     CatalogosRepository catalogosRepo;
     @Autowired
     UnidadEjecutoraRepository ueRepo;
+    @Autowired
+    IdiomaRepository idiomasRepo;
+    @Autowired
+    PuestosRepository puestosRepo;
 
     @Override
     public GetPersonaDto execute(PersonaDto request) {
@@ -149,10 +153,10 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         return dto;
     }
 
-    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidad) {
+    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidadId) {
         RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
-        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidad);
-        ref.setFkComunidad(fkComunidad);
+        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidadId);
+        ref.setFkComunidad(fkComunidadId);
         ref.setNombreComunidad(un.getValor());
 
         un = unidadNotificadora.findOne(un.getCodigoPadre());
@@ -195,9 +199,6 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         return refArea;
     }
 
-    @Autowired
-    IdiomaRepository idiomasRepo;
-
     private void fillIdiomas(List<IdiomaDto> idiomas) {
         for (IdiomaDto i : idiomas) {
             i.setNombre(catalogosRepo.findOne(i.getFkIdioma()).getValor());
@@ -211,9 +212,6 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             }
         }
     }
-
-    @Autowired
-    private PuestosRepository puestosRepo;
 
     private RefClasificacionServiciDto buildByClasificacionServicio(Integer fkClasificacionServicio) {
         RefClasificacionServiciDto refClasificacion = new RefClasificacionServiciDto();
@@ -230,7 +228,6 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     }
 
     private void fillRegistroPuesto(RegistroLaboralPuestoDto reg) {
-
         reg.setRefClasificacionServicio(buildByClasificacionServicio(reg.getFkClasificacionServicio()));
         reg.setRefUnidadNotificadora(buildByComunidad(reg.getFkComunidad()));
 
