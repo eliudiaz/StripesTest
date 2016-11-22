@@ -14,4 +14,11 @@ public class ValidationsHelper {
     public static boolean isNull(Object o) {
         return o == null;
     }
+
+    public static boolean containsAny(String source, String param) {
+        param = param.toLowerCase().substring(0, param.length() > 5
+                ? 4 : param.length() - 1);
+        source = source.toLowerCase();
+        return source.contains(param) || source.startsWith(param) || source.endsWith(param);
+    }
 }

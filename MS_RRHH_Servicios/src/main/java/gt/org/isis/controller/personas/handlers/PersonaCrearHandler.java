@@ -9,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractValidationsRequestHandler;
 import gt.org.isis.api.C;
+import static gt.org.isis.api.ValidationsHelper.containsAny;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
@@ -23,6 +24,8 @@ import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.converters.RegistroLaboralPuestosConverter;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
+import gt.org.isis.model.Catalogos;
+import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
 import gt.org.isis.model.Idioma;
@@ -35,6 +38,7 @@ import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.AreasGeografRepository;
+import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
 import gt.org.isis.repository.IdiomaRepository;
@@ -77,7 +81,25 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     PersonaDtoConverter converter;
     @Autowired
     AreasGeografRepository areasRepo;
+    @Autowired
+    CatalogosRepository catalogosRepo;
+
     private Persona currentPersona;
+
+    private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
+        List<Catalogos> all = catalogosRepo.findAll(new Specification<Catalogos>() {
+            @Override
+            public Predicate toPredicate(Root<Catalogos> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                return cb.equal(root.get(Catalogos_.tipo), tipo);
+            }
+        });
+        for (Catalogos ag : all) {
+            if (containsAny(ag.getValor(), nombre)) {
+                return ag;
+            }
+        }
+        return all.get(0);
+    }
 
     private AreaGeografica getAreaByNombreAndTipo(final String nombre, final String tipo) {
         List<AreaGeografica> all = areasRepo.findAll(new Specification<AreaGeografica>() {
@@ -87,7 +109,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
             }
         });
         for (AreaGeografica ag : all) {
-            if (ag.getValor().contains(nombre) || ag.getValor().startsWith(nombre) || ag.getValor().endsWith(nombre)) {
+            if (containsAny(ag.getValor(), nombre)) {
                 return ag;
             }
         }
@@ -130,7 +152,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
         if (r.getFkNacionalidadNombre() != null && !r.getFkNacionalidadNombre().isEmpty()) {
-            currentPersona.setFkNacionalidad(getAreaByNombreAndTipo(r.getFkNacionalidadNombre(),
+            currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
                     C.CAT_GEN_NACIONALIDAD).getId());
         }
         currentPersona = repo.save(currentPersona);
