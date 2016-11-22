@@ -24,13 +24,12 @@ import javax.servlet.http.HttpServletResponse;
 public class JnlpGenerator extends HttpServlet {
 
     private Mustache template;
-    private String jnlpFile;
 
     @Override
     public void init() throws ServletException {
         super.init();
         MustacheFactory mf = new DefaultMustacheFactory();
-        template = mf.compile(jnlpFile = "jnlp");
+        template = mf.compile("lector.jnlp");
     }
 
     private String getCurrentPath(HttpServletRequest request) {
@@ -54,10 +53,11 @@ public class JnlpGenerator extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse aResponse) throws ServletException, IOException {
         JnlpModel model = new JnlpModel();
         model.codeBaseUrl = getCurrentPath(req);
-        model.jnlpFile = this.jnlpFile;
+
         model.pushUrl = System.getProperty("SD_PUSH_URL") != null
                 ? System.getProperty("SD_PUSH_URL") : "localhost:41825/MS_RRHH";
         model.sessionId = req.getParameter("sessionId");
+        model.jnlpFile = "jnlp?sessionId=".concat(model.sessionId);
 
         aResponse.setContentType("application/x-java-jnlp-file");
         template.execute(new PrintWriter(System.out), model);
