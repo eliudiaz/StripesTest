@@ -72,52 +72,6 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     UnidadEjecutoraRepository ueRepo;
 
-    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidad) {
-        RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
-        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidad);
-        ref.setFkComunidad(fkComunidad);
-        ref.setNombreComunidad(un.getValor());
-
-        un = unidadNotificadora.findOne(un.getCodigoPadre());
-        if (!isNull(un)) {
-            ref.setFkLugarEspecifico(un.getId());
-            ref.setNombreLugarEspecifico(un.getValor());
-
-            un = unidadNotificadora.findOne(un.getCodigoPadre());
-            if (!isNull(un)) {
-                ref.setFkDistrito(un.getId());
-                ref.setNombreDistrito(un.getValor());
-
-                UnidadEjecutora ue = ueRepo.findOne(un.getCodigoPadre());
-                ref.setFkUnidadEjecutora(ue.getId());
-                ref.setFkUnidadEjecutoraNombre(ue.getNombre());
-            }
-        }
-        return ref;
-    }
-
-    private RefAreaGeograficaDto buildByMunicipio(Integer fkMunicipio) {
-        RefAreaGeograficaDto refArea = new RefAreaGeograficaDto();
-        AreaGeografica ag = areasRepo.findOne(fkMunicipio);
-        refArea.setFkMunicio(ag.getId());
-        refArea.setFkMunicioNombre(ag.getValor());
-
-        ag = areasRepo.findOne(ag.getCodigoPadre());
-        if (!isNull(ag)) {
-
-            refArea.setFkDepartamento(ag.getId());
-            refArea.setFkDepartamentoNombre(ag.getValor());
-
-            ag = areasRepo.findOne(ag.getCodigoPadre());
-            if (!isNull(ag)) {
-                refArea.setFkPais(ag.getId());
-                refArea.setFkPaisNombre(ag.getValor());
-            }
-
-        }
-        return refArea;
-    }
-
     @Override
     public GetPersonaDto execute(PersonaDto request) {
         Persona p = repo.findOne(request.getCui());
@@ -193,6 +147,52 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
 
         return dto;
+    }
+
+    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidad) {
+        RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
+        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidad);
+        ref.setFkComunidad(fkComunidad);
+        ref.setNombreComunidad(un.getValor());
+
+        un = unidadNotificadora.findOne(un.getCodigoPadre());
+        if (!isNull(un)) {
+            ref.setFkLugarEspecifico(un.getId());
+            ref.setNombreLugarEspecifico(un.getValor());
+
+            un = unidadNotificadora.findOne(un.getCodigoPadre());
+            if (!isNull(un)) {
+                ref.setFkDistrito(un.getId());
+                ref.setNombreDistrito(un.getValor());
+
+                UnidadEjecutora ue = ueRepo.findOne(un.getCodigoPadre());
+                ref.setFkUnidadEjecutora(ue.getId());
+                ref.setFkUnidadEjecutoraNombre(ue.getNombre());
+            }
+        }
+        return ref;
+    }
+
+    private RefAreaGeograficaDto buildByMunicipio(Integer fkMunicipio) {
+        RefAreaGeograficaDto refArea = new RefAreaGeograficaDto();
+        AreaGeografica ag = areasRepo.findOne(fkMunicipio);
+        refArea.setFkMunicio(ag.getId());
+        refArea.setFkMunicioNombre(ag.getValor());
+
+        ag = areasRepo.findOne(ag.getCodigoPadre());
+        if (!isNull(ag)) {
+
+            refArea.setFkDepartamento(ag.getId());
+            refArea.setFkDepartamentoNombre(ag.getValor());
+
+            ag = areasRepo.findOne(ag.getCodigoPadre());
+            if (!isNull(ag)) {
+                refArea.setFkPais(ag.getId());
+                refArea.setFkPaisNombre(ag.getValor());
+            }
+
+        }
+        return refArea;
     }
 
     @Autowired
