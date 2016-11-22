@@ -5,7 +5,17 @@
  */
 package gt.org.isis.controller.personas.handlers.validations;
 
+import gt.org.isis.api.ValidationRequestContext;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
+import gt.org.isis.api.misc.exceptions.ext.ValidationError;
+import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,5 +24,34 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CrearPersonaDatosValidation extends DatosPersonaValidation<ReqNuevaPersonaDto> {
+
+    private Date parseFechaNacTexto(String text) {
+        try {
+            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy");
+            return sd.parse(text);
+        } catch (ParseException ex) {
+            ex.printStackTrace(System.err);
+            return new DateTime().plusYears(-18).toDate();
+        }
+    }
+
+    @Override
+    public void validate(ReqNuevaPersonaDto persona, ValidationRequestContext ctx) {
+
+        if (persona.getFechaNacimientoTexto() == null) {
+            throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
+                    new String[]{"fecha_nac_requerido,Fecha nacimiento es requerido!"});
+
+        } else {
+            Date parseFechaNacTexto = parseFechaNacTexto(persona.getFechaNacimientoTexto());
+            Calendar c = Calendar.getInstance();
+            c.setTime(parseFechaNacTexto);
+            if (DateTime.now().getYear() < c.get(Calendar.YEAR)) {
+                throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
+                        new String[]{"fecha_nac_invalida,Fecha nacimiento debe ser menor a fecha actual!"});
+            }
+        }
+        super.validate(persona, ctx);
+    }
 
 }
