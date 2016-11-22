@@ -83,7 +83,20 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     AreasGeografRepository areasRepo;
     @Autowired
     CatalogosRepository catalogosRepo;
-
+    @Autowired
+    IdiomaRepository idiomasRepo;
+    @Autowired
+    RegistroAcademicoRepository regAcadRepo;
+    @Autowired
+    RegistroLaboralRepository regLaboralRepo;
+    @Autowired
+    PuestoRepository puestoRepo;
+    @Autowired
+    EstudiosSaludRepository estudiosRepo;
+    @Autowired
+    DpiRepository dpiRepo;
+    @Autowired
+    LugarResidenciaRepository lugaresRepo;
     private Persona currentPersona;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -190,21 +203,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         currentPersona = repo.save(currentPersona);
         return this;
     }
-
-    @Autowired
-    IdiomaRepository idiomasRepo;
-    @Autowired
-    RegistroAcademicoRepository regAcadRepo;
-    @Autowired
-    RegistroLaboralRepository regLaboralRepo;
-    @Autowired
-    PuestoRepository puestoRepo;
-    @Autowired
-    EstudiosSaludRepository estudiosRepo;
-    @Autowired
-    DpiRepository dpiRepo;
-    @Autowired
-    LugarResidenciaRepository lugaresRepo;
 
     private PersonaCrearHandler guardaRegAcademico(ReqNuevaPersonaDto r) {
         RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
