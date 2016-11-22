@@ -258,26 +258,41 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     private void fillRegistroRA(RegistroAcademicoDto reg) {
         Catalogos c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getUltimoGrado()));
-        reg.setNombreUltimoGrado(c.getValor());
+        reg.setCarreraUltimoGradoNombre(c.getValor());
+        reg.setCarreraUltimoGrado(c.getId());
 
         c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
         if (c != null) {
-            reg.setNivelUltimoGrado(c.getId());
+            reg.setUltimoGrado(c.getId());
+            reg.setNombreUltimoGrado(c.getValor());
 
-            reg.setNivelUltimoGradoNombre(c.getValor());
+            c = (Catalogos) catalogosRepo
+                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+            if (c != null) {
+                reg.setNivelUltimoGrado(c.getId());
+                reg.setNivelUltimoGradoNombre(c.getValor());
+            }
         }
+
         if (reg.isEstudiaActualmente()) {
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
-            reg.setNombreGradoActual(c.getValor());
+            reg.setCarreraGradoActual(c.getId());
+            reg.setCarreraGradoActualNombre(c.getValor());
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
             if (c != null) {
                 reg.setNivelGradoActual(c.getId());
-
                 reg.setNivelGradoActualNombre(c.getValor());
+
+                c = (Catalogos) catalogosRepo
+                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+                if (c != null) {
+                    reg.setNivelGradoActual(c.getId());
+                    reg.setNivelGradoActualNombre(c.getValor());
+                }
             }
         }
     }

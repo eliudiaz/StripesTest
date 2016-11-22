@@ -16,6 +16,8 @@ public class C {
     public static final String CAT_GEN_IDIOMA = "IDIOMA";
     public static final String CAT_GEN_PUESTO_FUNCIONAL = "PUESTO_FUNCIONAL";
     public static final String CAT_GEN_NIV_EDUCATIVO = "NIVEL_EDUCATIVO";
+    public static final String CAT_GEN_NIV_EDUCATIVO_GRADO = "NIVEL_EDUCATIVO_GRADO";
+    public static final String CAT_GEN_NIV_EDUCATIVO_CARRERA = "NIVEL_EDUCATIVO_CARRERA";
     public static final String CAT_GEN_COMUNIDAD_LING = "COMUNIDAD_LING";
     public static final String CAT_AG_TIPO_MUNICIPIOS = "MUNICIPIO";
     public static final String CAT_AG_TIPO_DEPTOS = "DEPARTAMENTOS";

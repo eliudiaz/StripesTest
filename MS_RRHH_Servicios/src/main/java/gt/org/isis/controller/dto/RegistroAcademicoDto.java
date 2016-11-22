@@ -19,6 +19,8 @@ public class RegistroAcademicoDto {
     @NotNull
     private Integer ultimoGrado;
     private String nombreUltimoGrado;
+    private Integer carreraUltimoGrado;
+    private String carreraUltimoGradoNombre;
     private Integer nivelUltimoGrado;
     private String nivelUltimoGradoNombre;
     @NotNull
@@ -28,10 +30,34 @@ public class RegistroAcademicoDto {
     private Integer nivelGradoActual;
     private String nivelGradoActualNombre;
     private Integer carreraGradoActual;
-    private String carreaGradoActualNombre;
+    private String carreraGradoActualNombre;
     private Date fechaCreacion;
     private String creadoPor;
     private List<RegistroAcademicoDto> historial;
+
+    public String getCarreraGradoActualNombre() {
+        return carreraGradoActualNombre;
+    }
+
+    public void setCarreraGradoActualNombre(String carreraGradoActualNombre) {
+        this.carreraGradoActualNombre = carreraGradoActualNombre;
+    }
+
+    public Integer getCarreraUltimoGrado() {
+        return carreraUltimoGrado;
+    }
+
+    public void setCarreraUltimoGrado(Integer carreraUltimoGrado) {
+        this.carreraUltimoGrado = carreraUltimoGrado;
+    }
+
+    public String getCarreraUltimoGradoNombre() {
+        return carreraUltimoGradoNombre;
+    }
+
+    public void setCarreraUltimoGradoNombre(String carreraUltimoGradoNombre) {
+        this.carreraUltimoGradoNombre = carreraUltimoGradoNombre;
+    }
 
     public Integer getCarreraGradoActual() {
         return carreraGradoActual;
@@ -39,14 +65,6 @@ public class RegistroAcademicoDto {
 
     public void setCarreraGradoActual(Integer carreraGradoActual) {
         this.carreraGradoActual = carreraGradoActual;
-    }
-
-    public String getCarreaGradoActualNombre() {
-        return carreaGradoActualNombre;
-    }
-
-    public void setCarreaGradoActualNombre(String carreaGradoActualNombre) {
-        this.carreaGradoActualNombre = carreaGradoActualNombre;
     }
 
     public String getNivelUltimoGradoNombre() {
