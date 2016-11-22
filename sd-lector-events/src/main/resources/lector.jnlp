@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jnlp     spec = "1.0+"
-          codebase = "{{codebase_url}}"
-          href = "{{jnlp_file}}"
+          codebase = "{{codeBaseUrl}}"
+          href = "{{jnlpFile}}"
 >
 
     <information>
@@ -14,11 +14,14 @@
     </security>
 
     <resources>
-        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+        <j2se version="1.6+"/>
         <jar href="edcracken-lector.jar" main="true"/>
     </resources>
 
-    <application-desc name="card-reader" main-class="ed.cracken.handlers.SDHandler" />
+    <application-desc name="card-reader" main-class="ed.cracken.handlers.SDHandler" >
+        <argument>{{sessionId}}</argument>
+        <argument>{{pushUrl}}</argument>
+    </application-desc>
 
     <update check="background"/>
 </jnlp>

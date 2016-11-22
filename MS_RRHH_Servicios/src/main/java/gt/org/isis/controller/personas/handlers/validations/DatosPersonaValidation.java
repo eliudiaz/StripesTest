@@ -23,18 +23,19 @@ public class DatosPersonaValidation<T extends PersonaDto> extends GenericValidat
     @Override
     public void validate(final T persona, ValidationRequestContext ctx) {
         ValidationException ex = new ValidationException(new ArrayList<ValidationError>());
-
-        DateTime f = new DateTime(persona.getFechaNacimiento());
-        if (f.getYear() >= DateTime.now().getYear()) {
-            ex.getErrors().add(new ValidationError("fecha_nacimiento", "Solo se soportan fechas anteriores al año actual!"));
-        } else {
-            int diff = DateTime.now().getYear() - f.getYear();
-            if (diff < 18) {
-                ex.getErrors().add(new ValidationError("fecha_nacimiento", "Solo se permiten personas de 18 años en adelante!"));
+        if (persona.getFechaNacimiento() != null) {
+            DateTime f = new DateTime(persona.getFechaNacimiento());
+            if (f.getYear() >= DateTime.now().getYear()) {
+                ex.getErrors().add(new ValidationError("fecha_nacimiento", "Solo se soportan fechas anteriores al año actual!"));
+            } else {
+                int diff = DateTime.now().getYear() - f.getYear();
+                if (diff < 18) {
+                    ex.getErrors().add(new ValidationError("fecha_nacimiento", "Solo se permiten personas de 18 años en adelante!"));
+                }
             }
-        }
-        if (!ex.getErrors().isEmpty()) {
-            throw ex;
+            if (!ex.getErrors().isEmpty()) {
+                throw ex;
+            }
         }
     }
 

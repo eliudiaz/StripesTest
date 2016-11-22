@@ -55,6 +55,15 @@ public class Persona {
     private String txtCedulaNumero;
     private String txtCedulaMunicipio;
     private String txtCedulaDepto;
+    private Integer edad;
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Integer edad) {
+        this.edad = edad;
+    }
 
     public String getSession() {
         return session;
