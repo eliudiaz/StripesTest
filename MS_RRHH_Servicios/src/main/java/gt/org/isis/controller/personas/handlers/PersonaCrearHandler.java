@@ -86,6 +86,38 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
     private Persona currentPersona;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public Boolean execute(ReqNuevaPersonaDto r) {
+        this
+                .guardaPersonaDatos(r)
+                .guardaIdiomas(r)
+                .guardaRegAcademico(r)
+                .guardaRegLaboral(r)
+                .guardaEstudiosSalud(r)
+                .guardaDpi(r)
+                .guardaLugarResidencia(r);
+
+        return true;
+    }
+
+    private PersonaCrearHandler guardaIdiomas(ReqNuevaPersonaDto r) {
+        idiomasRepo.save(
+                Collections2.transform(r.getIdiomas(),
+                        new Function<IdiomaDto, Idioma>() {
+                    @Override
+                    public Idioma apply(IdiomaDto f) {
+                        Idioma i = new IdiomaDtoConverter().toEntity(f);
+                        i.setFkPersona(currentPersona);
+                        i.setCreadoPor(currentPersona.getCreadoPor());
+                        EntitiesHelper.setDateCreateRef(i);
+                        return i;
+                    }
+                }));
+
+        return this;
+    }
+
     private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
         List<Catalogos> all = catalogosRepo.findAll(new Specification<Catalogos>() {
             @Override
@@ -161,25 +193,18 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
     @Autowired
     IdiomaRepository idiomasRepo;
-
-    private PersonaCrearHandler guardaIdiomas(ReqNuevaPersonaDto r) {
-        idiomasRepo.save(
-                Collections2.transform(r.getIdiomas(),
-                        new Function<IdiomaDto, Idioma>() {
-                    @Override
-                    public Idioma apply(IdiomaDto f) {
-                        Idioma i = new IdiomaDtoConverter().toEntity(f);
-                        i.setFkPersona(currentPersona);
-                        i.setCreadoPor(currentPersona.getCreadoPor());
-                        EntitiesHelper.setDateCreateRef(i);
-                        return i;
-                    }
-                }));
-
-        return this;
-    }
     @Autowired
     RegistroAcademicoRepository regAcadRepo;
+    @Autowired
+    RegistroLaboralRepository regLaboralRepo;
+    @Autowired
+    PuestoRepository puestoRepo;
+    @Autowired
+    EstudiosSaludRepository estudiosRepo;
+    @Autowired
+    DpiRepository dpiRepo;
+    @Autowired
+    LugarResidenciaRepository lugaresRepo;
 
     private PersonaCrearHandler guardaRegAcademico(ReqNuevaPersonaDto r) {
         RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
@@ -191,10 +216,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
         return this;
     }
-    @Autowired
-    RegistroLaboralRepository regLaboralRepo;
-    @Autowired
-    PuestoRepository puestoRepo;
 
     private PersonaCrearHandler guardaRegLaboral(ReqNuevaPersonaDto r) {
         RegistroLaboral rl = new RegistroLaboralConverter()
@@ -221,9 +242,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    @Autowired
-    EstudiosSaludRepository estudiosRepo;
-
     private PersonaCrearHandler guardaEstudiosSalud(ReqNuevaPersonaDto r) {
         estudiosRepo.save(
                 Collections2.transform(r.getEstudiosSalud(),
@@ -241,9 +259,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    @Autowired
-    DpiRepository dpiRepo;
-
     private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
         Dpi dpi = new DpiDtoConverter().toEntity(r.getDpi());
         dpi.setFkPersona(currentPersona);
@@ -254,8 +269,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         dpiRepo.save(dpi);
         return this;
     }
-    @Autowired
-    LugarResidenciaRepository lugaresRepo;
 
     private PersonaCrearHandler guardaLugarResidencia(ReqNuevaPersonaDto r) {
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
@@ -265,21 +278,6 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         EntitiesHelper.setDateCreateRef(lr);
         lugaresRepo.save(lr);
         return this;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Override
-    public Boolean execute(ReqNuevaPersonaDto r) {
-        this
-                .guardaPersonaDatos(r)
-                .guardaIdiomas(r)
-                .guardaRegAcademico(r)
-                .guardaRegLaboral(r)
-                .guardaEstudiosSalud(r)
-                .guardaDpi(r)
-                .guardaLugarResidencia(r);
-
-        return true;
     }
 
 }
