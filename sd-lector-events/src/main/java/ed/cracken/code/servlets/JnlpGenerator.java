@@ -30,7 +30,7 @@ public class JnlpGenerator extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         MustacheFactory mf = new DefaultMustacheFactory();
-        template = mf.compile(jnlpFile = "lector.jnlp");
+        template = mf.compile(jnlpFile = "jnlp");
     }
 
     private String getCurrentPath(HttpServletRequest request) {
