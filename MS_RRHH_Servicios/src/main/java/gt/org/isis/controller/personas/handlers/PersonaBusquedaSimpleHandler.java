@@ -8,6 +8,7 @@ package gt.org.isis.controller.personas.handlers;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.C;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.SingularAttrSpecificationBased;
 import gt.org.isis.controller.dto.EstudioSaludDto;
@@ -156,6 +157,14 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidadId) {
         RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
         UnidadNotificadora un = unidadNotificadora.findOne(fkComunidadId);
+
+        if (un.getTipo().equals(C.CAT_UN_COMUNIDAD2)) {
+            ref.setFkComunidad2(un.getId());
+            ref.setNombreComunidad2(un.getValor());
+
+            un = unidadNotificadora.findOne(un.getCodigoPadre());
+        }
+
         ref.setFkComunidad(fkComunidadId);
         ref.setNombreComunidad(un.getValor());
 

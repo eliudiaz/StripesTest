@@ -19,6 +19,24 @@ public class RefUnidadNotificadoraDto {
     private String nombreLugarEspecifico;
     private Integer fkDistrito;
     private String nombreDistrito;
+    private Integer fkComunidad2;
+    private String nombreComunidad2;
+
+    public Integer getFkComunidad2() {
+        return fkComunidad2;
+    }
+
+    public void setFkComunidad2(Integer fkComunidad2) {
+        this.fkComunidad2 = fkComunidad2;
+    }
+
+    public String getNombreComunidad2() {
+        return nombreComunidad2;
+    }
+
+    public void setNombreComunidad2(String nombreComunidad2) {
+        this.nombreComunidad2 = nombreComunidad2;
+    }
 
     public Integer getFkUnidadEjecutora() {
         return fkUnidadEjecutora;
