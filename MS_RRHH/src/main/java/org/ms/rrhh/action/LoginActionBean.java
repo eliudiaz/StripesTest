@@ -64,6 +64,10 @@ public class LoginActionBean extends BaseActionBean {
         req.getSession().setAttribute("applicationPath", url);
         req.getSession().setAttribute("servicesPath", C.SERVICIOS_CONTEXT == null
                 ? "http://localhost:41825/MS_RRHH_Servicios/" : C.SERVICIOS_CONTEXT);
+        req.getSession().setAttribute("lectorPath", C.LECTOR_PATH == null
+                ? "http://localhost:82/lector/launch.php" : C.LECTOR_PATH);
+        req.getSession().setAttribute("pushPath", C.PUSH_PATH == null
+                ? "http://localhost:41825/sd-lector-events/push" : C.PUSH_PATH);
 
     }
 

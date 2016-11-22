@@ -25,16 +25,24 @@
     <jsp:useBean id="currentUser"   class="org.ms.rrhh.dao.dto.UsuarioDto" scope="session"></jsp:useBean>
         <script type="text/javascript">
             if (typeof (Storage) !== "undefined") {
-                localStorage.setItem("sessionid", '<c:out value="${pageContext.session.id}"/>');
+                localStorage.setItem("sessionId", '<c:out value="${pageContext.session.id}"/>');
                 localStorage.setItem("context",
                         '<c:out value="${sessionScope.applicationPath}"/>');
                 localStorage.setItem("servicesPath",
                         '<c:out value="${sessionScope.servicesPath}"/>');
+                localStorage.setItem("lectorPath",
+                        '<c:out value="${sessionScope.lectorPath}"/>');
+                localStorage.setItem("pushPath",
+                        '<c:out value="${sessionScope.pushPath}"/>');
                 localStorage.setItem("currentUser", JSON.stringify(<%=currentUser%>));
                 setTimeout(function () {
                     window.location = "${sessionScope.applicationPath}/fuse";
                 }, 300);
+            } else {
+                alert("Explorador no compatible con aplicacion!, intente con uno mas reciente.");
             }
+
+
     </script>
 </body>
 </html>

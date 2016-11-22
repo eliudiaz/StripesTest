@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author eliud
  */
-@WebServlet(name = "PushProcessor", urlPatterns = {"/pushProcessor"})
+@WebServlet(name = "PushProcessor", urlPatterns = {"/push"})
 public class PushHandler extends HttpServlet {
 
     /**
