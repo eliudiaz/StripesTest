@@ -38,7 +38,7 @@ public class PushHandler extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
-        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
         String json = "";
         StringBuilder sb = new StringBuilder();
         while ((json = br.readLine()) != null) {
@@ -49,8 +49,7 @@ public class PushHandler extends HttpServlet {
         System.out.println(">> " + sb.toString());
         JsonReader reader = new JsonReader(new StringReader(sb.toString()));
         reader.setLenient(true);
-        Persona persona = new Gson().fromJson(reader, Persona.class
-        );
+        Persona persona = new Gson().fromJson(reader, Persona.class);
         IDsManager idsManager;
         if ((idsManager = (IDsManager) request.getServletContext().getAttribute("idsmanager")) == null) {
             idsManager = new IDsManager();

@@ -6,10 +6,12 @@
 package ed.cracken.code.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ed.cracken.code.managers.IDsManager;
 import ed.cracken.code.servlets.dto.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Normalizer;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author eliud //
  */
-@WebServlet(name = "EventsHandler", urlPatterns = {"/events2"})
+@WebServlet(name = "PullsHandler", urlPatterns = {"/pull"})
 public class PullsHandler extends HttpServlet {
 
     /**
@@ -34,12 +36,13 @@ public class PullsHandler extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             System.out.println("streaming..." + request.getParameter("sessionid"));
-            response.setContentType("application/json");
+            String type = "application/json; charset=UTF-8";
+            response.setContentType(type);
             response.setCharacterEncoding("UTF-8");
+            response.setHeader("Content-Type", type);
 
             String session;
             if ((session = request.getParameter("sessionid")) == null) {
@@ -62,8 +65,9 @@ public class PullsHandler extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             } else {
-                String j;
-                writer.write(j = new Gson().toJson(p));
+                Gson g = new GsonBuilder().setPrettyPrinting().create();
+                String j = Normalizer.normalize(g.toJson(p), Normalizer.Form.NFC);
+                writer.write(j);
                 System.out.println(">> sending >>" + j);
                 manager.getIds().clear();
             }
