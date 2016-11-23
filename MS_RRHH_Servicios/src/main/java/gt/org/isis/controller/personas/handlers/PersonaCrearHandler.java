@@ -265,6 +265,9 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     }
 
     private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
+        if (r.getDpi() == null) {
+            return this;
+        }
         DpiDto dpiDto = r.getDpi();
         if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
             dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));

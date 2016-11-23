@@ -7,12 +7,9 @@ package gt.org.isis.controller.personas.handlers.validations;
 
 import gt.org.isis.api.ValidationRequestContext;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
-import gt.org.isis.api.misc.exceptions.ext.ValidationError;
-import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import org.joda.time.DateTime;
@@ -38,11 +35,10 @@ public class CrearPersonaDatosValidation extends DatosPersonaValidation<ReqNueva
     @Override
     public void validate(ReqNuevaPersonaDto persona, ValidationRequestContext ctx) {
 
-        if (persona.getFechaNacimientoTexto() == null) {
+        if (persona.getFechaNacimiento() == null && persona.getFechaNacimientoTexto() == null) {
             throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
                     new String[]{"fecha_nac_requerido,Fecha nacimiento es requerido!"});
-
-        } else {
+        } else if (persona.getFechaNacimientoTexto() != null) {
             Date parseFechaNacTexto = parseFechaNacTexto(persona.getFechaNacimientoTexto());
             Calendar c = Calendar.getInstance();
             c.setTime(parseFechaNacTexto);
