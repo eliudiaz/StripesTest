@@ -34,6 +34,8 @@
                         '<c:out value="${sessionScope.lectorPath}"/>');
                 localStorage.setItem("pushPath",
                         '<c:out value="${sessionScope.pushPath}"/>');
+                localStorage.setItem("pullPath",
+                        '<c:out value="${sessionScope.pullPath}"/>');
                 localStorage.setItem("currentUser", JSON.stringify(<%=currentUser%>));
                 setTimeout(function () {
                     window.location = "${sessionScope.applicationPath}/fuse";

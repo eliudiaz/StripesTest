@@ -22,6 +22,15 @@ public class UsuarioLoginDto {
     private String foto;
     private PersonaDto persona;
     private List<RoleDto> roles;
+    private boolean root;
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
+    }
 
     public String getNombres() {
         return nombres;

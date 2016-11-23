@@ -68,6 +68,8 @@ public class LoginActionBean extends BaseActionBean {
                 ? "http://localhost:82/lector/launch.php" : C.LECTOR_PATH);
         req.getSession().setAttribute("pushPath", C.PUSH_PATH == null
                 ? "http://localhost:41825/sd-lector-events/push" : C.PUSH_PATH);
+        req.getSession().setAttribute("pullPath", C.PUSH_PATH == null
+                ? "http://localhost:41825/sd-lector-events/pull" : C.PUSH_PATH);
 
     }
 
@@ -75,7 +77,8 @@ public class LoginActionBean extends BaseActionBean {
         UsuarioDto usuario;
         try {
             usuario = usuariosRepo.doLogin(username, password);
-            if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+            if (!usuario.isRoot()
+                    && (usuario.getRoles() == null || usuario.getRoles().isEmpty())) {
                 throw new Exception("Usuario no tiene roles asignados");
             }
             getContext().getRequest().getSession().setAttribute("currentUser", usuario);

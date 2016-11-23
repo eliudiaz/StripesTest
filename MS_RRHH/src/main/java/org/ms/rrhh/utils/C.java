@@ -14,6 +14,7 @@ public class C {
     public static final String SERVICIOS_CONTEXT = System.getProperty("servicios_context");
     public static final String LECTOR_PATH = System.getProperty("lector_path");
     public static final String PUSH_PATH = System.getProperty("push_path");
+    public static final String PULL_PATH = System.getProperty("pull_path");
     public static final String LOGIN_PATH = System.getProperty("servicios_login");
 
 }

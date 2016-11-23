@@ -21,12 +21,21 @@ public class UsuarioDto {
     private String nombres;
     private String apellidos;
     private String clave;
+    private boolean root;
     private PersonaDto persona;
     private List<RoleDto> roles;
 
     public UsuarioDto(String usuario, String clave) {
         this.usuario = usuario;
         this.clave = clave;
+    }
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
     }
 
     public List<RoleDto> getRoles() {
