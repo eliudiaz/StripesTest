@@ -77,9 +77,9 @@ public class Persona implements Serializable, CustomEntity {
     @Column(name = "limitaciones_fisicas")
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
-    private Boolean sabeLeer;
+    private boolean sabeLeer;
     @Column(name = "sabe_escribir")
-    private Boolean sabeEscribir;
+    private boolean sabeEscribir;
     @Basic(optional = false)
     @Column(name = "fecha_nacimiento", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -104,9 +104,9 @@ public class Persona implements Serializable, CustomEntity {
     @Column(name = "fk_municipio_vecindad")
     private Integer fkMunicipioVecindad;
     @Column(name = "huella_mano_der")
-    private Boolean huellaManoDer;
+    private boolean huellaManoDer;
     @Column(name = "huella_mano_izq")
-    private Boolean huellaManoIzq;
+    private boolean huellaManoIzq;
     @Column(name = "huella_dedo_der")
     private String huellaDedoDer;
     @Column(name = "huella_dedo_izq")
@@ -286,22 +286,6 @@ public class Persona implements Serializable, CustomEntity {
         this.limitacionesFisicas = limitacionesFisicas;
     }
 
-    public Boolean getSabeLeer() {
-        return sabeLeer;
-    }
-
-    public void setSabeLeer(Boolean sabeLeer) {
-        this.sabeLeer = sabeLeer;
-    }
-
-    public Boolean getSabeEscribir() {
-        return sabeEscribir;
-    }
-
-    public void setSabeEscribir(Boolean sabeEscribir) {
-        this.sabeEscribir = sabeEscribir;
-    }
-
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -390,19 +374,35 @@ public class Persona implements Serializable, CustomEntity {
         this.fkMunicipioVecindad = fkMunicipioVecindad;
     }
 
-    public Boolean getHuellaManoDer() {
+    public boolean isSabeLeer() {
+        return sabeLeer;
+    }
+
+    public void setSabeLeer(boolean sabeLeer) {
+        this.sabeLeer = sabeLeer;
+    }
+
+    public boolean isSabeEscribir() {
+        return sabeEscribir;
+    }
+
+    public void setSabeEscribir(boolean sabeEscribir) {
+        this.sabeEscribir = sabeEscribir;
+    }
+
+    public boolean isHuellaManoDer() {
         return huellaManoDer;
     }
 
-    public void setHuellaManoDer(Boolean huellaManoDer) {
+    public void setHuellaManoDer(boolean huellaManoDer) {
         this.huellaManoDer = huellaManoDer;
     }
 
-    public Boolean getHuellaManoIzq() {
+    public boolean isHuellaManoIzq() {
         return huellaManoIzq;
     }
 
-    public void setHuellaManoIzq(Boolean huellaManoIzq) {
+    public void setHuellaManoIzq(boolean huellaManoIzq) {
         this.huellaManoIzq = huellaManoIzq;
     }
 

@@ -43,9 +43,9 @@ public class PersonaDto {
     @NotNull
     private String limitacionesFisicas;
     @NotNull
-    private Boolean sabeLeer;
+    private boolean sabeLeer;
     @NotNull
-    private Boolean sabeEscribir;
+    private boolean sabeEscribir;
     private Date fechaNacimiento;
     private Integer edad;
 
@@ -67,9 +67,9 @@ public class PersonaDto {
     private Integer fkMunicipioCedula;
     private Integer fkMunicipioVecindad;
     @NotNull
-    private Boolean huellaManoDer;
+    private boolean huellaManoDer;
     @NotNull
-    private Boolean huellaManoIzq;
+    private boolean huellaManoIzq;
     @NotNull
     private String huellaDedoDer;
     @NotNull
@@ -272,19 +272,19 @@ public class PersonaDto {
         this.limitacionesFisicas = limitacionesFisicas;
     }
 
-    public Boolean getSabeLeer() {
+    public boolean isSabeLeer() {
         return sabeLeer;
     }
 
-    public void setSabeLeer(Boolean sabeLeer) {
+    public void setSabeLeer(boolean sabeLeer) {
         this.sabeLeer = sabeLeer;
     }
 
-    public Boolean getSabeEscribir() {
+    public boolean isSabeEscribir() {
         return sabeEscribir;
     }
 
-    public void setSabeEscribir(Boolean sabeEscribir) {
+    public void setSabeEscribir(boolean sabeEscribir) {
         this.sabeEscribir = sabeEscribir;
     }
 
@@ -384,19 +384,19 @@ public class PersonaDto {
         this.fkMunicipioVecindad = fkMunicipioVecindad;
     }
 
-    public Boolean getHuellaManoDer() {
+    public boolean isHuellaManoDer() {
         return huellaManoDer;
     }
 
-    public void setHuellaManoDer(Boolean huellaManoDer) {
+    public void setHuellaManoDer(boolean huellaManoDer) {
         this.huellaManoDer = huellaManoDer;
     }
 
-    public Boolean getHuellaManoIzq() {
+    public boolean isHuellaManoIzq() {
         return huellaManoIzq;
     }
 
-    public void setHuellaManoIzq(Boolean huellaManoIzq) {
+    public void setHuellaManoIzq(boolean huellaManoIzq) {
         this.huellaManoIzq = huellaManoIzq;
     }
 

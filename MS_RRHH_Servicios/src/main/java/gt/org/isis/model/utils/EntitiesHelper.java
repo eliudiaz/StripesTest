@@ -14,6 +14,9 @@ import gt.org.isis.model.PersonaChildEntity;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +30,18 @@ import org.joda.time.Years;
  * @author eliud
  */
 public class EntitiesHelper {
+
+    public static Date parseFechaDPI(String text) {
+        try {
+            DateFormatSymbols sym = DateFormatSymbols.getInstance();
+            sym.setShortMonths(new String[]{"ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DEC"});
+            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy", sym);
+            return sd.parse(text);
+        } catch (ParseException ex) {
+            ex.printStackTrace(System.err);
+            return new DateTime().plusYears(-18).toDate();
+        }
+    }
 
     public static void setDateCreateRef(CustomEntity ce) {
         ce.setFechaCreacion(new DateTime().toDate());
