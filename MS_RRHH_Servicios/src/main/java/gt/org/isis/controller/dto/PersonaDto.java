@@ -40,7 +40,6 @@ public class PersonaDto {
     private Integer fkNacionalidad;
     @NotNull
     private String fkProfesion;
-    @NotNull
     private String limitacionesFisicas;
     @NotNull
     private boolean sabeLeer;
@@ -60,7 +59,6 @@ public class PersonaDto {
     private Integer fkComunidadLinguistica;
     @NotNull
     private String mrz;
-    @NotNull
     private String noCedula;
     private Estado estado;
     private Integer fkMunicipioNacimiento;
