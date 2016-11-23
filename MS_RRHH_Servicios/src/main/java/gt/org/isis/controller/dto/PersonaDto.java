@@ -57,7 +57,6 @@ public class PersonaDto {
     private String nacNoPartida;
     @NotNull
     private Pueblo fkPueblo;
-    @NotNull
     private Integer fkComunidadLinguistica;
     @NotNull
     private String mrz;

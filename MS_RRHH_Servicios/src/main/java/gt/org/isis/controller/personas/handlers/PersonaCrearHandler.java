@@ -11,6 +11,7 @@ import gt.org.isis.api.AbstractValidationsRequestHandler;
 import gt.org.isis.api.C;
 import static gt.org.isis.api.ValidationsHelper.containsAny;
 import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
@@ -49,8 +50,11 @@ import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.RegistroAcademicoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -106,11 +110,11 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     public Boolean execute(ReqNuevaPersonaDto r) {
         this
                 .guardaPersonaDatos(r)
+                .guardaDpi(r)
                 .guardaIdiomas(r)
                 .guardaRegAcademico(r)
                 .guardaRegLaboral(r)
                 .guardaEstudiosSalud(r)
-                .guardaDpi(r)
                 .guardaLugarResidencia(r);
 
         return true;
@@ -165,7 +169,9 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
     private Date parseFechaDPI(String text) {
         try {
-            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy");
+            DateFormatSymbols sym = DateFormatSymbols.getInstance();
+            sym.setShortMonths(new String[]{"ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DEC"});
+            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy", sym);
             return sd.parse(text);
         } catch (ParseException ex) {
             ex.printStackTrace(System.err);
@@ -261,17 +267,25 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
 
     private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
         DpiDto dpiDto = r.getDpi();
-        if (!isNull(dpiDto.getFechaEmisionTexto()) && isNull(dpiDto.getFechaVencimientoTexto())) {
+        if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
             dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
             dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
+        } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
+            throw ExceptionsManager.newValidationException("dpi_datos",
+                    new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
         }
-        Dpi dpi = new DpiDtoConverter().toEntity(r.getDpi());
+
+        Dpi dpi = new DpiDtoConverter().toEntity(dpiDto);
+        dpi.setFechaCreacion(dpiDto.getFechaCreacion());
+        dpi.setFechaVencimiento(dpiDto.getFechaVencimiento());
         dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(currentPersona.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
 
-        dpiRepo.saveAndFlush(dpi);
+        currentPersona.setDpiCollection(new ArrayList<Dpi>());
+        currentPersona.getDpiCollection().add(dpi);
+        repo.save(currentPersona);
         return this;
     }
 

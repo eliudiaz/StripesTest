@@ -231,10 +231,12 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         refClasificacion.setFkAreaServicio(c.getId());
         refClasificacion.setFkAreaServicioNombre(c.getValor());
 
-        c = catalogosRepo.findOne(c.getCodigoPadre());
-        if (c != null) {
-            refClasificacion.setFkClasificacionServicio(c.getId());
-            refClasificacion.setFkClasificacionServicioNombre(c.getValor());
+        if (c.getCodigoPadre() != null) {
+            c = catalogosRepo.findOne(c.getCodigoPadre());
+            if (c != null) {
+                refClasificacion.setFkClasificacionServicio(c.getId());
+                refClasificacion.setFkClasificacionServicioNombre(c.getValor());
+            }
         }
         return refClasificacion;
     }

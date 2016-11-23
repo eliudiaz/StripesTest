@@ -35,7 +35,7 @@ public class Dpi implements Serializable, CustomEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "no_serie", nullable = false, length = 50)
+    @Column(name = "no_serie")
     private String noSerie;
     @Basic(optional = false)
     @Column(name = "fecha_emision", nullable = false)
