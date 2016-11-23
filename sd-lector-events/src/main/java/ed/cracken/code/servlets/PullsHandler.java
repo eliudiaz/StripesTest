@@ -45,7 +45,7 @@ public class PullsHandler extends HttpServlet {
             response.setHeader("Content-Type", type);
 
             String session;
-            if ((session = request.getParameter("sessionid")) == null) {
+            if ((session = request.getParameter("sessionId")) == null) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
