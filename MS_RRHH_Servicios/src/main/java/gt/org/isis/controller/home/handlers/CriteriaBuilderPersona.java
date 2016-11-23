@@ -57,7 +57,7 @@ public class CriteriaBuilderPersona {
     }
 
     private String likeExpr(String val) {
-        return "%".concat(val).concat("%");
+        return "%".concat(val.toLowerCase()).concat("%");
     }
 
     public Predicate build() {
@@ -66,19 +66,19 @@ public class CriteriaBuilderPersona {
                     normal.getCui()));
         }
         if (normal.getPrimerNombre() != null) {
-            criteria.add(cb.like(rootPersona.get(Persona_.primerNombre),
+            criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.primerNombre)),
                     likeExpr(normal.getPrimerNombre())));
         }
         if (normal.getSegundoNombre() != null) {
-            criteria.add(cb.like(rootPersona.get(Persona_.segundoNombre),
+            criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.segundoNombre)),
                     likeExpr(normal.getSegundoNombre())));
         }
         if (normal.getPrimerApellido() != null) {
-            criteria.add(cb.like(rootPersona.get(Persona_.primerApellido),
+            criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.primerApellido)),
                     likeExpr(normal.getPrimerNombre())));
         }
         if (normal.getSegundoApellido() != null) {
-            criteria.add(cb.like(rootPersona.get(Persona_.segundoApellido),
+            criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.segundoApellido)),
                     likeExpr(normal.getPrimerApellido())));
         }
         if (normal.getSexo() != null) {

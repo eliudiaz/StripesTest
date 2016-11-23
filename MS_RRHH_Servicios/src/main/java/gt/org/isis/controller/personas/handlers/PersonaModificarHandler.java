@@ -252,8 +252,9 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         if (!p.getDpiCollection().isEmpty()) {
             for (Dpi d : p.getDpiCollection()) {
                 if (r.getDpi().getNoSerie().equals(d.getNoSerie())) {
-                    throw ExceptionsManager.newValidationException("invalid_dpi",
-                            new String[]{"no_serie,Ya tiene un DPI con ese numero de serie!"});
+//                    throw ExceptionsManager.newValidationException("invalid_dpi",
+//                            new String[]{"no_serie,Ya tiene un DPI con ese numero de serie!"});
+                    return;
                 }
             }
         }

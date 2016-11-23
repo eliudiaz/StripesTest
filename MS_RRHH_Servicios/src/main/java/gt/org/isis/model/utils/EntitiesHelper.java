@@ -31,6 +31,15 @@ import org.joda.time.Years;
  */
 public class EntitiesHelper {
 
+    public static boolean isNumeric(String value) {
+        try {
+            Integer.valueOf(value);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public static Date parseFechaDPI(String text) {
         try {
             DateFormatSymbols sym = DateFormatSymbols.getInstance();
