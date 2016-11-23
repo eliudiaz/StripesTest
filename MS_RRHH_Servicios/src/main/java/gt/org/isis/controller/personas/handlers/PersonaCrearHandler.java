@@ -10,6 +10,8 @@ import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractValidationsRequestHandler;
 import gt.org.isis.api.C;
 import static gt.org.isis.api.ValidationsHelper.containsAny;
+import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
@@ -161,7 +163,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return all.get(0);
     }
 
-    private Date parseFechaNacTexto(String text) {
+    private Date parseFechaDPI(String text) {
         try {
             SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy");
             return sd.parse(text);
@@ -178,7 +180,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         currentPersona.setCui(r.getCui());
         currentPersona.setCreadoPor("admin");
         if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
-            currentPersona.setFechaNacimiento(parseFechaNacTexto(r.getFechaNacimientoTexto()));
+            currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         }
         currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
@@ -258,13 +260,18 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     }
 
     private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
+        DpiDto dpiDto = r.getDpi();
+        if (!isNull(dpiDto.getFechaEmisionTexto()) && isNull(dpiDto.getFechaVencimientoTexto())) {
+            dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
+            dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
+        }
         Dpi dpi = new DpiDtoConverter().toEntity(r.getDpi());
         dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(currentPersona.getCreadoPor());
         EntitiesHelper.setDateCreateRef(dpi);
 
-        dpiRepo.save(dpi);
+        dpiRepo.saveAndFlush(dpi);
         return this;
     }
 

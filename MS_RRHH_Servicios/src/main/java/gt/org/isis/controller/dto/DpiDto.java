@@ -18,14 +18,30 @@ public class DpiDto {
 
     @NotNull
     private String noSerie;
-    @NotNull
     private Date fechaEmision;
-    @NotNull
     private Date fechaVencimiento;
+    private String fechaEmisionTexto;
+    private String fechaVencimientoTexto;
     private EstadoVariable estado;
     private Date fechaCreacion;
     private String creadoPor;
     private List<DpiDto> historial;
+
+    public String getFechaEmisionTexto() {
+        return fechaEmisionTexto;
+    }
+
+    public void setFechaEmisionTexto(String fechaEmisionTexto) {
+        this.fechaEmisionTexto = fechaEmisionTexto;
+    }
+
+    public String getFechaVencimientoTexto() {
+        return fechaVencimientoTexto;
+    }
+
+    public void setFechaVencimientoTexto(String fechaVencimientoTexto) {
+        this.fechaVencimientoTexto = fechaVencimientoTexto;
+    }
 
     public List<DpiDto> getHistorial() {
         return historial;
