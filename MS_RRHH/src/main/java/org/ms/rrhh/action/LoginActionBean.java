@@ -68,8 +68,8 @@ public class LoginActionBean extends BaseActionBean {
                 ? "http://localhost:82/lector/launch.php" : C.LECTOR_PATH);
         req.getSession().setAttribute("pushPath", C.PUSH_PATH == null
                 ? "http://localhost:41825/sd-lector-events/push" : C.PUSH_PATH);
-        req.getSession().setAttribute("pullPath", C.PUSH_PATH == null
-                ? "http://localhost:41825/sd-lector-events/pull" : C.PUSH_PATH);
+        req.getSession().setAttribute("pullPath", C.PULL_PATH == null
+                ? "http://localhost:41825/sd-lector-events/pull" : C.PULL_PATH);
 
     }
 

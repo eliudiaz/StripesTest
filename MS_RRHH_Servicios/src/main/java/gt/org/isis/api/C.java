@@ -28,4 +28,5 @@ public class C {
     public static final String CAT_UN_LUGAR_ESPEC = "LUGAR_ESPECIFICO";
     public static final String CAT_UN_COMUNIDAD = "COMUNIDAD";
     public static final String CAT_UN_COMUNIDAD2 = "NIVEL4";
+
 }

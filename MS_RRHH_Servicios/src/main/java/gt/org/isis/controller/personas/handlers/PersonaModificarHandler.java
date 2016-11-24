@@ -101,26 +101,29 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     AreasGeografRepository areasRepo;
     @Autowired
     CatalogosRepository catalogosRepo;
+    @Autowired
+    PuestoRepository puestoRepo;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
-        p = guardaPersonaDatos(p, r);
-        crearHistorico(p);
-        guardaIdiomas(p, r);
-        guardaEstudiosSalud(p, r);
-        actualizaRegistroAcademico(p, r);
-        actualizaRegistroLaboral(p, r);
+        guardarDatosGenerales(p, r);
         actualizaDpi(p, r);
+        actualizarIdiomas(p, r);
+        actualizaRegistroAcademico(p, r);
+        actualizarEstudiosSalud(p, r);
+        actualizaRegistroLaboral(p, r);
+
         actualizaLugarResidencia(p, r);
 
         return true;
     }
 
-    private Persona guardaPersonaDatos(Persona currentPersona, ReqModPersonaDto r) {
-        BeanUtils.copyProperties(r, currentPersona);
+    private PersonaModificarHandler guardarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
+        crearHistorico(currentPersona);
 
+        BeanUtils.copyProperties(r, currentPersona);
         currentPersona.setUltimoCambioPor("admin");
         currentPersona.setFechaUltimoCambio(Calendar.getInstance().getTime());
         if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
@@ -145,7 +148,95 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
             currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
                     C.CAT_GEN_NACIONALIDAD).getId());
         }
-        return repo.save(currentPersona);
+        repo.save(currentPersona);
+
+        return this;
+    }
+
+    private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
+        estudiosRepo.deleteInBatch(p.getEstudioSaludCollection());
+        for (EstudioSaludDto t : r.getEstudiosSalud()) {
+            EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
+            i.setFkPersona(p);
+            EntitiesHelper.setDateCreateRef(i);
+        }
+        return this;
+    }
+
+    private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
+        idiomasRepo.deleteInBatch(p.getIdiomaCollection());
+        for (IdiomaDto t : r.getIdiomas()) {
+            Idioma i = new IdiomaDtoConverter().toEntity(t);
+            i.setFkPersona(p);
+            EntitiesHelper.setDateCreateRef(i);
+            idiomasRepo.save(i);
+        }
+        return this;
+    }
+
+    private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
+        rAcaRepository.archivarRegitro(p.getCui());
+        RegistroAcademico ra = new RegistroAcademicoConverter()
+                .toEntity(r.getRegistroAcademico());
+        ra.setEstado(EstadoVariable.ACTUAL);
+        ra.setFkPersona(p);
+        ra.setCreadoPor(p.getUltimoCambioPor());
+        EntitiesHelper.setDateCreateRef(ra);
+        rAcaRepository.save(ra);
+
+        return this;
+    }
+
+    private PersonaModificarHandler actualizaRegistroLaboral(final Persona p, PersonaDto r) {
+        rLabRepository.archivarRegitro(p.getCui());
+        final RegistroLaboral rl = new RegistroLaboralConverter()
+                .toEntity(r.getRegistroLaboral());
+        rl.setEstado(EstadoVariable.ACTUAL);
+        rl.setFkPersona(p);
+        rl.setCreadoPor(p.getUltimoCambioPor());
+        EntitiesHelper.setDateCreateRef(rl);
+        rLabRepository.save(rl);
+
+        puestoRepo.save(Collections2
+                .transform(r.getRegistroLaboral().getPuestos(),
+                        new Function<RegistroLaboralPuestoDto, Puesto>() {
+                    @Override
+                    public Puesto apply(RegistroLaboralPuestoDto f) {
+                        Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
+                        ps.setFkRegistroLaboral(rl);
+                        EntitiesHelper.setDateCreateRef(ps);
+                        ps.setCreadoPor(p.getUltimoCambioPor());
+                        return ps;
+                    }
+                }));
+        return this;
+    }
+
+    private PersonaModificarHandler actualizaDpi(Persona p, PersonaDto r) {
+        if (!p.getDpiCollection().isEmpty()) {
+            for (Dpi d : p.getDpiCollection()) {
+                if (r.getDpi().getNoSerie().equals(d.getNoSerie())) {
+                    // TODO: save history
+                }
+            }
+        }
+        DpiDto dpiDto = r.getDpi();
+        if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
+            dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
+            dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
+        } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
+            throw ExceptionsManager.newValidationException("dpi_datos",
+                    new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
+        }
+        dpiRepository.archivarRegitro(p.getCui());
+        Dpi ra = new DpiDtoConverter()
+                .toEntity(dpiDto);
+        ra.setEstado(EstadoVariable.ACTUAL);
+        ra.setFkPersona(p);
+        ra.setCreadoPor(p.getUltimoCambioPor());
+        EntitiesHelper.setDateCreateRef(ra);
+        dpiRepository.save(ra);
+        return this;
     }
 
     private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
@@ -178,27 +269,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return all.get(0);
     }
 
-    private void guardaEstudiosSalud(Persona p, PersonaDto r) {
-        estudiosRepo.deleteInBatch(p.getEstudioSaludCollection());
-
-        for (EstudioSaludDto t : r.getEstudiosSalud()) {
-            EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
-            i.setFkPersona(p);
-            EntitiesHelper.setDateCreateRef(i);
-            estudiosRepo.save(i);
-        }
-    }
-
-    private void guardaIdiomas(Persona p, PersonaDto r) {
-        idiomasRepo.deleteInBatch(p.getIdiomaCollection());
-        for (IdiomaDto t : r.getIdiomas()) {
-            Idioma i = new IdiomaDtoConverter().toEntity(t);
-            i.setFkPersona(p);
-            EntitiesHelper.setDateCreateRef(i);
-            idiomasRepo.save(i);
-        }
-    }
-
     private void crearHistorico(Persona p) {
         HistoricoPersona hp = new PersonaHistorialConverter()
                 .toEntity(new PersonaDtoConverter().toDTO(p));
@@ -207,73 +277,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         EntitiesHelper.setDateCreateRef(hp);
         hp.setCreadoPor(p.getUltimoCambioPor());
         historicoRepo.save(hp);
-    }
-
-    private void actualizaRegistroAcademico(Persona p, PersonaDto r) {
-        rAcaRepository.archivarRegitro(p.getCui());
-        RegistroAcademico ra = new RegistroAcademicoConverter()
-                .toEntity(r.getRegistroAcademico());
-        ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setFkPersona(p);
-        ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(ra);
-        rAcaRepository.save(ra);
-    }
-
-    @Autowired
-    PuestoRepository puestoRepo;
-
-    private void actualizaRegistroLaboral(final Persona p, PersonaDto r) {
-        rLabRepository.archivarRegitro(p.getCui());
-        final RegistroLaboral rl = new RegistroLaboralConverter()
-                .toEntity(r.getRegistroLaboral());
-        rl.setEstado(EstadoVariable.ACTUAL);
-        rl.setFkPersona(p);
-        rl.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(rl);
-        rLabRepository.save(rl);
-
-        puestoRepo.save(Collections2
-                .transform(r.getRegistroLaboral().getPuestos(),
-                        new Function<RegistroLaboralPuestoDto, Puesto>() {
-                    @Override
-                    public Puesto apply(RegistroLaboralPuestoDto f) {
-                        Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
-                        ps.setFkRegistroLaboral(rl);
-                        EntitiesHelper.setDateCreateRef(ps);
-                        ps.setCreadoPor(p.getUltimoCambioPor());
-                        return ps;
-                    }
-                }));
-
-    }
-
-    private void actualizaDpi(Persona p, PersonaDto r) {
-        if (!p.getDpiCollection().isEmpty()) {
-            for (Dpi d : p.getDpiCollection()) {
-                if (r.getDpi().getNoSerie().equals(d.getNoSerie())) {
-//                    throw ExceptionsManager.newValidationException("invalid_dpi",
-//                            new String[]{"no_serie,Ya tiene un DPI con ese numero de serie!"});
-                    return;
-                }
-            }
-        }
-        DpiDto dpiDto = r.getDpi();
-        if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
-            dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
-            dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
-        } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
-            throw ExceptionsManager.newValidationException("dpi_datos",
-                    new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
-        }
-        dpiRepository.archivarRegitro(p.getCui());
-        Dpi ra = new DpiDtoConverter()
-                .toEntity(dpiDto);
-        ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setFkPersona(p);
-        ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(ra);
-        dpiRepository.save(ra);
     }
 
     private void actualizaLugarResidencia(Persona p, PersonaDto r) {
