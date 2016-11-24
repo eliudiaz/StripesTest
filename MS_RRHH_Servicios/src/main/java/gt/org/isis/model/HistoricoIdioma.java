@@ -7,7 +7,6 @@ package gt.org.isis.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ import javax.persistence.TemporalType;
 @Table(name = "historico_idioma", catalog = "rrhh", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "HistoricoIdioma.findAll", query = "SELECT h FROM HistoricoIdioma h")})
-public class HistoricoIdioma implements Serializable {
+public class HistoricoIdioma implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -125,6 +124,11 @@ public class HistoricoIdioma implements Serializable {
     @Override
     public String toString() {
         return "gt.org.isis.model.HistoricoIdioma[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

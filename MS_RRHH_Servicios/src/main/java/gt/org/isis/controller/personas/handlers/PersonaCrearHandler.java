@@ -55,6 +55,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -231,18 +232,17 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         EntitiesHelper.setDateCreateRef(rl);
         final RegistroLaboral rl2 = regLaboralRepo.save(rl);
 
-        puestoRepo.save(
-                Collections2.transform(r.getRegistroLaboral().getPuestos(),
-                        new Function<RegistroLaboralPuestoDto, Puesto>() {
-                    @Override
-                    public Puesto apply(RegistroLaboralPuestoDto f) {
-                        Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
-                        ps.setFkRegistroLaboral(rl2);
-                        EntitiesHelper.setDateCreateRef(ps);
-                        ps.setCreadoPor(rl2.getCreadoPor());
-                        return ps;
-                    }
-                }));
+        puestoRepo.save((Collection) Collections2.transform(r.getRegistroLaboral().getPuestos(),
+                new Function<RegistroLaboralPuestoDto, Puesto>() {
+            @Override
+            public Puesto apply(RegistroLaboralPuestoDto f) {
+                Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
+                ps.setFkRegistroLaboral(rl2);
+                EntitiesHelper.setDateCreateRef(ps);
+                ps.setCreadoPor(rl2.getCreadoPor());
+                return ps;
+            }
+        }));
 
         return this;
     }

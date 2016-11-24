@@ -32,6 +32,7 @@ import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
+import gt.org.isis.model.HistoricoIdioma;
 import gt.org.isis.model.HistoricoLugarResidencia;
 import gt.org.isis.model.HistoricoPersona;
 import gt.org.isis.model.Idioma;
@@ -47,6 +48,7 @@ import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
+import gt.org.isis.repository.IdiomaHistoricoRepository;
 import gt.org.isis.repository.IdiomaRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
@@ -70,6 +72,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import gt.org.isis.repository.PersonasHistoricoRepository;
+import java.util.Collection;
 
 /**
  *
@@ -122,7 +125,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
 
     private PersonaModificarHandler guardarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
         if (r.isLector()) {
-            setDatosByLector(currentPersona, r);
+            setDatosGeneralesByLector(currentPersona, r);
         }
         crearHistorico(currentPersona);
         BeanUtils.copyProperties(r, currentPersona);
@@ -135,7 +138,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return this;
     }
 
-    private void setDatosByLector(Persona currentPersona, ReqModPersonaDto r) {
+    private void setDatosGeneralesByLector(Persona currentPersona, ReqModPersonaDto r) {
         if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
             currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         } else {
@@ -192,6 +195,23 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return this;
     }
 
+    @Autowired
+    IdiomaHistoricoRepository idiomasHisRepo;
+
+    public void crearHistoricoIdiomas(List<Idioma> idiomas) {
+        idiomasHisRepo.save((Collection) Collections2.transform(idiomas,
+                new Function<Idioma, HistoricoIdioma>() {
+            @Override
+            public HistoricoIdioma apply(Idioma f) {
+                HistoricoIdioma hId = new HistoricoIdioma();
+                BeanUtils.copyProperties(f, hId);
+                hId.setCreadoPor(f.getUltimoCambioPor());
+                hId.setFechaCreacion(f.getFechaUltimoCambio());
+                return hId;
+            }
+        }));
+    }
+
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
         rAcaRepository.archivarRegitro(p.getCui());
         RegistroAcademico ra = new RegistroAcademicoConverter()
@@ -215,7 +235,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         EntitiesHelper.setDateCreateRef(rl);
         rLabRepository.save(rl);
 
-        puestoRepo.save(Collections2
+        puestoRepo.save((Collection) Collections2
                 .transform(r.getRegistroLaboral().getPuestos(),
                         new Function<RegistroLaboralPuestoDto, Puesto>() {
                     @Override
@@ -255,6 +275,10 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         EntitiesHelper.setDateCreateRef(ra);
         dpiRepository.save(ra);
         return this;
+    }
+
+    private void crearHistoricoDpi(Dpi dpi) {
+
     }
 
     private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
