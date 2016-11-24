@@ -18,8 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,9 +30,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "historico_lugar_residencia", catalog = "rrhh", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "HistoricoLugarResidencia.findAll", query = "SELECT h FROM HistoricoLugarResidencia h")})
-public class HistoricoLugarResidencia implements Serializable {
+public class HistoricoLugarResidencia implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,7 +47,6 @@ public class HistoricoLugarResidencia implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "direccion", length = 2147483647)
     private String direccion;
-
     @NotNull
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -62,6 +57,19 @@ public class HistoricoLugarResidencia implements Serializable {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne(optional = false)
     private Persona fkPersona;
+    @Column(name = "fecha_ultimo_cambio")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaUltimoCambio;
+    @Column(name = "ultimo_cambio_por", length = 50)
+    private String ultimoCambioPor;
+
+    public String getUltimoCambioPor() {
+        return ultimoCambioPor;
+    }
+
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        this.ultimoCambioPor = ultimoCambioPor;
+    }
 
     public HistoricoLugarResidencia() {
     }
@@ -154,6 +162,14 @@ public class HistoricoLugarResidencia implements Serializable {
     @Override
     public String toString() {
         return "gt.org.isis.model.HistoricoLugarResidencia[ id=" + id + " ]";
+    }
+
+    public Date getFechaUltimoCambio() {
+        return fechaUltimoCambio;
+    }
+
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
 }

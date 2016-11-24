@@ -7,7 +7,7 @@ package gt.org.isis.api;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public class ValidationsHelper {
 
@@ -16,9 +16,9 @@ public class ValidationsHelper {
     }
 
     public static boolean containsAny(String source, String param) {
-        param = param.toLowerCase().substring(0, param.length() > 5
-                ? 4 : param.length() - 1);
+        param = param.toLowerCase().substring(0, param.length() > 6
+                ? 6 : param.length() - 1);
         source = source.toLowerCase();
-        return source.contains(param) || source.startsWith(param) || source.endsWith(param);
+        return source.equalsIgnoreCase(param) || source.contains(param) || source.startsWith(param);
     }
 }

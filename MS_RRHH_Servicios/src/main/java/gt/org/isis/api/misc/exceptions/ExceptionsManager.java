@@ -28,6 +28,16 @@ public class ExceptionsManager {
         }));
     }
 
+    public static RuntimeException newValidationException(String cause, String error) {
+        return new ValidationException(Lists.transform(Arrays.asList(new String[]{error}),
+                new Function<String, ValidationError>() {
+            @Override
+            public ValidationError apply(String f) {
+                return splitError(f);
+            }
+        }));
+    }
+
     protected static ValidationError splitError(String error) {
         String[] e = error.split(",");
         return new ValidationError(e[0], e.length > 1 ? e[1] : error);

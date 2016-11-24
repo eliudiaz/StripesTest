@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author eliud
  */
 @Repository
-public interface HIstoricoPersonasRepository extends JpaRepository<HistoricoPersona, String> {
+public interface PersonasHistoricoRepository extends JpaRepository<HistoricoPersona, String> {
 
 }

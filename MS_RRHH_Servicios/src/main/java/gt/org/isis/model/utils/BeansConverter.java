@@ -7,6 +7,7 @@ package gt.org.isis.model.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import gt.org.isis.api.misc.Singleton;
 import gt.org.isis.model.CustomEntity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -22,7 +23,16 @@ import org.springframework.beans.BeanUtils;
  */
 public class BeansConverter<A, B> {
 
+    private static Class me;
     private String[] ignore;
+
+    public static <T> T get() {
+        return Singleton.<T>Instance(me.getName());
+    }
+
+    public BeansConverter() {
+        this.me = this.getClass();
+    }
 
     public void setIgnore(String[] ignore) {
         this.ignore = ignore;

@@ -5,7 +5,7 @@
  */
 package gt.org.isis.repository;
 
-import gt.org.isis.model.HistoricoPuesto;
+import gt.org.isis.model.HistoricoEstudioSalud;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  * @author eliud
  */
 @Repository
-public interface PuestoRepository extends JpaRepository<HistoricoPuesto, Integer>, JpaSpecificationExecutor {
+public interface EstudiosSaludHistoricoRepository extends JpaRepository<HistoricoEstudioSalud, Integer>, JpaSpecificationExecutor {
 
 }

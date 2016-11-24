@@ -23,7 +23,6 @@ import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.IdiomaDtoConverter;
 import gt.org.isis.converters.LugarResidenciaDtoConverter;
 import gt.org.isis.converters.PersonaDtoConverter;
-import gt.org.isis.converters.PersonaHistorialConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.converters.RegistroLaboralPuestosConverter;
@@ -33,6 +32,7 @@ import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
+import gt.org.isis.model.HistoricoLugarResidencia;
 import gt.org.isis.model.HistoricoPersona;
 import gt.org.isis.model.Idioma;
 import gt.org.isis.model.LugarResidencia;
@@ -47,7 +47,6 @@ import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
-import gt.org.isis.repository.HIstoricoPersonasRepository;
 import gt.org.isis.repository.IdiomaRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
@@ -70,6 +69,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import gt.org.isis.repository.PersonasHistoricoRepository;
 
 /**
  *
@@ -82,7 +82,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Autowired
     PersonasRepository repo;
     @Autowired
-    HIstoricoPersonasRepository historicoRepo;
+    PersonasHistoricoRepository historicoRepo;
     @Autowired
     IdiomaRepository idiomasRepo;
     @Autowired
@@ -96,7 +96,8 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Autowired
     DpiRepository dpiRepository;
     @Autowired
-    LugarResidenciaRepository lrRepository;
+    LugarResidenciaRepository registroLaboralRepo;
+
     @Autowired
     AreasGeografRepository areasRepo;
     @Autowired
@@ -108,49 +109,66 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
-        guardarDatosGenerales(p, r);
-        actualizaDpi(p, r);
-        actualizarIdiomas(p, r);
-        actualizaRegistroAcademico(p, r);
-        actualizarEstudiosSalud(p, r);
-        actualizaRegistroLaboral(p, r);
-
-        actualizaLugarResidencia(p, r);
+        guardarDatosGenerales(p, r)
+                .actualizaDpi(p, r)
+                .actualizarIdiomas(p, r)
+                .actualizaRegistroAcademico(p, r)
+                .actualizarEstudiosSalud(p, r)
+                .actualizaRegistroLaboral(p, r)
+                .actualizaLugarResidencia(p, r);
 
         return true;
     }
 
     private PersonaModificarHandler guardarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
+        if (r.isLector()) {
+            setDatosByLector(currentPersona, r);
+        }
         crearHistorico(currentPersona);
-
         BeanUtils.copyProperties(r, currentPersona);
+
         currentPersona.setUltimoCambioPor("admin");
         currentPersona.setFechaUltimoCambio(Calendar.getInstance().getTime());
-        if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
-            currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
-        }
-        currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
-                LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
 
-        if (r.getFkMunicipioCedulaNombre() != null && !r.getFkMunicipioCedulaNombre().isEmpty()) {
-            currentPersona.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkMunicipioNacimientoNombre() != null && !r.getFkMunicipioNacimientoNombre().isEmpty()) {
-            currentPersona.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkMunicipioVecindadNombre() != null && !r.getFkMunicipioVecindadNombre().isEmpty()) {
-            currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkNacionalidadNombre() != null && !r.getFkNacionalidadNombre().isEmpty()) {
-            currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
-                    C.CAT_GEN_NACIONALIDAD).getId());
-        }
         repo.save(currentPersona);
 
         return this;
+    }
+
+    private void setDatosByLector(Persona currentPersona, ReqModPersonaDto r) {
+        if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
+            currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
+        } else {
+            throw ExceptionsManager.newValidationException("fecha_nacimiento", "fecha de nacimiento es requerida!");
+        }
+
+        currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
+                LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
+
+        if (!isNull(r.getFkMunicipioNacimientoNombre()) && !r.getFkMunicipioNacimientoNombre().isEmpty()) {
+            currentPersona.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        } else {
+            throw ExceptionsManager.newValidationException("municipio_nacimiento", "municipio nacimiento es requerido!");
+        }
+
+        if (!isNull(r.getFkMunicipioCedulaNombre()) && !r.getFkMunicipioCedulaNombre().isEmpty()) {
+            currentPersona.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        }
+
+        if (!isNull(r.getFkMunicipioVecindadNombre()) && !r.getFkMunicipioVecindadNombre().isEmpty()) {
+            currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
+                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
+        } else {
+            throw ExceptionsManager.newValidationException("municipio_vecindad", "Municipio vecindad es requerido!");
+        }
+        if (!isNull(r.getFkNacionalidadNombre()) && !r.getFkNacionalidadNombre().isEmpty()) {
+            currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
+                    C.CAT_GEN_NACIONALIDAD).getId());
+        } else {
+            throw ExceptionsManager.newValidationException("municipio_nacimiento", "Nacionalidad es requerido!");
+        }
     }
 
     private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
@@ -270,24 +288,33 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     }
 
     private void crearHistorico(Persona p) {
-        HistoricoPersona hp = new PersonaHistorialConverter()
-                .toEntity(new PersonaDtoConverter().toDTO(p));
-        hp.setFkPersona(p);
-        hp.setEdad(p.getEdad());
-        EntitiesHelper.setDateCreateRef(hp);
-        hp.setCreadoPor(p.getUltimoCambioPor());
-        historicoRepo.save(hp);
+        HistoricoPersona historicoPersona = new HistoricoPersona();
+        BeanUtils.copyProperties(p, historicoPersona);
+        historicoPersona.setFkPersona(p);
+        historicoPersona.setEdad(p.getEdad());
+        EntitiesHelper.setDateCreateRef(historicoPersona);
+        historicoPersona.setCreadoPor(p.getUltimoCambioPor());
+        historicoRepo.save(historicoPersona);
     }
 
     private void actualizaLugarResidencia(Persona p, PersonaDto r) {
-        lrRepository.archivarRegitro(p.getCui());
+
+        registroLaboralRepo.archivarRegitro(p.getCui());
+
         LugarResidencia ra = new LugarResidenciaDtoConverter()
                 .toEntity(r.getLugarResidencia());
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
         ra.setCreadoPor(p.getUltimoCambioPor());
         EntitiesHelper.setDateCreateRef(ra);
-        lrRepository.save(ra);
+        registroLaboralRepo.save(ra);
+    }
+
+    private void crearHistoricoLugarResidencia(LugarResidencia original) {
+        HistoricoLugarResidencia historico = new HistoricoLugarResidencia();
+        BeanUtils.copyProperties(original, historico);
+        EntitiesHelper.setDateCreateRef(historico);
+
     }
 
 }

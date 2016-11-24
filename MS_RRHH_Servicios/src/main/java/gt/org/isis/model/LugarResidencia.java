@@ -18,8 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,8 +28,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "lugar_residencia", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "LugarResidencia.findAll", query = "SELECT l FROM LugarResidencia l")})
 public class LugarResidencia implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
