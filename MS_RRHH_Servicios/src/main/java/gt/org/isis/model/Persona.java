@@ -133,9 +133,6 @@ public class Persona implements Serializable, CustomEntity {
     private Collection<RegistroAcademico> registroAcademicoCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
-    private Collection<HistoricoPersona> historicoPersonaCollection;
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<EstudioSalud> estudioSaludCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
@@ -452,14 +449,6 @@ public class Persona implements Serializable, CustomEntity {
 
     public void setRegistroAcademicoCollection(Collection<RegistroAcademico> registroAcademicoCollection) {
         this.registroAcademicoCollection = registroAcademicoCollection;
-    }
-
-    public Collection<HistoricoPersona> getHistoricoPersonaCollection() {
-        return historicoPersonaCollection;
-    }
-
-    public void setHistoricoPersonaCollection(Collection<HistoricoPersona> historicoPersonaCollection) {
-        this.historicoPersonaCollection = historicoPersonaCollection;
     }
 
     public Collection<EstudioSalud> getEstudioSaludCollection() {

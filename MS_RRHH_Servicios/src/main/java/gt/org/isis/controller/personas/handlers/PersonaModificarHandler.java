@@ -171,6 +171,19 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         } else {
             throw ExceptionsManager.newValidationException("municipio_nacimiento", "Nacionalidad es requerido!");
         }
+        DpiDto dpiDto;
+        if ((dpiDto = r.getDpi()) != null) {
+            if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
+                dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
+                dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
+            } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
+                throw ExceptionsManager.newValidationException("dpi_datos",
+                        new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
+            }
+        } else {
+            throw ExceptionsManager.newValidationException("dpi",
+                    new String[]{"dpi,Lectura de DPI es invalida, datos del DPI son requeridos!"});
+        }
     }
 
     private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
@@ -249,36 +262,25 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return this;
     }
 
-    private PersonaModificarHandler actualizaDpi(Persona p, PersonaDto r) {
-        if (!p.getDpiCollection().isEmpty()) {
-            for (Dpi d : p.getDpiCollection()) {
-                if (r.getDpi().getNoSerie().equals(d.getNoSerie())) {
-                    // TODO: save history
-                }
+    private PersonaModificarHandler actualizaDpi(Persona p, final ReqModPersonaDto r) {
+        Collection<Dpi> ls = Collections2.filter(p.getDpiCollection(), new com.google.common.base.Predicate<Dpi>() {
+            @Override
+            public boolean apply(Dpi t) {
+                return t.getNoSerie().equals(r.getDpi().getNoSerie());
             }
+        });
+        if (ls.isEmpty()) {
+            Dpi ra = new DpiDtoConverter()
+                    .toEntity(r.getDpi());
+            ra.setEstado(EstadoVariable.ACTUAL);
+            ra.setFkPersona(p);
+            ra.setCreadoPor(p.getUltimoCambioPor());
+            EntitiesHelper.setDateCreatedInfo(ra);
+
+            dpiRepository.archivarRegitro(p.getCui());
+            dpiRepository.save(ra);
         }
-        crearHistoricoDpi(p.getDpiCollection().iterator().next()); //first
-        DpiDto dpiDto = r.getDpi();
-        if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
-            dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
-            dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
-        } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
-            throw ExceptionsManager.newValidationException("dpi_datos",
-                    new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
-        }
-        dpiRepository.archivarRegitro(p.getCui());
-        Dpi ra = new DpiDtoConverter()
-                .toEntity(dpiDto);
-        ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setFkPersona(p);
-        ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreatedInfo(ra);
-        dpiRepository.save(ra);
         return this;
-    }
-
-    private void crearHistoricoDpi(Dpi dpi) {
-
     }
 
     private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
