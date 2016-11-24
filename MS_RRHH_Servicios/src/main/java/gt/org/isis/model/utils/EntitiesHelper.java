@@ -52,11 +52,11 @@ public class EntitiesHelper {
         }
     }
 
-    public static void setDateCreateRef(CustomEntity ce) {
+    public static void setDateCreatedInfo(CustomEntity ce) {
         ce.setFechaCreacion(new DateTime().toDate());
     }
 
-    public static void setDateUpdateRef(CustomEntity ce) {
+    public static void setDateUpdatedInfo(CustomEntity ce) {
         ce.setFechaUltimoCambio(new DateTime().toDate());
     }
 

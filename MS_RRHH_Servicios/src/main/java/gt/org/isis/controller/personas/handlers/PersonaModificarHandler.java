@@ -21,7 +21,6 @@ import gt.org.isis.controller.dto.ReqModPersonaDto;
 import gt.org.isis.converters.DpiDtoConverter;
 import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.IdiomaDtoConverter;
-import gt.org.isis.converters.LugarResidenciaDtoConverter;
 import gt.org.isis.converters.PersonaDtoConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
@@ -115,10 +114,10 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         guardarDatosGenerales(p, r)
                 .actualizaDpi(p, r)
                 .actualizarIdiomas(p, r)
+                .actualizaLugarResidencia(p, r)
                 .actualizaRegistroAcademico(p, r)
                 .actualizarEstudiosSalud(p, r)
-                .actualizaRegistroLaboral(p, r)
-                .actualizaLugarResidencia(p, r);
+                .actualizaRegistroLaboral(p, r);
 
         return true;
     }
@@ -127,7 +126,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         if (r.isLector()) {
             setDatosGeneralesByLector(currentPersona, r);
         }
-        crearHistorico(currentPersona);
+        crearHistoricoPersona(currentPersona);
         BeanUtils.copyProperties(r, currentPersona);
 
         currentPersona.setUltimoCambioPor("admin");
@@ -179,17 +178,17 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         for (EstudioSaludDto t : r.getEstudiosSalud()) {
             EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
             i.setFkPersona(p);
-            EntitiesHelper.setDateCreateRef(i);
+            EntitiesHelper.setDateCreatedInfo(i);
         }
         return this;
     }
 
     private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
-        idiomasRepo.deleteInBatch(p.getIdiomaCollection());
+        crearHistoricoIdiomas((List) p.getIdiomaCollection());
         for (IdiomaDto t : r.getIdiomas()) {
             Idioma i = new IdiomaDtoConverter().toEntity(t);
             i.setFkPersona(p);
-            EntitiesHelper.setDateCreateRef(i);
+            EntitiesHelper.setDateCreatedInfo(i);
             idiomasRepo.save(i);
         }
         return this;
@@ -219,7 +218,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
         ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(ra);
+        EntitiesHelper.setDateCreatedInfo(ra);
         rAcaRepository.save(ra);
 
         return this;
@@ -232,7 +231,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(p);
         rl.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(rl);
+        EntitiesHelper.setDateCreatedInfo(rl);
         rLabRepository.save(rl);
 
         puestoRepo.save((Collection) Collections2
@@ -242,7 +241,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                     public Puesto apply(RegistroLaboralPuestoDto f) {
                         Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
                         ps.setFkRegistroLaboral(rl);
-                        EntitiesHelper.setDateCreateRef(ps);
+                        EntitiesHelper.setDateCreatedInfo(ps);
                         ps.setCreadoPor(p.getUltimoCambioPor());
                         return ps;
                     }
@@ -258,6 +257,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
                 }
             }
         }
+        crearHistoricoDpi(p.getDpiCollection().iterator().next()); //first
         DpiDto dpiDto = r.getDpi();
         if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
             dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
@@ -272,7 +272,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         ra.setEstado(EstadoVariable.ACTUAL);
         ra.setFkPersona(p);
         ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(ra);
+        EntitiesHelper.setDateCreatedInfo(ra);
         dpiRepository.save(ra);
         return this;
     }
@@ -311,33 +311,28 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return all.get(0);
     }
 
-    private void crearHistorico(Persona p) {
+    private void crearHistoricoPersona(Persona p) {
         HistoricoPersona historicoPersona = new HistoricoPersona();
         BeanUtils.copyProperties(p, historicoPersona);
         historicoPersona.setFkPersona(p);
-        historicoPersona.setEdad(p.getEdad());
-        EntitiesHelper.setDateCreateRef(historicoPersona);
+        EntitiesHelper.setDateCreatedInfo(historicoPersona);
         historicoPersona.setCreadoPor(p.getUltimoCambioPor());
         historicoRepo.save(historicoPersona);
     }
 
-    private void actualizaLugarResidencia(Persona p, PersonaDto r) {
-
-        registroLaboralRepo.archivarRegitro(p.getCui());
-
-        LugarResidencia ra = new LugarResidenciaDtoConverter()
-                .toEntity(r.getLugarResidencia());
-        ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setFkPersona(p);
-        ra.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreateRef(ra);
+    private PersonaModificarHandler actualizaLugarResidencia(Persona p, PersonaDto r) {
+        LugarResidencia ra;
+        crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
+        BeanUtils.copyProperties(r.getLugarResidencia(), ra);
+        EntitiesHelper.setDateUpdatedInfo(ra);
         registroLaboralRepo.save(ra);
+        return this;
     }
 
     private void crearHistoricoLugarResidencia(LugarResidencia original) {
         HistoricoLugarResidencia historico = new HistoricoLugarResidencia();
         BeanUtils.copyProperties(original, historico);
-        EntitiesHelper.setDateCreateRef(historico);
+        EntitiesHelper.setDateCreatedInfo(historico);
 
     }
 

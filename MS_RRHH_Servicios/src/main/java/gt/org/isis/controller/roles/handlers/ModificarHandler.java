@@ -47,11 +47,11 @@ public class ModificarHandler extends AbstractRequestHandler<RoleDto, RoleDto> {
                 AccesoRole acceso = new AccesoRole();
                 acceso.setFkAcceso(accesos.findOne(f.getId()));
                 acceso.setFkRole(r2);
-                EntitiesHelper.setDateCreateRef(acceso);
+                EntitiesHelper.setDateCreatedInfo(acceso);
                 return acceso;
             }
         }));
-        EntitiesHelper.setDateUpdateRef(r2);
+        EntitiesHelper.setDateUpdatedInfo(r2);
 
         return request;
     }

@@ -105,7 +105,7 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             dbUser.setClave(newPass);
         }
 
-        EntitiesHelper.setDateUpdateRef(dbUser);
+        EntitiesHelper.setDateUpdatedInfo(dbUser);
         dbUser.setNombres(request.getNombres());
         dbUser.setApellidos(request.getApellidos());
         dbUser.setEstado(request.getEstado());

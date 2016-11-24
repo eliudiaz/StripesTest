@@ -28,7 +28,7 @@ public class CrearAcHandler extends AbstractRequestHandler<AccesoDto, AccesoDto>
     @Override
     public AccesoDto execute(final AccesoDto request) {
         final Acceso r = new AccesoDtoConverter().toEntity(request);
-        EntitiesHelper.setDateCreateRef(r);
+        EntitiesHelper.setDateCreatedInfo(r);
         r.setEstado(Estado.ACTIVO);
         accesos.save(r);
         return new AccesoDtoConverter().toDTO(r);

@@ -129,7 +129,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                         Idioma i = new IdiomaDtoConverter().toEntity(f);
                         i.setFkPersona(currentPersona);
                         i.setCreadoPor(currentPersona.getCreadoPor());
-                        EntitiesHelper.setDateCreateRef(i);
+                        EntitiesHelper.setDateCreatedInfo(i);
                         return i;
                     }
                 }));
@@ -190,7 +190,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         }
         currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
                 LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
-        EntitiesHelper.setDateCreateRef(currentPersona);
+        EntitiesHelper.setDateCreatedInfo(currentPersona);
 
         if (r.getFkMunicipioCedulaNombre() != null && !r.getFkMunicipioCedulaNombre().isEmpty()) {
             currentPersona.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
@@ -217,7 +217,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         ra.setFkPersona(currentPersona);
         ra.setCreadoPor(currentPersona.getCreadoPor());
         ra.setEstado(EstadoVariable.ACTUAL);
-        EntitiesHelper.setDateCreateRef(ra);
+        EntitiesHelper.setDateCreatedInfo(ra);
         regAcadRepo.save(ra);
 
         return this;
@@ -229,7 +229,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(currentPersona);
         rl.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreateRef(rl);
+        EntitiesHelper.setDateCreatedInfo(rl);
         final RegistroLaboral rl2 = regLaboralRepo.save(rl);
 
         puestoRepo.save((Collection) Collections2.transform(r.getRegistroLaboral().getPuestos(),
@@ -238,7 +238,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
             public Puesto apply(RegistroLaboralPuestoDto f) {
                 Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
                 ps.setFkRegistroLaboral(rl2);
-                EntitiesHelper.setDateCreateRef(ps);
+                EntitiesHelper.setDateCreatedInfo(ps);
                 ps.setCreadoPor(rl2.getCreadoPor());
                 return ps;
             }
@@ -283,7 +283,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
         dpi.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreateRef(dpi);
+        EntitiesHelper.setDateCreatedInfo(dpi);
 
         currentPersona.setDpiCollection(new ArrayList<Dpi>());
         currentPersona.getDpiCollection().add(dpi);
@@ -296,7 +296,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         lr.setFkPersona(currentPersona);
         lr.setEstado(EstadoVariable.ACTUAL);
         lr.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreateRef(lr);
+        EntitiesHelper.setDateCreatedInfo(lr);
         lugaresRepo.save(lr);
         return this;
     }

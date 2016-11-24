@@ -75,7 +75,7 @@ public class BeansConverter<A, B> {
         A iA = BeanUtils.instantiate((Class<A>) resolve(0));
         BeanUtils.copyProperties(iB, iA);
         if (iA instanceof CustomEntity) {
-            EntitiesHelper.setDateCreateRef((CustomEntity) iA);
+            EntitiesHelper.setDateCreatedInfo((CustomEntity) iA);
         }
         return iA;
     }

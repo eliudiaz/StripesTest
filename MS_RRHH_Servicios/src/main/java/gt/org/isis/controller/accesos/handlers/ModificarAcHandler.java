@@ -28,7 +28,7 @@ public class ModificarAcHandler extends AbstractRequestHandler<AccesoDto, Acceso
     public Acceso execute(final AccesoDto request) {
         Acceso origin = accesos.findOne(request.getId());
         BeanUtils.copyProperties(request, origin);
-        EntitiesHelper.setDateUpdateRef(origin);
+        EntitiesHelper.setDateUpdatedInfo(origin);
         accesos.save(origin);
         return origin;
     }

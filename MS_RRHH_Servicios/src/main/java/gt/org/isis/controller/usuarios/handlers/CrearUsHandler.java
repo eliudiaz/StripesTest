@@ -81,7 +81,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
         r.setId(request.getUsuario());
-        EntitiesHelper.setDateCreateRef(r);
+        EntitiesHelper.setDateCreatedInfo(r);
         r.setCreadoPor("test");
 
         if (request.getRoles() != null && !request.getRoles().isEmpty()) {
