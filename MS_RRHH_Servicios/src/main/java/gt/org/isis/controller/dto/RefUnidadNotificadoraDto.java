@@ -5,12 +5,15 @@
  */
 package gt.org.isis.controller.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  *
  * @author eliud
  */
 public class RefUnidadNotificadoraDto {
 
+    @NotNull
     private Integer fkUnidadEjecutora;
     private String fkUnidadEjecutoraNombre;
     private Integer fkComunidad;

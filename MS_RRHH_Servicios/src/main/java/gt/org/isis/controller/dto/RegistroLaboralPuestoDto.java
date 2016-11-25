@@ -6,6 +6,7 @@
 package gt.org.isis.controller.dto;
 
 import gt.org.isis.model.enums.TipoPuesto;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -13,15 +14,20 @@ import gt.org.isis.model.enums.TipoPuesto;
  */
 public class RegistroLaboralPuestoDto {
 
+    @NotNull
     private Integer fkPuestoFuncional;
     private String nombrePuestoFuncional;
+    @NotNull
     private TipoPuesto tipo;
+    @NotNull
     private Integer fkPuestoNominal;
     private String nombrePuestoNominal;
     private Integer fkPuestoNominalRenglon;
     private String nombrePuestoNominalRenglon;
-    private Integer fkComunidad;
+    @NotNull
+    private Integer fkComunidad; //unidad notificadora hijo
     private RefUnidadNotificadoraDto refUnidadNotificadora;
+    @NotNull
     private Integer fkClasificacionServicio;
     private RefClasificacionServiciDto refClasificacionServicio;
 
