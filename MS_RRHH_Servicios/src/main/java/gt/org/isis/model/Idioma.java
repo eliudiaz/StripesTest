@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,8 +25,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(schema = "public", name = "idioma")
-@NamedQueries({
-    @NamedQuery(name = "Idioma.findAll", query = "SELECT i FROM Idioma i")})
 public class Idioma implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
@@ -126,6 +122,16 @@ public class Idioma implements Serializable, CustomEntity {
     @Override
     public String toString() {
         return "org.ms.rrhh.domain.model.Idioma[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
