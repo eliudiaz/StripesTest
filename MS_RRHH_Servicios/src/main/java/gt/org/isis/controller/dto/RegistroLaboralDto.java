@@ -6,6 +6,7 @@
 package gt.org.isis.controller.dto;
 
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,13 +19,14 @@ public class RegistroLaboralDto {
     @NotNull
     private Integer anioIngreso;
     @NotNull
-    private Boolean comisionado;
+    private boolean comisionado;
     @NotNull
     private Integer fkExpectativa;
     private Integer fkComunidadComisionado;
     private String nombreComunidadComisionado;
     private String observaciones;
     @NotNull
+    @Valid
     private List<RegistroLaboralPuestoDto> puestos;
     private List<RegistroLaboralDto> historial;
 
@@ -84,11 +86,11 @@ public class RegistroLaboralDto {
         this.anioIngreso = anioIngreso;
     }
 
-    public Boolean getComisionado() {
+    public boolean isComisionado() {
         return comisionado;
     }
 
-    public void setComisionado(Boolean comisionado) {
+    public void setComisionado(boolean comisionado) {
         this.comisionado = comisionado;
     }
 
