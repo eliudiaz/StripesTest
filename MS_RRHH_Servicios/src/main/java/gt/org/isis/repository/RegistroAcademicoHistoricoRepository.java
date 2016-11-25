@@ -5,7 +5,7 @@
  */
 package gt.org.isis.repository;
 
-import gt.org.isis.model.RegistroAcademico;
+import gt.org.isis.model.HistoricoRegistroAcademico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RegistroAcademicoHistoricoRepository
-        extends JpaRepository<RegistroAcademico, Integer>, JpaSpecificationExecutor {
+        extends JpaRepository<HistoricoRegistroAcademico, Integer>, JpaSpecificationExecutor {
 
     @Modifying
     @Query("update RegistroAcademico r set r.estado='HISTORICO' where r.fkPersona.cui=?1")

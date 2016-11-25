@@ -5,7 +5,7 @@
  */
 package gt.org.isis.repository;
 
-import gt.org.isis.model.RegistroLaboral;
+import gt.org.isis.model.HistoricoRegistroLaboral;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -16,6 +16,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RegistroLaboralHistoricoRepository
-        extends JpaRepository<RegistroLaboral, Integer>, JpaSpecificationExecutor {
+        extends JpaRepository<HistoricoRegistroLaboral, Integer>, JpaSpecificationExecutor {
 
 }

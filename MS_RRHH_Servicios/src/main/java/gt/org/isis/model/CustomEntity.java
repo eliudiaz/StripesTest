@@ -15,5 +15,9 @@ public interface CustomEntity {
 
     public void setFechaUltimoCambio(Date fechaUltimoCambio);
 
+    public void setUltimoCambioPor(String ultimoCambioPor);
+
     public void setFechaCreacion(Date fechaCreacion);
+
+    public void setCreadoPor(String creadoPor);
 }

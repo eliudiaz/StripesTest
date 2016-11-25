@@ -6,6 +6,9 @@
 package gt.org.isis.api;
 
 import com.google.gson.Gson;
+import gt.org.isis.controller.dto.SecureRequestDto;
+import gt.org.isis.model.CustomEntity;
+import gt.org.isis.model.utils.EntitiesHelper;
 
 /**
  *
@@ -13,7 +16,7 @@ import com.google.gson.Gson;
  * @param <T>
  * @param <Q>
  */
-public abstract class AbstractRequestHandler<T, Q> implements IRequestHandler<T, Q> {
+public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto implements IRequestHandler<T, Q> {
 
     @Override
     public void after(T request, Q response) {
@@ -31,7 +34,13 @@ public abstract class AbstractRequestHandler<T, Q> implements IRequestHandler<T,
     @Override
     public void before(T request) {
         System.out.println(">> in >> " + new Gson().toJson(request));
-
     }
 
+    public void setUpdateInfo(CustomEntity entity) {
+        try {
+            EntitiesHelper.setDateUpdatedInfo(entity);
+            entity.setUltimoCambioPor(getLoggedUser().getUserName());
+        } catch (UnsupportedOperationException ex) {
+        }
+    }
 }

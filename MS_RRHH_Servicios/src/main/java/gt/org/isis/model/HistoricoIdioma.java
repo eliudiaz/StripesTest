@@ -14,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,8 +24,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "historico_idioma", catalog = "rrhh", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "HistoricoIdioma.findAll", query = "SELECT h FROM HistoricoIdioma h")})
 public class HistoricoIdioma implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
@@ -35,10 +31,8 @@ public class HistoricoIdioma implements Serializable, CustomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     @Column(name = "fk_idioma", nullable = false)
     private Integer fkIdioma;
-
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -128,6 +122,11 @@ public class HistoricoIdioma implements Serializable, CustomEntity {
 
     @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

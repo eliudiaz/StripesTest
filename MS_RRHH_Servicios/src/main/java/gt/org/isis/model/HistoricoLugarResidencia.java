@@ -57,19 +57,6 @@ public class HistoricoLugarResidencia implements Serializable, CustomEntity {
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne(optional = false)
     private Persona fkPersona;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por", length = 50)
-    private String ultimoCambioPor;
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
-    }
 
     public HistoricoLugarResidencia() {
     }
@@ -164,12 +151,14 @@ public class HistoricoLugarResidencia implements Serializable, CustomEntity {
         return "gt.org.isis.model.HistoricoLugarResidencia[ id=" + id + " ]";
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

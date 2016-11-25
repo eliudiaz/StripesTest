@@ -16,8 +16,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,8 +26,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(schema = "public", name = "dpi")
-@NamedQueries({
-    @NamedQuery(name = "Dpi.findAll", query = "SELECT d FROM Dpi d")})
 public class Dpi implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
@@ -155,6 +151,11 @@ public class Dpi implements Serializable, CustomEntity {
 
     @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

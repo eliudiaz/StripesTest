@@ -18,8 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,9 +30,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "historico_registro_academico", catalog = "rrhh", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "HistoricoRegistroAcademico.findAll", query = "SELECT h FROM HistoricoRegistroAcademico h")})
-public class HistoricoRegistroAcademico implements Serializable {
+public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -169,6 +165,16 @@ public class HistoricoRegistroAcademico implements Serializable {
     @Override
     public String toString() {
         return "gt.org.isis.model.HistoricoRegistroAcademico[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

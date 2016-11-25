@@ -14,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,9 +24,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "historico_estudio_salud", catalog = "rrhh", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "HistoricoEstudioSalud.findAll", query = "SELECT h FROM HistoricoEstudioSalud h")})
-public class HistoricoEstudioSalud implements Serializable {
+public class HistoricoEstudioSalud implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,11 +38,6 @@ public class HistoricoEstudioSalud implements Serializable {
     private Date fechaCreacion;
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por", length = 50)
-    private String ultimoCambioPor;
     @Column(name = "fk_estudio_salud")
     private Integer fkEstudioSalud;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
@@ -97,22 +88,6 @@ public class HistoricoEstudioSalud implements Serializable {
         this.creadoPor = creadoPor;
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
-    }
-
     public Integer getFkEstudioSalud() {
         return fkEstudioSalud;
     }
@@ -152,6 +127,16 @@ public class HistoricoEstudioSalud implements Serializable {
     @Override
     public String toString() {
         return "gt.org.isis.model.HistoricoEstudioSalud[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -22,8 +22,6 @@ import gt.org.isis.converters.DpiDtoConverter;
 import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.IdiomaDtoConverter;
 import gt.org.isis.converters.PersonaDtoConverter;
-import gt.org.isis.converters.RegistroAcademicoConverter;
-import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.converters.RegistroLaboralPuestosConverter;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
@@ -34,6 +32,8 @@ import gt.org.isis.model.EstudioSalud;
 import gt.org.isis.model.HistoricoIdioma;
 import gt.org.isis.model.HistoricoLugarResidencia;
 import gt.org.isis.model.HistoricoPersona;
+import gt.org.isis.model.HistoricoRegistroAcademico;
+import gt.org.isis.model.HistoricoRegistroLaboral;
 import gt.org.isis.model.Idioma;
 import gt.org.isis.model.LugarResidencia;
 import gt.org.isis.model.Persona;
@@ -71,6 +71,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import gt.org.isis.repository.PersonasHistoricoRepository;
+import gt.org.isis.repository.RegistroAcademicoHistoricoRepository;
+import gt.org.isis.repository.RegistroLaboralHistoricoRepository;
 import java.util.Collection;
 
 /**
@@ -111,7 +113,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     @Override
     public Boolean execute(ReqModPersonaDto r) {
         Persona p = repo.findOne(r.getCui());
-        guardarDatosGenerales(p, r)
+        actualizarDatosGenerales(p, r)
                 .actualizaDpi(p, r)
                 .actualizarIdiomas(p, r)
                 .actualizaLugarResidencia(p, r)
@@ -122,15 +124,14 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return true;
     }
 
-    private PersonaModificarHandler guardarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
+    private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
         if (r.isLector()) {
             setDatosGeneralesByLector(currentPersona, r);
         }
         crearHistoricoPersona(currentPersona);
         BeanUtils.copyProperties(r, currentPersona);
 
-        currentPersona.setUltimoCambioPor("admin");
-        currentPersona.setFechaUltimoCambio(Calendar.getInstance().getTime());
+        EntitiesHelper.setDateUpdatedInfo(currentPersona);
 
         repo.save(currentPersona);
 
@@ -225,41 +226,59 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     }
 
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
-        rAcaRepository.archivarRegitro(p.getCui());
-        RegistroAcademico ra = new RegistroAcademicoConverter()
-                .toEntity(r.getRegistroAcademico());
-        ra.setEstado(EstadoVariable.ACTUAL);
-        ra.setFkPersona(p);
-        ra.setCreadoPor(p.getUltimoCambioPor());
+        RegistroAcademico ra;
+        crearHistoricoRegistroAcademico(ra = p.getRegistroAcademicoCollection().iterator().next());
+        BeanUtils.copyProperties(r.getRegistroAcademico(), ra);
         EntitiesHelper.setDateCreatedInfo(ra);
         rAcaRepository.save(ra);
 
         return this;
     }
 
-    private PersonaModificarHandler actualizaRegistroLaboral(final Persona p, PersonaDto r) {
-        rLabRepository.archivarRegitro(p.getCui());
-        final RegistroLaboral rl = new RegistroLaboralConverter()
-                .toEntity(r.getRegistroLaboral());
-        rl.setEstado(EstadoVariable.ACTUAL);
-        rl.setFkPersona(p);
-        rl.setCreadoPor(p.getUltimoCambioPor());
-        EntitiesHelper.setDateCreatedInfo(rl);
-        rLabRepository.save(rl);
+    @Autowired
+    RegistroAcademicoHistoricoRepository raHisRepo;
 
+    private void crearHistoricoRegistroAcademico(RegistroAcademico ra) {
+        HistoricoRegistroAcademico hRa = new HistoricoRegistroAcademico();
+        BeanUtils.copyProperties(ra, hRa);
+        hRa.setCreadoPor("admin");  // TODO: replace by logged user
+        EntitiesHelper.setDateCreatedInfo(hRa);
+        raHisRepo.save(hRa);
+    }
+
+    private PersonaModificarHandler actualizaRegistroLaboral(final Persona persona,
+            ReqModPersonaDto requestModPersona) {
+        final RegistroLaboral registroLaboral;
+        crearHistoricoRegistroLaboral(registroLaboral = persona.getRegistroLaboralCollection().iterator().next());
+        BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral);
+        EntitiesHelper.setDateUpdatedInfo(registroLaboral);
+        registroLaboral.getPuestoCollection().clear();
+        rLabRepository.save(registroLaboral);
+
+        puestoRepo.delete((List) registroLaboral.getPuestoCollection());
         puestoRepo.save((Collection) Collections2
-                .transform(r.getRegistroLaboral().getPuestos(),
+                .transform(requestModPersona.getRegistroLaboral().getPuestos(),
                         new Function<RegistroLaboralPuestoDto, Puesto>() {
                     @Override
                     public Puesto apply(RegistroLaboralPuestoDto f) {
                         Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
-                        ps.setFkRegistroLaboral(rl);
+                        ps.setFkRegistroLaboral(registroLaboral);
                         EntitiesHelper.setDateCreatedInfo(ps);
-                        ps.setCreadoPor(p.getUltimoCambioPor());
+                        ps.setCreadoPor(persona.getUltimoCambioPor());
                         return ps;
                     }
                 }));
         return this;
+    }
+
+    @Autowired
+    RegistroLaboralHistoricoRepository registroLabHistoricoRepo;
+
+    private void crearHistoricoRegistroLaboral(RegistroLaboral actual) {
+        HistoricoRegistroLaboral historico = new HistoricoRegistroLaboral();
+        BeanUtils.copyProperties(actual, historico);
+        EntitiesHelper.setDateCreatedInfo(historico);
+        registroLabHistoricoRepo.save(historico);
     }
 
     private PersonaModificarHandler actualizaDpi(Persona p, final ReqModPersonaDto r) {

@@ -5,15 +5,12 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -48,10 +44,6 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
     private Boolean comisionado;
     @Column(name = "fk_comunidad_comisionado")
     private Integer fkComunidadComisionado;
-    @Size(max = 50)
-    @Column(name = "estado")
-    @Enumerated(EnumType.STRING)
-    private Estado estado;
     @Column
     private String observaciones;
     @Basic(optional = false)
@@ -59,13 +51,11 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Size(max = 50)
     @Column(name = "creado_por")
     private String creadoPor;
     @Column(name = "fecha_ultimo_cambio")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaUltimoCambio;
-    @Size(max = 50)
     @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
@@ -132,14 +122,6 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
 
     public void setFkComunidadComisionado(Integer fkComunidadComisionado) {
         this.fkComunidadComisionado = fkComunidadComisionado;
-    }
-
-    public Estado getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Estado estado) {
-        this.estado = estado;
     }
 
     public Date getFechaCreacion() {
