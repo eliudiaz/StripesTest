@@ -43,4 +43,12 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
         } catch (UnsupportedOperationException ex) {
         }
     }
+
+    public void setCreateInfo(CustomEntity entity) {
+        try {
+            EntitiesHelper.setDateCreatedInfo(entity);
+            entity.setCreadoPor(getLoggedUser().getUserName());
+        } catch (UnsupportedOperationException ex) {
+        }
+    }
 }

@@ -124,14 +124,13 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return true;
     }
 
-    private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, ReqModPersonaDto r) {
-        if (r.isLector()) {
-            setDatosGeneralesByLector(currentPersona, r);
+    private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, ReqModPersonaDto updateRequest) {
+        if (updateRequest.isLector()) {
+            setDatosGeneralesByLector(currentPersona, updateRequest);
         }
         crearHistoricoPersona(currentPersona);
-        BeanUtils.copyProperties(r, currentPersona);
-
-        EntitiesHelper.setDateUpdatedInfo(currentPersona);
+        BeanUtils.copyProperties(updateRequest, currentPersona);
+        setUpdateInfo(currentPersona);
 
         repo.save(currentPersona);
 
@@ -332,12 +331,12 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return all.get(0);
     }
 
-    private void crearHistoricoPersona(Persona p) {
+    private void crearHistoricoPersona(Persona persona) {
         HistoricoPersona historicoPersona = new HistoricoPersona();
-        BeanUtils.copyProperties(p, historicoPersona);
-        historicoPersona.setFkPersona(p);
-        EntitiesHelper.setDateCreatedInfo(historicoPersona);
-        historicoPersona.setCreadoPor(p.getUltimoCambioPor());
+        BeanUtils.copyProperties(persona, historicoPersona);
+        historicoPersona.setFkPersona(persona);
+        setUpdateInfo(historicoPersona);
+
         historicoRepo.save(historicoPersona);
     }
 
@@ -345,7 +344,8 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         LugarResidencia ra;
         crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
         BeanUtils.copyProperties(r.getLugarResidencia(), ra);
-        EntitiesHelper.setDateUpdatedInfo(ra);
+        setUpdateInfo(ra);
+
         registroLaboralRepo.save(ra);
         return this;
     }
