@@ -46,11 +46,6 @@ public class Idioma implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por", length = 50)
-    private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
     private Persona fkPersona;
@@ -62,11 +57,10 @@ public class Idioma implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public Idioma(Integer id, int fkIdioma, Date fechaCreacion, Date fechaUltimoCambio) {
+    public Idioma(Integer id, int fkIdioma, Date fechaCreacion) {
         this.id = id;
         this.fkIdioma = fkIdioma;
         this.fechaCreacion = fechaCreacion;
-        this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
     public Integer getId() {
@@ -99,22 +93,6 @@ public class Idioma implements Serializable, CustomEntity {
 
     public void setCreadoPor(String creadoPor) {
         this.creadoPor = creadoPor;
-    }
-
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
     }
 
     public Persona getFkPersona() {

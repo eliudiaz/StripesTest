@@ -229,6 +229,7 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
 
     private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
         crearHistoricoIdiomas((List) p.getIdiomaCollection());
+        idiomasRepo.delete((List) p.getIdiomaCollection()); // delete
         for (IdiomaDto t : r.getIdiomas()) {
             Idioma i = new IdiomaDtoConverter().toEntity(t);
             i.setFkPersona(p);
