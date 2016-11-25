@@ -12,7 +12,7 @@ import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.PersonaDto;
-import gt.org.isis.controller.dto.ReqModPersonaDto;
+import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Catalogos;
@@ -75,7 +75,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
         return all.get(0);
     }
 
-    public void setDatosGeneralesByLector(Persona currentPersona, ReqModPersonaDto r) {
+    public void setDatosGeneralesByLector(Persona currentPersona, ReqNuevaPersonaDto r) {
         if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
             currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         } else {
@@ -114,6 +114,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
             if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
                 dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
                 dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
+                r.setDpi(dpiDto);
             } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
                 throw ExceptionsManager.newValidationException("dpi_datos",
                         new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});

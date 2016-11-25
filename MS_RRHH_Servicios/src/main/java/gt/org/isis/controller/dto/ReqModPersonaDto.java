@@ -11,14 +11,4 @@ package gt.org.isis.controller.dto;
  */
 public class ReqModPersonaDto extends ReqNuevaPersonaDto {
 
-    private boolean lector;
-
-    public boolean isLector() {
-        return lector;
-    }
-
-    public void setLector(boolean lector) {
-        this.lector = lector;
-    }
-
 }

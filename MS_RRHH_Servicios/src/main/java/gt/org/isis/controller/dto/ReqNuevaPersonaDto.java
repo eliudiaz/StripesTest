@@ -16,6 +16,15 @@ public class ReqNuevaPersonaDto extends PersonaDto {
     private String fkMunicipioVecindadNombre;
     private String fechaNacimientoTexto;
     private String fkNacionalidadNombre;
+    private boolean lector;
+
+    public boolean isLector() {
+        return lector;
+    }
+
+    public void setLector(boolean lector) {
+        this.lector = lector;
+    }
 
     public String getFkNacionalidadNombre() {
         return fkNacionalidadNombre;

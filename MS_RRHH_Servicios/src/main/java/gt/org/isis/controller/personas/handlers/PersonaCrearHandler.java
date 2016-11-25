@@ -7,11 +7,6 @@ package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractValidationsRequestHandler;
-import gt.org.isis.api.C;
-import static gt.org.isis.api.ValidationsHelper.containsAny;
-import static gt.org.isis.api.ValidationsHelper.isNull;
-import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
@@ -25,10 +20,6 @@ import gt.org.isis.converters.PersonaDtoConverter;
 import gt.org.isis.converters.RegistroAcademicoConverter;
 import gt.org.isis.converters.RegistroLaboralConverter;
 import gt.org.isis.converters.RegistroLaboralPuestosConverter;
-import gt.org.isis.model.AreaGeografica;
-import gt.org.isis.model.AreaGeografica_;
-import gt.org.isis.model.Catalogos;
-import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
 import gt.org.isis.model.Idioma;
@@ -50,25 +41,11 @@ import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.RegistroAcademicoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
-import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,7 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNuevaPersonaDto, Boolean> {
+public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto, Boolean> {
 
     @Autowired
     PersonasRepository repo;
@@ -103,24 +80,34 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
     DpiRepository dpiRepo;
     @Autowired
     LugarResidenciaRepository lugaresRepo;
-    private Persona currentPersona;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public Boolean execute(ReqNuevaPersonaDto r) {
-        this
-                .guardaPersonaDatos(r)
-                .guardaDpi(r)
-                .guardaIdiomas(r)
-                .guardaRegAcademico(r)
-                .guardaRegLaboral(r)
-                .guardaEstudiosSalud(r)
-                .guardaLugarResidencia(r);
+        Persona p = converter.toEntity(r);
+        guardarDatosGeneralesPersona(r, p)
+                .guardarDpi(r, p)
+                .guardarIdiomas(r, p)
+                .guardarRegAcademico(r, p)
+                .guardarRegLaboral(r, p)
+                .guardarEstudiosSalud(r, p)
+                .guardarLugarResidencia(r, p);
 
         return true;
     }
 
-    private PersonaCrearHandler guardaIdiomas(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardarDatosGeneralesPersona(ReqNuevaPersonaDto r, Persona currentPersona) {
+        currentPersona.setEstado(Estado.ACTIVO);
+        setCreateInfo(currentPersona);
+
+        if (r.isLector()) {
+            setDatosGeneralesByLector(currentPersona, r);
+        }
+        currentPersona = repo.save(currentPersona);
+        return this;
+    }
+
+    private PersonaCrearHandler guardarIdiomas(ReqNuevaPersonaDto r, final Persona currentPersona) {
         idiomasRepo.save(
                 Collections2.transform(r.getIdiomas(),
                         new Function<IdiomaDto, Idioma>() {
@@ -128,8 +115,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                     public Idioma apply(IdiomaDto f) {
                         Idioma i = new IdiomaDtoConverter().toEntity(f);
                         i.setFkPersona(currentPersona);
-                        i.setCreadoPor(currentPersona.getCreadoPor());
-                        EntitiesHelper.setDateCreatedInfo(i);
+                        setCreateInfo(i);
                         return i;
                     }
                 }));
@@ -137,99 +123,22 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    private Catalogos getCatalogoByNombreAndTipo(final String nombre, final String tipo) {
-        List<Catalogos> all = catalogosRepo.findAll(new Specification<Catalogos>() {
-            @Override
-            public Predicate toPredicate(Root<Catalogos> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                return cb.equal(root.get(Catalogos_.tipo), tipo);
-            }
-        });
-        for (Catalogos ag : all) {
-            if (containsAny(ag.getValor(), nombre)) {
-                return ag;
-            }
-        }
-        return all.get(0);
-    }
-
-    private AreaGeografica getAreaByNombreAndTipo(final String nombre, final String tipo) {
-        List<AreaGeografica> all = areasRepo.findAll(new Specification<AreaGeografica>() {
-            @Override
-            public Predicate toPredicate(Root<AreaGeografica> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                return cb.equal(root.get(AreaGeografica_.tipo), tipo);
-            }
-        });
-        for (AreaGeografica ag : all) {
-            if (containsAny(ag.getValor(), nombre)) {
-                return ag;
-            }
-        }
-        return all.get(0);
-    }
-
-    private Date parseFechaDPI(String text) {
-        try {
-            DateFormatSymbols sym = DateFormatSymbols.getInstance();
-            sym.setShortMonths(new String[]{"ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DEC"});
-            SimpleDateFormat sd = new SimpleDateFormat("ddMMMyyyy", sym);
-            return sd.parse(text);
-        } catch (ParseException ex) {
-            ex.printStackTrace(System.err);
-            return new DateTime().plusYears(-18).toDate();
-        }
-    }
-
-    private PersonaCrearHandler guardaPersonaDatos(ReqNuevaPersonaDto r) {
-        currentPersona = converter.toEntity(r);
-
-        currentPersona.setEstado(Estado.ACTIVO);
-        currentPersona.setCui(r.getCui());
-        currentPersona.setCreadoPor("admin");
-        if (r.getFechaNacimientoTexto() != null && !r.getFechaNacimientoTexto().isEmpty()) {
-            currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
-        }
-        currentPersona.setEdad(Years.yearsBetween(LocalDate.fromDateFields(currentPersona.getFechaNacimiento()),
-                LocalDate.fromDateFields(Calendar.getInstance().getTime())).getYears());
-        EntitiesHelper.setDateCreatedInfo(currentPersona);
-
-        if (r.getFkMunicipioCedulaNombre() != null && !r.getFkMunicipioCedulaNombre().isEmpty()) {
-            currentPersona.setFkMunicipioCedula(getAreaByNombreAndTipo(r.getFkMunicipioCedulaNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkMunicipioNacimientoNombre() != null && !r.getFkMunicipioNacimientoNombre().isEmpty()) {
-            currentPersona.setFkMunicipioNacimiento(getAreaByNombreAndTipo(r.getFkMunicipioNacimientoNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkMunicipioVecindadNombre() != null && !r.getFkMunicipioVecindadNombre().isEmpty()) {
-            currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        }
-        if (r.getFkNacionalidadNombre() != null && !r.getFkNacionalidadNombre().isEmpty()) {
-            currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
-                    C.CAT_GEN_NACIONALIDAD).getId());
-        }
-        currentPersona = repo.save(currentPersona);
-        return this;
-    }
-
-    private PersonaCrearHandler guardaRegAcademico(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardarRegAcademico(ReqNuevaPersonaDto r, Persona currentPersona) {
         RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
         ra.setFkPersona(currentPersona);
-        ra.setCreadoPor(currentPersona.getCreadoPor());
         ra.setEstado(EstadoVariable.ACTUAL);
-        EntitiesHelper.setDateCreatedInfo(ra);
+        setCreateInfo(ra);
         regAcadRepo.save(ra);
 
         return this;
     }
 
-    private PersonaCrearHandler guardaRegLaboral(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardarRegLaboral(ReqNuevaPersonaDto r, Persona currentPersona) {
         RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
         rl.setEstado(EstadoVariable.ACTUAL);
         rl.setFkPersona(currentPersona);
-        rl.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreatedInfo(rl);
+        setCreateInfo(rl);
         final RegistroLaboral rl2 = regLaboralRepo.save(rl);
 
         puestoRepo.save((Collection) Collections2.transform(r.getRegistroLaboral().getPuestos(),
@@ -238,8 +147,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
             public Puesto apply(RegistroLaboralPuestoDto f) {
                 Puesto ps = new RegistroLaboralPuestosConverter().toEntity(f);
                 ps.setFkRegistroLaboral(rl2);
-                EntitiesHelper.setDateCreatedInfo(ps);
-                ps.setCreadoPor(rl2.getCreadoPor());
+                setCreateInfo(ps);
                 return ps;
             }
         }));
@@ -247,7 +155,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    private PersonaCrearHandler guardaEstudiosSalud(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardarEstudiosSalud(ReqNuevaPersonaDto r, final Persona currentPersona) {
         estudiosRepo.save(
                 Collections2.transform(r.getEstudiosSalud(),
                         new Function<EstudioSaludDto, EstudioSalud>() {
@@ -256,7 +164,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
                         EstudioSalud es = new EstudiosSaludConverter()
                                 .toEntity(f);
                         es.setFkPersona(currentPersona);
-                        es.setCreadoPor(currentPersona.getCreadoPor());
+                        setCreateInfo(es);
                         return es;
                     }
                 }));
@@ -264,26 +172,12 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    private PersonaCrearHandler guardaDpi(ReqNuevaPersonaDto r) {
-        if (r.getDpi() == null) {
-            return this;
-        }
+    private PersonaCrearHandler guardarDpi(ReqNuevaPersonaDto r, Persona currentPersona) {
         DpiDto dpiDto = r.getDpi();
-        if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
-            dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
-            dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
-        } else if (isNull(dpiDto.getFechaVencimiento()) || isNull(dpiDto.getFechaEmision())) {
-            throw ExceptionsManager.newValidationException("dpi_datos",
-                    new String[]{"fechas_dpi,Debe ingresar datos de fecha vencimiento y emision del DPI"});
-        }
-
         Dpi dpi = new DpiDtoConverter().toEntity(dpiDto);
-        dpi.setFechaCreacion(dpiDto.getFechaCreacion());
-        dpi.setFechaVencimiento(dpiDto.getFechaVencimiento());
         dpi.setFkPersona(currentPersona);
         dpi.setEstado(EstadoVariable.ACTUAL);
-        dpi.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreatedInfo(dpi);
+        setCreateInfo(dpi);
 
         currentPersona.setDpiCollection(new ArrayList<Dpi>());
         currentPersona.getDpiCollection().add(dpi);
@@ -291,7 +185,7 @@ public class PersonaCrearHandler extends AbstractValidationsRequestHandler<ReqNu
         return this;
     }
 
-    private PersonaCrearHandler guardaLugarResidencia(ReqNuevaPersonaDto r) {
+    private PersonaCrearHandler guardarLugarResidencia(ReqNuevaPersonaDto r, Persona currentPersona) {
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
         lr.setFkPersona(currentPersona);
         lr.setEstado(EstadoVariable.ACTUAL);
