@@ -29,6 +29,7 @@ import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.EstudioSalud;
+import gt.org.isis.model.HistoricoEstudioSalud;
 import gt.org.isis.model.HistoricoIdioma;
 import gt.org.isis.model.HistoricoLugarResidencia;
 import gt.org.isis.model.HistoricoPersona;
@@ -46,6 +47,7 @@ import static gt.org.isis.model.utils.EntitiesHelper.parseFechaDPI;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.DpiRepository;
+import gt.org.isis.repository.EstudiosSaludHistoricoRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
 import gt.org.isis.repository.IdiomaHistoricoRepository;
 import gt.org.isis.repository.IdiomaRepository;
@@ -112,6 +114,12 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     PuestoRepository puestoRepo;
     @Autowired
     LugarResidenciaHistoricoRepository lugarResidenciaHis;
+    @Autowired
+    IdiomaHistoricoRepository idiomasHisRepo;
+    @Autowired
+    RegistroAcademicoHistoricoRepository raHisRepo;
+    @Autowired
+    EstudiosSaludHistoricoRepository estudiosHisRepo;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -218,7 +226,9 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     }
 
     private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
-        estudiosRepo.deleteInBatch(p.getEstudioSaludCollection());
+        List<EstudioSalud> estudios;
+        crearHistoricoEstudiosSalud((estudios = (List) p.getEstudioSaludCollection()));
+        estudiosRepo.deleteInBatch(estudios);
         for (EstudioSaludDto t : r.getEstudiosSalud()) {
             EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
             i.setFkPersona(p);
@@ -227,9 +237,21 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return this;
     }
 
+    private void crearHistoricoEstudiosSalud(List<EstudioSalud> estudios) {
+        estudiosHisRepo.save((List) Collections2.transform(estudios, new Function<EstudioSalud, HistoricoEstudioSalud>() {
+            @Override
+            public HistoricoEstudioSalud apply(EstudioSalud f) {
+                HistoricoEstudioSalud hEs = new HistoricoEstudioSalud();
+                BeanUtils.copyProperties(f, hEs);
+                setCreateInfo(hEs);
+                return hEs;
+            }
+        }));
+    }
+
     private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
         crearHistoricoIdiomas((List) p.getIdiomaCollection());
-        idiomasRepo.delete((List) p.getIdiomaCollection()); // delete
+        idiomasRepo.delete((List) p.getIdiomaCollection()); // clean after make history
         for (IdiomaDto t : r.getIdiomas()) {
             Idioma i = new IdiomaDtoConverter().toEntity(t);
             i.setFkPersona(p);
@@ -238,9 +260,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         }
         return this;
     }
-
-    @Autowired
-    IdiomaHistoricoRepository idiomasHisRepo;
 
     public void crearHistoricoIdiomas(List<Idioma> idiomas) {
         idiomasHisRepo.save((Collection) Collections2.transform(idiomas,
@@ -264,9 +283,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
 
         return this;
     }
-
-    @Autowired
-    RegistroAcademicoHistoricoRepository raHisRepo;
 
     private void crearHistoricoRegistroAcademico(RegistroAcademico ra) {
         HistoricoRegistroAcademico hRa = new HistoricoRegistroAcademico();
