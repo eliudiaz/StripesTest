@@ -67,9 +67,9 @@ public class PersonaDto {
     @NotNull
     private Integer fkMunicipioVecindad;
     @NotNull
-    private boolean huellaManoDer;
+    private String huellaManoDer;
     @NotNull
-    private boolean huellaManoIzq;
+    private String huellaManoIzq;
     @NotNull
     private String huellaDedoDer;
     @NotNull
@@ -387,19 +387,19 @@ public class PersonaDto {
         this.fkMunicipioVecindad = fkMunicipioVecindad;
     }
 
-    public boolean isHuellaManoDer() {
+    public String getHuellaManoDer() {
         return huellaManoDer;
     }
 
-    public void setHuellaManoDer(boolean huellaManoDer) {
+    public void setHuellaManoDer(String huellaManoDer) {
         this.huellaManoDer = huellaManoDer;
     }
 
-    public boolean isHuellaManoIzq() {
+    public String getHuellaManoIzq() {
         return huellaManoIzq;
     }
 
-    public void setHuellaManoIzq(boolean huellaManoIzq) {
+    public void setHuellaManoIzq(String huellaManoIzq) {
         this.huellaManoIzq = huellaManoIzq;
     }
 
