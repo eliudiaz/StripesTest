@@ -49,6 +49,7 @@ import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
 import gt.org.isis.repository.IdiomaHistoricoRepository;
 import gt.org.isis.repository.IdiomaRepository;
+import gt.org.isis.repository.LugarResidenciaHistoricoRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestoRepository;
@@ -101,13 +102,16 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
     DpiRepository dpiRepository;
     @Autowired
     LugarResidenciaRepository registroLaboralRepo;
-
+    @Autowired
+    RegistroLaboralHistoricoRepository registroLabHistoricoRepo;
     @Autowired
     AreasGeografRepository areasRepo;
     @Autowired
     CatalogosRepository catalogosRepo;
     @Autowired
     PuestoRepository puestoRepo;
+    @Autowired
+    LugarResidenciaHistoricoRepository lugarResidenciaHis;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -270,9 +274,6 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         return this;
     }
 
-    @Autowired
-    RegistroLaboralHistoricoRepository registroLabHistoricoRepo;
-
     private void crearHistoricoRegistroLaboral(RegistroLaboral actual) {
         HistoricoRegistroLaboral historico = new HistoricoRegistroLaboral();
         BeanUtils.copyProperties(actual, historico);
@@ -354,7 +355,9 @@ public class PersonaModificarHandler extends AbstractValidationsRequestHandler<R
         HistoricoLugarResidencia historico = new HistoricoLugarResidencia();
         BeanUtils.copyProperties(original, historico);
         EntitiesHelper.setDateCreatedInfo(historico);
+        setCreateInfo(historico);
 
+        lugarResidenciaHis.save(historico);
     }
 
 }
