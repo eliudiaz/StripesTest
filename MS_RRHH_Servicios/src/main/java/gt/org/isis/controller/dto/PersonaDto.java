@@ -11,6 +11,7 @@ import gt.org.isis.model.enums.Pueblo;
 import gt.org.isis.model.enums.Sexo;
 import java.util.Date;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -46,6 +47,7 @@ public class PersonaDto {
     @NotNull
     private boolean sabeEscribir;
     private Date fechaNacimiento;
+    private Integer fkMunicipioNacimiento;
     private Integer edad;
 
     @NotNull
@@ -60,9 +62,9 @@ public class PersonaDto {
     @NotNull
     private String mrz;
     private String noCedula;
-    private Estado estado;
-    private Integer fkMunicipioNacimiento;
     private Integer fkMunicipioCedula;
+    private Estado estado;
+    @NotNull
     private Integer fkMunicipioVecindad;
     @NotNull
     private boolean huellaManoDer;
@@ -73,10 +75,13 @@ public class PersonaDto {
     @NotNull
     private String huellaDedoIzq;
     @NotNull
+    @Valid
     private RegistroLaboralDto registroLaboral;
     @NotNull
+    @Valid
     private LugarResidenciaDto lugarResidencia;
     @NotNull
+    @Valid
     private RegistroAcademicoDto registroAcademico;
     private DpiDto dpi;
     @NotNull
