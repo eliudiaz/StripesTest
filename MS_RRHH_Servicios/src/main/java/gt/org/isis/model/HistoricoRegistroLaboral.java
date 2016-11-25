@@ -53,11 +53,6 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por")
     private String creadoPor;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por")
-    private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne(optional = false)
     private Persona fkPersona;
@@ -140,22 +135,6 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
         this.creadoPor = creadoPor;
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
-    }
-
     public Persona getFkPersona() {
         return fkPersona;
     }
@@ -195,6 +174,16 @@ public class HistoricoRegistroLaboral implements Serializable, CustomEntity {
     @Override
     public String toString() {
         return "gt.org.isis.model.HistoricoRegistroLaboral[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

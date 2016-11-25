@@ -22,7 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -40,19 +39,16 @@ public class HistoricoLugarResidencia implements Serializable, CustomEntity {
     private Integer id;
     @Column(name = "fk_municipio")
     private Integer fkMunicipio;
-    @Size(max = 50)
-    @Column(name = "estado", length = 50)
+    @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private Estado estado;
-    @Size(max = 2147483647)
-    @Column(name = "direccion", length = 2147483647)
+    @Column(name = "direccion")
     private String direccion;
     @NotNull
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Size(max = 50)
-    @Column(name = "creado_por", length = 50)
+    @Column(name = "creado_por")
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
     @ManyToOne(optional = false)

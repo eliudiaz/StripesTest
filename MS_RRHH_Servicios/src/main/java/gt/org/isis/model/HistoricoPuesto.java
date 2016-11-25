@@ -47,7 +47,6 @@ public class HistoricoPuesto implements Serializable, CustomEntity {
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
-    @Size(max = 50)
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
 

@@ -78,9 +78,9 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Column(name = "limitaciones_fisicas", length = 2147483647)
     private String limitacionesFisicas;
     @Column(name = "sabe_leer")
-    private Boolean sabeLeer;
+    private boolean sabeLeer;
     @Column(name = "sabe_escribir")
-    private Boolean sabeEscribir;
+    private boolean sabeEscribir;
     @Basic(optional = false)
     @Column(name = "fecha_nacimiento", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -122,6 +122,30 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_civil")
     private EstadoCivil estadoCivil;
+
+    public boolean isSabeLeer() {
+        return sabeLeer;
+    }
+
+    public void setSabeLeer(boolean sabeLeer) {
+        this.sabeLeer = sabeLeer;
+    }
+
+    public boolean isSabeEscribir() {
+        return sabeEscribir;
+    }
+
+    public void setSabeEscribir(boolean sabeEscribir) {
+        this.sabeEscribir = sabeEscribir;
+    }
+
+    public Integer getFkNacionalidad() {
+        return fkNacionalidad;
+    }
+
+    public void setFkNacionalidad(Integer fkNacionalidad) {
+        this.fkNacionalidad = fkNacionalidad;
+    }
 
     public String getHuellaManoDer() {
         return huellaManoDer;
@@ -258,14 +282,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
         this.apellidoCasada = apellidoCasada;
     }
 
-    public int getFkNacionalidad() {
-        return fkNacionalidad;
-    }
-
-    public void setFkNacionalidad(int fkNacionalidad) {
-        this.fkNacionalidad = fkNacionalidad;
-    }
-
     public String getFkProfesion() {
         return fkProfesion;
     }
@@ -280,22 +296,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
 
     public void setLimitacionesFisicas(String limitacionesFisicas) {
         this.limitacionesFisicas = limitacionesFisicas;
-    }
-
-    public Boolean getSabeLeer() {
-        return sabeLeer;
-    }
-
-    public void setSabeLeer(Boolean sabeLeer) {
-        this.sabeLeer = sabeLeer;
-    }
-
-    public Boolean getSabeEscribir() {
-        return sabeEscribir;
-    }
-
-    public void setSabeEscribir(Boolean sabeEscribir) {
-        this.sabeEscribir = sabeEscribir;
     }
 
     public Date getFechaNacimiento() {
