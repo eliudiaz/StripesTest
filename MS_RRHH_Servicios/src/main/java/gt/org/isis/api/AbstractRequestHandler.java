@@ -20,7 +20,6 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
 
     @Override
     public void after(T request, Q response) {
-
     }
 
     @Override
@@ -49,6 +48,7 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
             EntitiesHelper.setDateCreatedInfo(entity);
             entity.setCreadoPor(getLoggedUser().getUserName());
         } catch (UnsupportedOperationException ex) {
+            entity.getClass().getName();
         }
     }
 }

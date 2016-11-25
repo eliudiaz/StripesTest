@@ -7,11 +7,11 @@ package gt.org.isis.controller.personas.handlers.validations;
 
 import gt.org.isis.api.GenericValidationRequest;
 import gt.org.isis.api.ValidationRequestContext;
-import gt.org.isis.api.misc.exceptions.ext.ValidationError;
-import gt.org.isis.api.misc.exceptions.ext.ValidationException;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.PersonaDto;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,22 +20,21 @@ import java.util.ArrayList;
  */
 public class CUIPersonaValidation<T extends PersonaDto> extends GenericValidationRequest<T> {
 
+    private static final Logger LOG
+            = LoggerFactory.getLogger(CUIPersonaValidation.class);
+
     @Override
     public void validate(final T persona, ValidationRequestContext ctx) {
-        ValidationException ex = new ValidationException(new ArrayList<ValidationError>());
         if (persona.getCui().length() != 13) {
-            ex.getErrors().add(new ValidationError("cui", "CUI invalido"));
+            throw ExceptionsManager.newValidationException("cui", "invalid_cui,Longitud de CUI es de 13 digitos!");
         }
-
         try {
-            System.out.println(new BigInteger(persona.getCui()));
+            LOG.info(">> " + new BigInteger(persona.getCui()).toString());
         } catch (NumberFormatException e) {
-            ex.getErrors().add(new ValidationError("cui", "CUI no lleva letras"));
+            throw ExceptionsManager.newValidationException("cui", "invalid_cui,CUI es numerico!");
+
         }
 
-        if (!ex.getErrors().isEmpty()) {
-            throw ex;
-        }
     }
 
 }

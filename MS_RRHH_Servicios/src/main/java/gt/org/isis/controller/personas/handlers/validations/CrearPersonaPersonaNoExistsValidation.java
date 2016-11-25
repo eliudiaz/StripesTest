@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  * @author edcracken
  */
 @Component
-public class CreaExistePersonaValidation extends GenericValidationRequest<ReqNuevaPersonaDto> {
+public class CrearPersonaPersonaNoExistsValidation extends GenericValidationRequest<ReqNuevaPersonaDto> {
 
     @Autowired
     PersonasRepository repo;

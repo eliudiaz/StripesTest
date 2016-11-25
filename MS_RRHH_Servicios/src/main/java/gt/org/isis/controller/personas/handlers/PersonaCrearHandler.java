@@ -30,9 +30,6 @@ import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
-import gt.org.isis.model.utils.EntitiesHelper;
-import gt.org.isis.repository.AreasGeografRepository;
-import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
 import gt.org.isis.repository.IdiomaRepository;
@@ -62,10 +59,6 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
     PersonasRepository repo;
     @Autowired
     PersonaDtoConverter converter;
-    @Autowired
-    AreasGeografRepository areasRepo;
-    @Autowired
-    CatalogosRepository catalogosRepo;
     @Autowired
     IdiomaRepository idiomasRepo;
     @Autowired
@@ -189,8 +182,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
         lr.setFkPersona(currentPersona);
         lr.setEstado(EstadoVariable.ACTUAL);
-        lr.setCreadoPor(currentPersona.getCreadoPor());
-        EntitiesHelper.setDateCreatedInfo(lr);
+        setCreateInfo(lr);
         lugaresRepo.save(lr);
         return this;
     }
