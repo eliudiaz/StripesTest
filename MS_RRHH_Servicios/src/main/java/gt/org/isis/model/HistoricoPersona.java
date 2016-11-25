@@ -104,13 +104,9 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Column(name = "fk_municipio_vecindad")
     private Integer fkMunicipioVecindad;
     @Column(name = "huella_mano_der")
-    private Boolean huellaManoDer;
+    private String huellaManoDer;
     @Column(name = "huella_mano_izq")
-    private Boolean huellaManoIzq;
-    @Column(name = "huella_dedo_der")
-    private String huellaDedoDer;
-    @Column(name = "huella_dedo_izq")
-    private String huellaDedoIzq;
+    private String huellaManoIzq;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -126,6 +122,22 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_civil")
     private EstadoCivil estadoCivil;
+
+    public String getHuellaManoDer() {
+        return huellaManoDer;
+    }
+
+    public void setHuellaManoDer(String huellaManoDer) {
+        this.huellaManoDer = huellaManoDer;
+    }
+
+    public String getHuellaManoIzq() {
+        return huellaManoIzq;
+    }
+
+    public void setHuellaManoIzq(String huellaManoIzq) {
+        this.huellaManoIzq = huellaManoIzq;
+    }
 
     public Integer getEdad() {
         return edad;
@@ -364,38 +376,6 @@ public class HistoricoPersona implements Serializable, CustomEntity {
 
     public void setFkMunicipioVecindad(Integer fkMunicipioVecindad) {
         this.fkMunicipioVecindad = fkMunicipioVecindad;
-    }
-
-    public Boolean getHuellaManoDer() {
-        return huellaManoDer;
-    }
-
-    public void setHuellaManoDer(Boolean huellaManoDer) {
-        this.huellaManoDer = huellaManoDer;
-    }
-
-    public Boolean getHuellaManoIzq() {
-        return huellaManoIzq;
-    }
-
-    public void setHuellaManoIzq(Boolean huellaManoIzq) {
-        this.huellaManoIzq = huellaManoIzq;
-    }
-
-    public String getHuellaDedoDer() {
-        return huellaDedoDer;
-    }
-
-    public void setHuellaDedoDer(String huellaDedoDer) {
-        this.huellaDedoDer = huellaDedoDer;
-    }
-
-    public String getHuellaDedoIzq() {
-        return huellaDedoIzq;
-    }
-
-    public void setHuellaDedoIzq(String huellaDedoIzq) {
-        this.huellaDedoIzq = huellaDedoIzq;
     }
 
     public Date getFechaCreacion() {
