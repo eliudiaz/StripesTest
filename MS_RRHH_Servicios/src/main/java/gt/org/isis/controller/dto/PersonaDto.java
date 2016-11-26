@@ -66,10 +66,9 @@ public class PersonaDto {
     private String noCedula;
     private Integer fkMunicipioCedula;
     private String fkMunicipioCedulaNombre;
-
     private Estado estado;
+    @NotNull
     private Integer fkMunicipioVecindad;
-
     @NotNull
     private String huellaManoDer;
     @NotNull
