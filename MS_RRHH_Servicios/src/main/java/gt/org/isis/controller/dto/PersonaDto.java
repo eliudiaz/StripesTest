@@ -85,9 +85,11 @@ public class PersonaDto {
     private DpiDto dpi;
     @NotNull
     @NotEmpty
+    @Valid
     private List<IdiomaDto> idiomas;
     @NotNull
     @NotEmpty
+    @Valid
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
 
