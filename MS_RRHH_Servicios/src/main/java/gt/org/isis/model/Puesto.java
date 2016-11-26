@@ -16,6 +16,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,6 +52,8 @@ public class Puesto implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por")
     private String creadoPor;
+    @JoinColumn(name = "fk_registro_laboral", referencedColumnName = "id")
+    @ManyToOne
     private RegistroLaboral fkRegistroLaboral;
 
     public Puesto() {

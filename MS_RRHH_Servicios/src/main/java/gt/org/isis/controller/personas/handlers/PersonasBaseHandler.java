@@ -7,6 +7,7 @@ package gt.org.isis.controller.personas.handlers;
 
 import gt.org.isis.api.AbstractValidationsRequestHandler;
 import gt.org.isis.api.C;
+import gt.org.isis.api.ValidationsHelper;
 import static gt.org.isis.api.ValidationsHelper.containsAny;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
@@ -68,11 +69,12 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
             }
         });
         for (AreaGeografica ag : all) {
-            if (containsAny(ag.getValor(), nombre)) {
+            if (ag.getValor().trim().equalsIgnoreCase(nombre.trim())) {
                 return ag;
             }
         }
-        return all.get(0);
+
+        return ValidationsHelper.findBestMatchItem(nombre.trim(), all);
     }
 
     public void setDatosGeneralesByLector(Persona currentPersona, RequestPersonaDto r) {

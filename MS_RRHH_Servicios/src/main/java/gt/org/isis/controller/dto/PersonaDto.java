@@ -91,7 +91,7 @@ public class PersonaDto {
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
 
-    private boolean lector;
+    private boolean lector = true;
 
     public boolean isLector() {
         return lector;

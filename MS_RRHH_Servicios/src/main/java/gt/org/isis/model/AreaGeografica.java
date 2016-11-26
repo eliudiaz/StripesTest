@@ -166,7 +166,7 @@ public class AreaGeografica implements Serializable {
 
     @Override
     public String toString() {
-        return "org.ms.rrhh.domain.model.AreaGeografica[ id=" + id + " ]";
+        return getValor();
     }
 
 }
