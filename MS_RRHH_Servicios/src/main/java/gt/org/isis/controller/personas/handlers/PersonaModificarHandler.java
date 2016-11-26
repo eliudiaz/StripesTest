@@ -7,6 +7,7 @@ package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.PersonaDto;
@@ -31,6 +32,7 @@ import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puesto;
 import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.DpiRepository;
@@ -113,8 +115,9 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
 
     private void crearHistoricoPersona(Persona persona) {
         HistoricoPersona historicoPersona = new HistoricoPersona();
-        BeanUtils.copyProperties(persona, historicoPersona);
+        BeanUtils.copyProperties(persona, historicoPersona, new String[]{"estado"});
         historicoPersona.setFkPersona(persona);
+        historicoPersona.setEstado(Estado.ACTIVO);
         setUpdateInfo(historicoPersona);
 
         historicoRepo.save(historicoPersona);
@@ -123,7 +126,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     private PersonaModificarHandler actualizaLugarResidencia(Persona p, PersonaDto r) {
         LugarResidencia ra;
         crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
-        BeanUtils.copyProperties(r.getLugarResidencia(), ra);
+        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id"});
         setUpdateInfo(ra);
 
         registroLaboralRepo.save(ra);
@@ -132,7 +135,8 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
 
     private void crearHistoricoLugarResidencia(LugarResidencia original) {
         HistoricoLugarResidencia historico = new HistoricoLugarResidencia();
-        BeanUtils.copyProperties(original, historico);
+        BeanUtils.copyProperties(original, historico, new String[]{"estado"});
+        historico.setEstado(Estado.ACTIVO);
         setCreateInfo(historico);
 
         lugarResidenciaHis.save(historico);
@@ -144,6 +148,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
         }
         crearHistoricoPersona(currentPersona);
         BeanUtils.copyProperties(updateRequest, currentPersona);
+
         setUpdateInfo(currentPersona);
 
         repo.save(currentPersona);
@@ -152,19 +157,21 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     }
 
     private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
-        List<EstudioSalud> estudios;
-        crearHistoricoEstudiosSalud((estudios = (List) p.getEstudioSaludCollection()));
-        estudiosRepo.deleteInBatch(estudios);
-        for (EstudioSaludDto t : r.getEstudiosSalud()) {
-            EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
-            i.setFkPersona(p);
-            EntitiesHelper.setDateCreatedInfo(i);
+        if (!isNull(r.getEstudiosSalud())) {
+            List<EstudioSalud> estudios;
+            crearHistoricoEstudiosSalud((estudios = (List) p.getEstudioSaludCollection()));
+            estudiosRepo.deleteInBatch(estudios);
+            for (EstudioSaludDto t : r.getEstudiosSalud()) {
+                EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
+                i.setFkPersona(p);
+                EntitiesHelper.setDateCreatedInfo(i);
+            }
         }
         return this;
     }
 
     private void crearHistoricoEstudiosSalud(List<EstudioSalud> estudios) {
-        estudiosHisRepo.save((List) Collections2.transform(estudios, new Function<EstudioSalud, HistoricoEstudioSalud>() {
+        estudiosHisRepo.save((Collection) Collections2.transform(estudios, new Function<EstudioSalud, HistoricoEstudioSalud>() {
             @Override
             public HistoricoEstudioSalud apply(EstudioSalud f) {
                 HistoricoEstudioSalud hEs = new HistoricoEstudioSalud();
@@ -203,7 +210,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
         RegistroAcademico ra;
         crearHistoricoRegistroAcademico(ra = p.getRegistroAcademicoCollection().iterator().next());
-        BeanUtils.copyProperties(r.getRegistroAcademico(), ra);
+        BeanUtils.copyProperties(r.getRegistroAcademico(), ra, new String[]{"id"});
         setUpdateInfo(ra);
         rAcaRepository.save(ra);
 
@@ -212,7 +219,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
 
     private void crearHistoricoRegistroAcademico(RegistroAcademico ra) {
         HistoricoRegistroAcademico hRa = new HistoricoRegistroAcademico();
-        BeanUtils.copyProperties(ra, hRa);
+        BeanUtils.copyProperties(ra, hRa, new String[]{"estado"});
         setCreateInfo(hRa);
         raHisRepo.save(hRa);
     }
@@ -221,7 +228,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
             ReqModPersonaDto requestModPersona) {
         final RegistroLaboral registroLaboral;
         crearHistoricoRegistroLaboral(registroLaboral = persona.getRegistroLaboralCollection().iterator().next());
-        BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral);
+        BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral, new String[]{"id"});
         setUpdateInfo(registroLaboral);
 
         registroLaboral.getPuestoCollection().clear();

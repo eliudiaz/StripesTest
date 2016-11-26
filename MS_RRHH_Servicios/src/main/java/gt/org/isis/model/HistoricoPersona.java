@@ -97,7 +97,8 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     private String mrz;
     @Column(name = "no_cedula")
     private String noCedula;
-    @Column
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
     private Estado estado;
     @Column(name = "fk_municipio_cedula")
     private Integer fkMunicipioCedula;

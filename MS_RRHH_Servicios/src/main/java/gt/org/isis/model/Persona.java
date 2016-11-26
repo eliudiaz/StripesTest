@@ -34,19 +34,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Table(schema = "public", name = "persona")
 public class Persona implements Serializable, CustomEntity {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado_civil")
-    private EstadoCivil estadoCivil;
-    @Column(name = "edad", nullable = false)
-    private Integer edad;
-    @Column(name = "fk_nacionalidad", nullable = false)
-    private Integer fkNacionalidad;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "fk_pueblo", length = 50)
-    private Pueblo fkPueblo;
-    @Column(name = "fk_comunidad_linguistica")
-    private Integer fkComunidadLinguistica;
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -71,6 +58,18 @@ public class Persona implements Serializable, CustomEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_civil")
+    private EstadoCivil estadoCivil;
+    @Column(name = "edad", nullable = false)
+    private Integer edad;
+    @Column(name = "fk_nacionalidad", nullable = false)
+    private Integer fkNacionalidad;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "fk_pueblo", length = 50)
+    private Pueblo fkPueblo;
+    @Column(name = "fk_comunidad_linguistica")
+    private Integer fkComunidadLinguistica;
     @Basic(optional = false)
     @Column(name = "fk_profesion", nullable = false)
     private String fkProfesion;
