@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,8 +25,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "estudio_salud", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "EstudioSalud.findAll", query = "SELECT e FROM EstudioSalud e")})
 public class EstudioSalud implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
@@ -47,11 +43,6 @@ public class EstudioSalud implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por", length = 50)
-    private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
     private Persona fkPersona;
@@ -63,10 +54,9 @@ public class EstudioSalud implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public EstudioSalud(Integer id, Date fechaCreacion, Date fechaUltimoCambio) {
+    public EstudioSalud(Integer id, Date fechaCreacion) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
-        this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
     public Integer getFkEstudioSalud() {
@@ -109,22 +99,6 @@ public class EstudioSalud implements Serializable, CustomEntity {
         this.creadoPor = creadoPor;
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
-    }
-
     public Persona getFkPersona() {
         return fkPersona;
     }
@@ -156,6 +130,16 @@ public class EstudioSalud implements Serializable, CustomEntity {
     @Override
     public String toString() {
         return "org.ms.rrhh.domain.model.EstudioSalud[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

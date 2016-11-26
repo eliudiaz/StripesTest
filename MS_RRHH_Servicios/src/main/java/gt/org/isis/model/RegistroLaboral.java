@@ -20,8 +20,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -33,8 +31,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "registro_laboral", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "RegistroLaboral.findAll", query = "SELECT r FROM RegistroLaboral r")})
 public class RegistroLaboral implements Serializable, CustomEntity, PersonaChildEntity {
 
     private static final long serialVersionUID = 1L;
@@ -47,7 +43,7 @@ public class RegistroLaboral implements Serializable, CustomEntity, PersonaChild
     private Integer anioIngreso;
     @Column(name = "fk_expectativa")
     private Integer fkExpectativa;
-    private Boolean comisionado;
+    private boolean comisionado;
     @Column
     private String observaciones;
     @Column(name = "fk_comunidad_comisionado")
@@ -126,11 +122,11 @@ public class RegistroLaboral implements Serializable, CustomEntity, PersonaChild
         this.fkExpectativa = fkExpectativa;
     }
 
-    public Boolean getComisionado() {
+    public boolean isComisionado() {
         return comisionado;
     }
 
-    public void setComisionado(Boolean comisionado) {
+    public void setComisionado(boolean comisionado) {
         this.comisionado = comisionado;
     }
 

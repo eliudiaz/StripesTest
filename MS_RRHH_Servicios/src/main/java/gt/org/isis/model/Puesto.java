@@ -16,10 +16,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,8 +26,6 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(schema = "public", name = "puesto")
-@NamedQueries({
-    @NamedQuery(name = "Puesto.findAll", query = "SELECT p FROM Puesto p")})
 public class Puesto implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
@@ -42,7 +36,6 @@ public class Puesto implements Serializable, CustomEntity {
     private Integer id;
     @Column(name = "fk_puesto_funcional")
     private Integer fkPuestoFuncional;
-    @Column(length = 50)
     @Enumerated(EnumType.STRING)
     private TipoPuesto tipo;
     @Column(name = "fk_puesto_nominal")
@@ -57,13 +50,6 @@ public class Puesto implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por")
     private String creadoPor;
-    @Column(name = "fecha_ultimo_cambio")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaUltimoCambio;
-    @Column(name = "ultimo_cambio_por")
-    private String ultimoCambioPor;
-    @JoinColumn(name = "fk_registro_laboral", referencedColumnName = "id")
-    @ManyToOne
     private RegistroLaboral fkRegistroLaboral;
 
     public Puesto() {
@@ -73,10 +59,9 @@ public class Puesto implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public Puesto(Integer id, Date fechaCreacion, Date fechaUltimoCambio) {
+    public Puesto(Integer id, Date fechaCreacion) {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
-        this.fechaUltimoCambio = fechaUltimoCambio;
     }
 
     public Integer getFkClasificacionServicio() {
@@ -143,22 +128,6 @@ public class Puesto implements Serializable, CustomEntity {
         this.creadoPor = creadoPor;
     }
 
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
-    }
-
     public RegistroLaboral getFkRegistroLaboral() {
         return fkRegistroLaboral;
     }
@@ -190,6 +159,16 @@ public class Puesto implements Serializable, CustomEntity {
     @Override
     public String toString() {
         return "org.ms.rrhh.domain.model.Puesto[ id=" + id + " ]";
+    }
+
+    @Override
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

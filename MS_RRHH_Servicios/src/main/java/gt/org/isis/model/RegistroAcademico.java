@@ -40,7 +40,7 @@ public class RegistroAcademico implements Serializable, CustomEntity {
     @Column(name = "ultimo_grado", nullable = false)
     private Integer ultimoGrado;
     @Column(name = "estudia_actualmente")
-    private Boolean estudiaActualmente;
+    private boolean estudiaActualmente;
     @Column(name = "grado_actual")
     private Integer gradoActual;
     @Column
@@ -52,6 +52,12 @@ public class RegistroAcademico implements Serializable, CustomEntity {
     private Date fechaCreacion;
     @Column(name = "creado_por")
     private String creadoPor;
+    @Basic(optional = false)
+    @Column(name = "fecha_ultimo_cambio", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaUltimoCambio;
+    @Column(name = "ultimo_cambio_por", length = 50)
+    private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
     @ManyToOne
     private Persona fkPersona;
@@ -74,6 +80,14 @@ public class RegistroAcademico implements Serializable, CustomEntity {
         return id;
     }
 
+    public Date getFechaUltimoCambio() {
+        return fechaUltimoCambio;
+    }
+
+    public String getUltimoCambioPor() {
+        return ultimoCambioPor;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -86,11 +100,11 @@ public class RegistroAcademico implements Serializable, CustomEntity {
         this.ultimoGrado = ultimoGrado;
     }
 
-    public Boolean getEstudiaActualmente() {
+    public boolean isEstudiaActualmente() {
         return estudiaActualmente;
     }
 
-    public void setEstudiaActualmente(Boolean estudiaActualmente) {
+    public void setEstudiaActualmente(boolean estudiaActualmente) {
         this.estudiaActualmente = estudiaActualmente;
     }
 
