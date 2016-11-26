@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
  * @author eliud
  */
 @Entity
-@Table(name = "historico_lugar_residencia", catalog = "rrhh", schema = "public")
+@Table(name = "historico_lugar_residencia", schema = "public")
 public class HistoricoLugarResidencia implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;

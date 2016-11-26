@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
  * @author eliud
  */
 @Entity
-@Table(name = "historico_idioma", catalog = "rrhh", schema = "public")
+@Table(name = "historico_idioma", schema = "public")
 public class HistoricoIdioma implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;

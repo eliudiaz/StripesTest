@@ -29,7 +29,7 @@ import javax.validation.constraints.Size;
  * @author eliud
  */
 @Entity
-@Table(name = "historico_registro_academico", catalog = "rrhh", schema = "public")
+@Table(name = "historico_registro_academico", schema = "public")
 public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
 
     private static final long serialVersionUID = 1L;
