@@ -12,7 +12,7 @@ import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.PersonaDto;
-import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
+import gt.org.isis.controller.dto.RequestPersonaDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Catalogos;
@@ -75,7 +75,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
         return all.get(0);
     }
 
-    public void setDatosGeneralesByLector(Persona currentPersona, ReqNuevaPersonaDto r) {
+    public void setDatosGeneralesByLector(Persona currentPersona, RequestPersonaDto r) {
         if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
             currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         } else {

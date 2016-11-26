@@ -9,13 +9,12 @@ package gt.org.isis.controller.dto;
  *
  * @author edcracken
  */
-public class ReqNuevaPersonaDto extends PersonaDto {
+public class RequestPersonaDto extends PersonaDto {
 
     private String fkMunicipioNacimientoNombre;
     private String fkMunicipioCedulaNombre;
     private String fkMunicipioVecindadNombre;
-    private String fechaNacimientoTexto;
-    private String fkNacionalidadNombre;
+
     private boolean lector;
 
     public boolean isLector() {
@@ -24,22 +23,6 @@ public class ReqNuevaPersonaDto extends PersonaDto {
 
     public void setLector(boolean lector) {
         this.lector = lector;
-    }
-
-    public String getFkNacionalidadNombre() {
-        return fkNacionalidadNombre;
-    }
-
-    public void setFkNacionalidadNombre(String fkNacionalidadNombre) {
-        this.fkNacionalidadNombre = fkNacionalidadNombre;
-    }
-
-    public String getFechaNacimientoTexto() {
-        return fechaNacimientoTexto;
-    }
-
-    public void setFechaNacimientoTexto(String fechaNacimientoTexto) {
-        this.fechaNacimientoTexto = fechaNacimientoTexto;
     }
 
     public String getFkMunicipioNacimientoNombre() {

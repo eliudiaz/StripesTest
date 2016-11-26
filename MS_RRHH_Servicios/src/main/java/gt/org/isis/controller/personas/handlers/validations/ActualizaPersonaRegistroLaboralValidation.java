@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.personas.handlers.validations;
 
-import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
+import gt.org.isis.controller.dto.RequestPersonaDto;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Component;
  * @author eliud
  */
 @Component
-public class ActualizaPersonaRegistroLaboralValidation extends PersonaRegistroLaboralValidation<ReqNuevaPersonaDto> {
+public class ActualizaPersonaRegistroLaboralValidation extends PersonaRegistroLaboralValidation<RequestPersonaDto> {
 
 }

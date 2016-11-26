@@ -11,7 +11,7 @@ import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
-import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
+import gt.org.isis.controller.dto.RequestPersonaDto;
 import gt.org.isis.converters.DpiDtoConverter;
 import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.IdiomaDtoConverter;
@@ -53,7 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto, Boolean> {
+public class PersonaCrearHandler extends PersonasBaseHandler<RequestPersonaDto, Boolean> {
 
     @Autowired
     PersonasRepository repo;
@@ -76,7 +76,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Boolean execute(ReqNuevaPersonaDto r) {
+    public Boolean execute(RequestPersonaDto r) {
         Persona p = converter.toEntity(r);
         guardarDatosGeneralesPersona(r, p)
                 .guardarDpi(r, p)
@@ -89,7 +89,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return true;
     }
 
-    private PersonaCrearHandler guardarDatosGeneralesPersona(ReqNuevaPersonaDto r, Persona currentPersona) {
+    private PersonaCrearHandler guardarDatosGeneralesPersona(RequestPersonaDto r, Persona currentPersona) {
         currentPersona.setEstado(Estado.ACTIVO);
         setCreateInfo(currentPersona);
 
@@ -100,7 +100,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarIdiomas(ReqNuevaPersonaDto r, final Persona currentPersona) {
+    private PersonaCrearHandler guardarIdiomas(RequestPersonaDto r, final Persona currentPersona) {
         idiomasRepo.save(
                 Collections2.transform(r.getIdiomas(),
                         new Function<IdiomaDto, Idioma>() {
@@ -116,7 +116,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarRegAcademico(ReqNuevaPersonaDto r, Persona currentPersona) {
+    private PersonaCrearHandler guardarRegAcademico(RequestPersonaDto r, Persona currentPersona) {
         RegistroAcademico ra = new RegistroAcademicoConverter().toEntity(r.getRegistroAcademico());
         ra.setFkPersona(currentPersona);
         ra.setEstado(EstadoVariable.ACTUAL);
@@ -126,7 +126,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarRegLaboral(ReqNuevaPersonaDto r, Persona currentPersona) {
+    private PersonaCrearHandler guardarRegLaboral(RequestPersonaDto r, Persona currentPersona) {
         RegistroLaboral rl = new RegistroLaboralConverter()
                 .toEntity(r.getRegistroLaboral());
         rl.setEstado(EstadoVariable.ACTUAL);
@@ -148,7 +148,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarEstudiosSalud(ReqNuevaPersonaDto r, final Persona currentPersona) {
+    private PersonaCrearHandler guardarEstudiosSalud(RequestPersonaDto r, final Persona currentPersona) {
         estudiosRepo.save(
                 Collections2.transform(r.getEstudiosSalud(),
                         new Function<EstudioSaludDto, EstudioSalud>() {
@@ -165,7 +165,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarDpi(ReqNuevaPersonaDto r, Persona currentPersona) {
+    private PersonaCrearHandler guardarDpi(RequestPersonaDto r, Persona currentPersona) {
         DpiDto dpiDto = r.getDpi();
         Dpi dpi = new DpiDtoConverter().toEntity(dpiDto);
         dpi.setFkPersona(currentPersona);
@@ -178,7 +178,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<ReqNuevaPersonaDto,
         return this;
     }
 
-    private PersonaCrearHandler guardarLugarResidencia(ReqNuevaPersonaDto r, Persona currentPersona) {
+    private PersonaCrearHandler guardarLugarResidencia(RequestPersonaDto r, Persona currentPersona) {
         LugarResidencia lr = new LugarResidenciaDtoConverter().toEntity(r.getLugarResidencia());
         lr.setFkPersona(currentPersona);
         lr.setEstado(EstadoVariable.ACTUAL);

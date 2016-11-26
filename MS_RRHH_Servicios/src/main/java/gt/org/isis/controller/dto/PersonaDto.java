@@ -39,6 +39,7 @@ public class PersonaDto {
     @NotNull
     private Sexo sexo;
     private Integer fkNacionalidad;
+    private String fkNacionalidadNombre;
     @NotNull
     private String fkProfesion;
     private String limitacionesFisicas;
@@ -47,9 +48,10 @@ public class PersonaDto {
     @NotNull
     private boolean sabeEscribir;
     private Date fechaNacimiento;
+    private String fechaNacimientoTexto;
     private Integer fkMunicipioNacimiento;
+    private String fkMunicipioNacimientoNombre;
     private Integer edad;
-
     @NotNull
     private String nacNoLibro;
     @NotNull
@@ -63,19 +65,17 @@ public class PersonaDto {
     private String mrz;
     private String noCedula;
     private Integer fkMunicipioCedula;
+    private String fkMunicipioCedulaNombre;
+
     private Estado estado;
-    @NotNull
     private Integer fkMunicipioVecindad;
+
     @NotNull
     private String huellaManoDer;
     @NotNull
     private String huellaManoIzq;
-    @NotNull
-    private String huellaDedoDer;
-    @NotNull
-    private String huellaDedoIzq;
-    @NotNull
     @Valid
+    @NotNull
     private RegistroLaboralDto registroLaboral;
     @NotNull
     @Valid
@@ -91,6 +91,48 @@ public class PersonaDto {
     @NotEmpty
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
+
+    private boolean lector;
+
+    public boolean isLector() {
+        return lector;
+    }
+
+    public void setLector(boolean lector) {
+        this.lector = lector;
+    }
+
+    public String getFkMunicipioNacimientoNombre() {
+        return fkMunicipioNacimientoNombre;
+    }
+
+    public void setFkMunicipioNacimientoNombre(String fkMunicipioNacimientoNombre) {
+        this.fkMunicipioNacimientoNombre = fkMunicipioNacimientoNombre;
+    }
+
+    public String getFkMunicipioCedulaNombre() {
+        return fkMunicipioCedulaNombre;
+    }
+
+    public void setFkMunicipioCedulaNombre(String fkMunicipioCedulaNombre) {
+        this.fkMunicipioCedulaNombre = fkMunicipioCedulaNombre;
+    }
+
+    public String getFkNacionalidadNombre() {
+        return fkNacionalidadNombre;
+    }
+
+    public void setFkNacionalidadNombre(String fkNacionalidadNombre) {
+        this.fkNacionalidadNombre = fkNacionalidadNombre;
+    }
+
+    public String getFechaNacimientoTexto() {
+        return fechaNacimientoTexto;
+    }
+
+    public void setFechaNacimientoTexto(String fechaNacimientoTexto) {
+        this.fechaNacimientoTexto = fechaNacimientoTexto;
+    }
 
     public String getObservaciones() {
         return observaciones;
@@ -401,22 +443,6 @@ public class PersonaDto {
 
     public void setHuellaManoIzq(String huellaManoIzq) {
         this.huellaManoIzq = huellaManoIzq;
-    }
-
-    public String getHuellaDedoDer() {
-        return huellaDedoDer;
-    }
-
-    public void setHuellaDedoDer(String huellaDedoDer) {
-        this.huellaDedoDer = huellaDedoDer;
-    }
-
-    public String getHuellaDedoIzq() {
-        return huellaDedoIzq;
-    }
-
-    public void setHuellaDedoIzq(String huellaDedoIzq) {
-        this.huellaDedoIzq = huellaDedoIzq;
     }
 
 }

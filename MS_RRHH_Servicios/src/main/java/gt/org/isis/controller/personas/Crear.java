@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.personas;
 
-import gt.org.isis.controller.dto.ReqNuevaPersonaDto;
+import gt.org.isis.controller.dto.RequestPersonaDto;
 import gt.org.isis.controller.personas.handlers.PersonaCrearHandler;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class Crear {
     @RequestMapping(value = "/crea", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity crear(@RequestBody @Valid ReqNuevaPersonaDto persona) {
+    public HttpEntity crear(@RequestBody @Valid RequestPersonaDto persona) {
         handler.handle(persona);
         return new ResponseEntity(HttpStatus.CREATED);
     }
