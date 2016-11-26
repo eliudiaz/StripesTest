@@ -87,8 +87,6 @@ public class PersonaDto {
     @NotEmpty
     @Valid
     private List<IdiomaDto> idiomas;
-    @NotNull
-    @NotEmpty
     @Valid
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;

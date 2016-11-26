@@ -151,12 +151,10 @@ public class Dpi implements Serializable, CustomEntity {
 
     @Override
     public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void setUltimoCambioPor(String ultimoCambioPor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

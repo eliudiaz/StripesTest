@@ -7,6 +7,7 @@ package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
@@ -149,19 +150,20 @@ public class PersonaCrearHandler extends PersonasBaseHandler<RequestPersonaDto, 
     }
 
     private PersonaCrearHandler guardarEstudiosSalud(RequestPersonaDto r, final Persona currentPersona) {
-        estudiosRepo.save(
-                Collections2.transform(r.getEstudiosSalud(),
-                        new Function<EstudioSaludDto, EstudioSalud>() {
-                    @Override
-                    public EstudioSalud apply(EstudioSaludDto f) {
-                        EstudioSalud es = new EstudiosSaludConverter()
-                                .toEntity(f);
-                        es.setFkPersona(currentPersona);
-                        setCreateInfo(es);
-                        return es;
-                    }
-                }));
-
+        if (!isNull(currentPersona.getEstudioSaludCollection())) {
+            estudiosRepo.save(
+                    Collections2.transform(r.getEstudiosSalud(),
+                            new Function<EstudioSaludDto, EstudioSalud>() {
+                        @Override
+                        public EstudioSalud apply(EstudioSaludDto f) {
+                            EstudioSalud es = new EstudiosSaludConverter()
+                                    .toEntity(f);
+                            es.setFkPersona(currentPersona);
+                            setCreateInfo(es);
+                            return es;
+                        }
+                    }));
+        }
         return this;
     }
 
