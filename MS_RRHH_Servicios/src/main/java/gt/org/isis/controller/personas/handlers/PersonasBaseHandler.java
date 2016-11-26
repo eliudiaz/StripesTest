@@ -97,12 +97,6 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
                     C.CAT_AG_TIPO_MUNICIPIOS).getId());
         }
 
-        if (!isNull(r.getFkMunicipioVecindadNombre()) && !r.getFkMunicipioVecindadNombre().isEmpty()) {
-            currentPersona.setFkMunicipioVecindad(getAreaByNombreAndTipo(r.getFkMunicipioVecindadNombre(),
-                    C.CAT_AG_TIPO_MUNICIPIOS).getId());
-        } else {
-            throw ExceptionsManager.newValidationException("municipio_vecindad", "Municipio vecindad es requerido!");
-        }
         if (!isNull(r.getFkNacionalidadNombre()) && !r.getFkNacionalidadNombre().isEmpty()) {
             currentPersona.setFkNacionalidad(getCatalogoByNombreAndTipo(r.getFkNacionalidadNombre(),
                     C.CAT_GEN_NACIONALIDAD).getId());

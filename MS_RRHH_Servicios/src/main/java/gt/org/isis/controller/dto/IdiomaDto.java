@@ -22,8 +22,6 @@ public class IdiomaDto {
     private String nombre;
     private Date fechaCreacion;
     private String creadoPor;
-    private Date fechaUltimoCambio;
-    private String ultimoCambioPor;
 
     public String getNombre() {
         return nombre;
@@ -71,22 +69,6 @@ public class IdiomaDto {
 
     public void setCreadoPor(String creadoPor) {
         this.creadoPor = creadoPor;
-    }
-
-    public Date getFechaUltimoCambio() {
-        return fechaUltimoCambio;
-    }
-
-    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
-        this.fechaUltimoCambio = fechaUltimoCambio;
-    }
-
-    public String getUltimoCambioPor() {
-        return ultimoCambioPor;
-    }
-
-    public void setUltimoCambioPor(String ultimoCambioPor) {
-        this.ultimoCambioPor = ultimoCambioPor;
     }
 
 }
