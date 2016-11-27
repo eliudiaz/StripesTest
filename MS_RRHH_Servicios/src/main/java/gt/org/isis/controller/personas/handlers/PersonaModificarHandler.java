@@ -12,7 +12,7 @@ import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
-import gt.org.isis.controller.dto.ReqModPersonaDto;
+import gt.org.isis.controller.dto.RequestUpdatePersonaDto;
 import gt.org.isis.converters.DpiDtoConverter;
 import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.IdiomaDtoConverter;
@@ -65,7 +65,7 @@ import java.util.Collection;
  */
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDto, Boolean> {
+public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePersonaDto, Boolean> {
 
     @Autowired
     PersonasRepository repo;
@@ -100,7 +100,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Boolean execute(ReqModPersonaDto r) {
+    public Boolean execute(RequestUpdatePersonaDto r) {
         Persona p = repo.findOne(r.getCui());
         actualizarDatosGenerales(p, r)
                 .actualizaDpi(p, r)
@@ -126,7 +126,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     private PersonaModificarHandler actualizaLugarResidencia(Persona p, PersonaDto r) {
         LugarResidencia ra;
         crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
-        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id"});
+        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id", "creadoPor", "fechaCreacion"});
         setUpdateInfo(ra);
 
         registroLaboralRepo.save(ra);
@@ -142,13 +142,12 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
         lugarResidenciaHis.save(historico);
     }
 
-    private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, ReqModPersonaDto updateRequest) {
+    private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, RequestUpdatePersonaDto updateRequest) {
+        crearHistoricoPersona(currentPersona);
+        BeanUtils.copyProperties(updateRequest, currentPersona);
         if (updateRequest.isLector()) {
             setDatosGeneralesByLector(currentPersona, updateRequest);
         }
-        crearHistoricoPersona(currentPersona);
-        BeanUtils.copyProperties(updateRequest, currentPersona);
-
         setUpdateInfo(currentPersona);
 
         repo.save(currentPersona);
@@ -210,7 +209,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
         RegistroAcademico ra;
         crearHistoricoRegistroAcademico(ra = p.getRegistroAcademicoCollection().iterator().next());
-        BeanUtils.copyProperties(r.getRegistroAcademico(), ra, new String[]{"id"});
+        BeanUtils.copyProperties(r.getRegistroAcademico(), ra, new String[]{"id", "creadoPor", "fechaCreacion"});
         setUpdateInfo(ra);
         rAcaRepository.save(ra);
 
@@ -225,7 +224,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
     }
 
     private PersonaModificarHandler actualizaRegistroLaboral(final Persona persona,
-            ReqModPersonaDto requestModPersona) {
+            RequestUpdatePersonaDto requestModPersona) {
         final RegistroLaboral registroLaboral;
         crearHistoricoRegistroLaboral(registroLaboral = persona.getRegistroLaboralCollection().iterator().next());
         BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral, new String[]{"id"});
@@ -256,7 +255,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<ReqModPersonaDt
         registroLabHistoricoRepo.save(historico);
     }
 
-    private PersonaModificarHandler actualizaDpi(Persona p, final ReqModPersonaDto r) {
+    private PersonaModificarHandler actualizaDpi(Persona p, final RequestUpdatePersonaDto r) {
         Collection<Dpi> ls = Collections2.filter(p.getDpiCollection(), new com.google.common.base.Predicate<Dpi>() {
             @Override
             public boolean apply(Dpi t) {

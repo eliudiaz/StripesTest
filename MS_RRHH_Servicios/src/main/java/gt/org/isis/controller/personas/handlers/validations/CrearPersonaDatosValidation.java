@@ -7,7 +7,7 @@ package gt.org.isis.controller.personas.handlers.validations;
 
 import gt.org.isis.api.ValidationRequestContext;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
-import gt.org.isis.controller.dto.RequestPersonaDto;
+import gt.org.isis.controller.dto.RequestCreatePersonaDto;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author eliud
  */
 @Component
-public class CrearPersonaDatosValidation extends DatosPersonaValidation<RequestPersonaDto> {
+public class CrearPersonaDatosValidation extends DatosPersonaValidation<RequestCreatePersonaDto> {
 
     private Date parseFechaNacTexto(String text) {
         try {
@@ -33,7 +33,7 @@ public class CrearPersonaDatosValidation extends DatosPersonaValidation<RequestP
     }
 
     @Override
-    public void validate(RequestPersonaDto persona, ValidationRequestContext ctx) {
+    public void validate(RequestCreatePersonaDto persona, ValidationRequestContext ctx) {
 
         if (persona.getFechaNacimiento() == null && persona.getFechaNacimientoTexto() == null) {
             throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",

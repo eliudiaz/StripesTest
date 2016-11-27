@@ -9,5 +9,5 @@ package gt.org.isis.controller.dto;
  *
  * @author edcracken
  */
-public class RequestPersonaDto extends PersonaDto {
+public class RequestCreatePersonaDto extends PersonaDto {
 }

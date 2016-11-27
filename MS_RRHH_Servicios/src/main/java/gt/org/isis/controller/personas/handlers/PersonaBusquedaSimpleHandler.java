@@ -90,11 +90,11 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             }).iterator().next()));
         }
 
-        dto.setRefCedula(dto.getFkMunicipioCedula() != null
+        dto.setRefCedula(!isNull(dto.getFkMunicipioCedula())
                 ? buildByMunicipio(dto.getFkMunicipioCedula()) : null);
-        dto.setRefNacimiento(dto.getFkMunicipioNacimiento() != null
+        dto.setRefNacimiento(!isNull(dto.getFkMunicipioNacimiento())
                 ? buildByMunicipio(dto.getFkMunicipioNacimiento()) : null);
-        dto.setRefVecindad(dto.getFkMunicipioNacimiento() != null
+        dto.setRefVecindad(!isNull(dto.getFkMunicipioNacimiento())
                 ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
 
         //registro laboral

@@ -13,7 +13,7 @@ import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.PersonaDto;
-import gt.org.isis.controller.dto.RequestPersonaDto;
+import gt.org.isis.controller.dto.RequestCreatePersonaDto;
 import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Catalogos;
@@ -77,7 +77,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
         return ValidationsHelper.findBestMatchItem(nombre.trim(), all);
     }
 
-    public void setDatosGeneralesByLector(Persona currentPersona, RequestPersonaDto r) {
+    public void setDatosGeneralesByLector(Persona currentPersona, RequestCreatePersonaDto r) {
         if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
             currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         } else {
@@ -106,7 +106,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
             throw ExceptionsManager.newValidationException("municipio_nacimiento", "Nacionalidad es requerido!");
         }
         DpiDto dpiDto;
-        if ((dpiDto = r.getDpi()) != null) {
+        if (!isNull(dpiDto = r.getDpi())) {
             if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
                 dpiDto.setFechaEmision(parseFechaDPI(dpiDto.getFechaEmisionTexto()));
                 dpiDto.setFechaVencimiento(parseFechaDPI(dpiDto.getFechaVencimientoTexto()));
