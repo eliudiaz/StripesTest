@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 @Component
 public class ActualizaPersonaCUIValidation extends CUIPersonaValidation<RequestCreatePersonaDto> {
