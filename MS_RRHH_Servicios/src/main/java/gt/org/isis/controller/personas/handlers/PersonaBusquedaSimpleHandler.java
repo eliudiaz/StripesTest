@@ -143,14 +143,16 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     }
 
     private void setLugarResidencia(Persona p, RequestGetPersonaDto dto) {
-        if (p.getLugarResidenciaCollection() != null && !p.getLugarResidenciaCollection().isEmpty()) {
-            dto.setLugarResidencia((LugarResidenciaDto) Collections2.filter(new LugarResidenciaDtoConverter().toDTO((List) p.getLugarResidenciaCollection()),
-                    new Predicate<LugarResidenciaDto>() {
-                @Override
-                public boolean apply(LugarResidenciaDto t) {
-                    return t.getEstado().equals(EstadoVariable.ACTUAL);
-                }
-            }).iterator().next());
+        if (!isNull(p.getLugarResidenciaCollection()) && !p.getLugarResidenciaCollection().isEmpty()) {
+            dto.setLugarResidencia((LugarResidenciaDto) Collections2
+                    .filter(new LugarResidenciaDtoConverter()
+                            .toDTO((List) p.getLugarResidenciaCollection()),
+                            new Predicate<LugarResidenciaDto>() {
+                        @Override
+                        public boolean apply(LugarResidenciaDto t) {
+                            return t.getEstado().equals(EstadoVariable.ACTUAL);
+                        }
+                    }).iterator().next());
         }
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
     }
