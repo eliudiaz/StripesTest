@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.personas.handlers.validations;
 
-import gt.org.isis.controller.dto.RequestUpdatePersonaDto;
+import gt.org.isis.controller.dto.RequestGetPersonaDto;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,5 +13,5 @@ import org.springframework.stereotype.Component;
  * @author edcracken
  */
 @Component
-public class UpdateExistePersonaValidation extends ExistePersonaValidation<RequestUpdatePersonaDto> {
+public class GetPersonaExisteValidation extends ExistePersonaValidation<RequestGetPersonaDto> {
 }
