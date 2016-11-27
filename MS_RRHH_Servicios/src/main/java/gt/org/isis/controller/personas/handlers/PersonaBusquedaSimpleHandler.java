@@ -12,7 +12,6 @@ import gt.org.isis.api.C;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.SingularAttrSpecificationBased;
 import gt.org.isis.controller.dto.EstudioSaludDto;
-import gt.org.isis.controller.dto.GetPersonaDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.controller.dto.PersonaDto;
@@ -22,6 +21,7 @@ import gt.org.isis.controller.dto.RefUnidadNotificadoraDto;
 import gt.org.isis.controller.dto.RegistroAcademicoDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;
 import gt.org.isis.controller.dto.RegistroLaboralPuestoDto;
+import gt.org.isis.controller.dto.RequestGetPersonaDto;
 import gt.org.isis.converters.DpiDtoConverter;
 import gt.org.isis.converters.EstudiosSaludConverter;
 import gt.org.isis.converters.GetPersonaDtoConverter;
@@ -77,10 +77,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     PuestosRepository puestosRepo;
 
-    @Override
-    public GetPersonaDto execute(PersonaDto request) {
-        Persona p = repo.findOne(request.getCui());
-        final GetPersonaDto dto = new GetPersonaDtoConverter().toDTO(p);
+    private void setDpiDto(Persona p, RequestGetPersonaDto dto) {
         if (p.getDpiCollection() != null && !p.getDpiCollection().isEmpty()) {
             dto.setDpi(new DpiDtoConverter().toDTO(Collections2.filter(p.getDpiCollection(), new Predicate<Dpi>() {
                 @Override
@@ -89,14 +86,18 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 }
             }).iterator().next()));
         }
+    }
 
+    public void setDatosGenerales(Persona p, RequestGetPersonaDto dto) {
         dto.setRefCedula(!isNull(dto.getFkMunicipioCedula())
                 ? buildByMunicipio(dto.getFkMunicipioCedula()) : null);
         dto.setRefNacimiento(!isNull(dto.getFkMunicipioNacimiento())
                 ? buildByMunicipio(dto.getFkMunicipioNacimiento()) : null);
         dto.setRefVecindad(!isNull(dto.getFkMunicipioNacimiento())
                 ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
+    }
 
+    public void setRegistroLaboral(Persona p, RequestGetPersonaDto dto) {
         //registro laboral
         RegistroLaboralDto currentRL = null;
         List<RegistroLaboralDto> histRL = new ArrayList<RegistroLaboralDto>();
@@ -116,30 +117,32 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             currentRL = !histRL.isEmpty() ? histRL.get(0) : null;
         }
         dto.setRegistroLaboral(currentRL);
+    }
 
+    private void setRegistroAcademico(Persona p, RequestGetPersonaDto dto) {
         //registro academico
-        List<RegistroAcademicoDto> hisRA = new ArrayList<RegistroAcademicoDto>();
         RegistroAcademicoDto currentRA = null;
         for (RegistroAcademico ra : p.getRegistroAcademicoCollection()) {
             if (ra.getEstado().equals(EstadoVariable.ACTUAL)) {
                 currentRA = new RegistroAcademicoConverter().toDTO(ra);
                 fillRegistroRA(currentRA);
-                currentRA.setHistorial(hisRA);
-            } else {
-                hisRA.add(new RegistroAcademicoConverter().toDTO(ra));
             }
         }
-        if (isNull(currentRA)) {
-            currentRA = !hisRA.isEmpty() ? hisRA.get(0) : null;
-        }
-        dto.setRegistroAcademico(currentRA);
 
+        dto.setRegistroAcademico(currentRA);
+    }
+
+    private void setIdiomas(Persona p, RequestGetPersonaDto dto) {
         dto.setIdiomas(new IdiomaDtoConverter().toDTO((List) p.getIdiomaCollection()));
         fillIdiomas(dto.getIdiomas());
+    }
 
+    private void setEstudiosSalud(Persona p, RequestGetPersonaDto dto) {
         dto.setEstudiosSalud(new EstudiosSaludConverter().toDTO((List) p.getEstudioSaludCollection()));
         fillEstudiosSalud(dto.getEstudiosSalud());
+    }
 
+    private void setLugarResidencia(Persona p, RequestGetPersonaDto dto) {
         if (p.getLugarResidenciaCollection() != null && !p.getLugarResidenciaCollection().isEmpty()) {
             dto.setLugarResidencia((LugarResidenciaDto) Collections2.filter(new LugarResidenciaDtoConverter().toDTO((List) p.getLugarResidenciaCollection()),
                     new Predicate<LugarResidenciaDto>() {
@@ -150,6 +153,19 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             }).iterator().next());
         }
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
+    }
+
+    @Override
+    public RequestGetPersonaDto execute(PersonaDto request) {
+        Persona p = repo.findOne(request.getCui());
+        RequestGetPersonaDto dto = new GetPersonaDtoConverter().toDTO(p);
+        setDpiDto(p, dto);
+        setDatosGenerales(p, dto);
+        setRegistroLaboral(p, dto);
+        setRegistroAcademico(p, dto);
+        setIdiomas(p, dto);
+        setEstudiosSalud(p, dto);
+        setLugarResidencia(p, dto);
 
         return dto;
     }
