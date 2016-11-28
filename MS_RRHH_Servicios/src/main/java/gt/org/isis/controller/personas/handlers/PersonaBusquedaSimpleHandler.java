@@ -47,7 +47,6 @@ import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestosRepository;
 import gt.org.isis.repository.UnidadEjecutoraRepository;
 import gt.org.isis.repository.UnidadNotificadoraRepository;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -97,24 +96,23 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
     }
 
+    private void fillExpectativa(RegistroLaboralDto rl) {
+        Catalogos c = (Catalogos) catalogosRepo
+                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, rl.getFkExpectativa()));
+        rl.setFkExpectativaNombre(c.getValor());
+    }
+
     public void setRegistroLaboral(Persona p, RequestGetPersonaDto dto) {
         //registro laboral
         RegistroLaboralDto currentRL = null;
-        List<RegistroLaboralDto> histRL = new ArrayList<RegistroLaboralDto>();
         for (RegistroLaboral rl : p.getRegistroLaboralCollection()) {
             if (rl.getEstado().equals(EstadoVariable.ACTUAL)) {
                 currentRL = new RegistroLaboralConverter().toDTO(rl);
+                fillExpectativa(currentRL);
                 for (RegistroLaboralPuestoDto rp : currentRL.getPuestos()) {
                     fillRegistroPuesto(rp);
                 }
-                currentRL.setHistorial(histRL);
-            } else {
-                histRL.add(new RegistroLaboralConverter().toDTO(rl));
             }
-        }
-
-        if (isNull(currentRL)) {
-            currentRL = !histRL.isEmpty() ? histRL.get(0) : null;
         }
         dto.setRegistroLaboral(currentRL);
     }

@@ -22,6 +22,7 @@ public class RegistroLaboralDto {
     private boolean comisionado;
     @NotNull
     private Integer fkExpectativa;
+    private String fkExpectativaNombre;
     private Integer fkComunidadComisionado;
     private String nombreComunidadComisionado;
     private String observaciones;
@@ -29,6 +30,14 @@ public class RegistroLaboralDto {
     @Valid
     private List<RegistroLaboralPuestoDto> puestos;
     private List<RegistroLaboralDto> historial;
+
+    public String getFkExpectativaNombre() {
+        return fkExpectativaNombre;
+    }
+
+    public void setFkExpectativaNombre(String fkExpectativaNombre) {
+        this.fkExpectativaNombre = fkExpectativaNombre;
+    }
 
     public String getObservaciones() {
         return observaciones;
