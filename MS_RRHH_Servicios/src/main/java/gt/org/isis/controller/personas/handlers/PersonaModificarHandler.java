@@ -126,7 +126,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
     private PersonaModificarHandler actualizaLugarResidencia(Persona p, PersonaDto r) {
         LugarResidencia ra;
         crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
-        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id", "creadoPor", "fechaCreacion"});
+        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id", "creadoPor", "fechaCreacion", "estado"});
         setUpdateInfo(ra);
 
         registroLaboralRepo.save(ra);
@@ -210,7 +210,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
         RegistroAcademico ra;
         crearHistoricoRegistroAcademico(ra = p.getRegistroAcademicoCollection().iterator().next());
-        BeanUtils.copyProperties(r.getRegistroAcademico(), ra, new String[]{"id", "creadoPor", "fechaCreacion"});
+        BeanUtils.copyProperties(r.getRegistroAcademico(), ra, new String[]{"id", "creadoPor", "fechaCreacion", "estado"});
         setUpdateInfo(ra);
         rAcaRepository.save(ra);
 
