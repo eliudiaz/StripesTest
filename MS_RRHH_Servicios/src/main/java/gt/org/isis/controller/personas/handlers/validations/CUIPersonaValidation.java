@@ -26,12 +26,12 @@ public class CUIPersonaValidation<T extends PersonaDto> extends GenericValidatio
     @Override
     public void validate(final T persona, ValidationRequestContext ctx) {
         if (persona.getCui().length() != 13) {
-            throw ExceptionsManager.newValidationException("cui", "invalid_cui,Longitud de CUI es de 13 digitos!");
+            throw ExceptionsManager.newValidationException("cui", "invalid_cui,Longitud de CUI es diferente de 13 digitos!");
         }
         try {
-            LOG.info(">> " + new BigInteger(persona.getCui()).toString());
+            LOG.info(">> cui >> valid! >> " + new BigInteger(persona.getCui()).toString());
         } catch (NumberFormatException e) {
-            throw ExceptionsManager.newValidationException("cui", "invalid_cui,CUI es numerico!");
+            throw ExceptionsManager.newValidationException("cui", "invalid_cui,CUI debe ser numerico!");
 
         }
 
