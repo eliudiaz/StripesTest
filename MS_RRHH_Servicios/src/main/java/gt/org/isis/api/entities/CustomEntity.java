@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.model;
+package gt.org.isis.api.entities;
 
 import java.util.Date;
 

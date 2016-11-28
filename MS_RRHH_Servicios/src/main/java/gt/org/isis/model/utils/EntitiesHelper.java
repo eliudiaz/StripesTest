@@ -8,7 +8,7 @@ package gt.org.isis.model.utils;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.misc.exceptions.ext.UnknownException;
-import gt.org.isis.model.CustomEntity;
+import gt.org.isis.api.entities.CustomEntity;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.PersonaChildEntity;
 import java.io.UnsupportedEncodingException;

@@ -5,9 +5,9 @@
  */
 package gt.org.isis.api;
 
+import gt.org.isis.api.entities.CustomEntity;
 import com.google.gson.Gson;
 import gt.org.isis.controller.dto.SecureRequestDto;
-import gt.org.isis.model.CustomEntity;
 import gt.org.isis.model.utils.EntitiesHelper;
 
 /**

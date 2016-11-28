@@ -8,7 +8,7 @@ package gt.org.isis.model.utils;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.misc.Singleton;
-import gt.org.isis.model.CustomEntity;
+import gt.org.isis.api.entities.CustomEntity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;

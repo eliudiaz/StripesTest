@@ -5,6 +5,7 @@
  */
 package gt.org.isis.model;
 
+import gt.org.isis.api.entities.CustomEntity;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoCivil;
 import gt.org.isis.model.enums.Pueblo;

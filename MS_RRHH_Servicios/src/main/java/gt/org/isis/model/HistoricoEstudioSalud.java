@@ -5,6 +5,7 @@
  */
 package gt.org.isis.model;
 
+import gt.org.isis.api.entities.CustomEntity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
