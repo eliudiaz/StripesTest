@@ -78,6 +78,10 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
     }
 
     public void setDatosGeneralesByLector(Persona currentPersona, RequestCreatePersonaDto r) {
+        if (isNull(r.getFoto()) || r.getFoto().isEmpty()) {
+            throw ExceptionsManager.newValidationException("foto", "La fotografia es requerida!");
+        }
+
         if (!isNull(r.getFechaNacimientoTexto()) && !r.getFechaNacimientoTexto().isEmpty()) {
             currentPersona.setFechaNacimiento(parseFechaDPI(r.getFechaNacimientoTexto()));
         } else {
