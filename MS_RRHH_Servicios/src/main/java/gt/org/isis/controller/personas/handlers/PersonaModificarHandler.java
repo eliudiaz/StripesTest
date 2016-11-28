@@ -115,7 +115,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
 
     private void crearHistoricoPersona(Persona persona) {
         HistoricoPersona historicoPersona = new HistoricoPersona();
-        BeanUtils.copyProperties(persona, historicoPersona, new String[]{"estado"});
+        BeanUtils.copyProperties(persona, historicoPersona, new String[]{"estado", "id"});
         historicoPersona.setFkPersona(persona);
         historicoPersona.setEstado(Estado.ACTIVO);
         setUpdateInfo(historicoPersona);

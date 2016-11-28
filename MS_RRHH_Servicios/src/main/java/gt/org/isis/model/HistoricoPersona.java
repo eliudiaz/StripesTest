@@ -35,6 +35,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "historico_persona", schema = "public")
 public class HistoricoPersona implements Serializable, CustomEntity {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fk_nacionalidad", nullable = false)
@@ -42,18 +48,10 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "fk_pueblo", length = 50)
     private Pueblo fkPueblo;
-
     @Column(name = "fk_comunidad_linguistica", length = 50)
     private Integer fkComunidadLinguistica;
     @Column(name = "edad", nullable = false)
     private Integer edad;
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(nullable = false)
-    private Integer id;
     @Basic(optional = false)
     @Column(name = "primer_nombre", nullable = false, length = 100)
     private String primerNombre;
