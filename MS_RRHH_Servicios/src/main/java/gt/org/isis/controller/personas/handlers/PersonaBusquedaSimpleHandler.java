@@ -76,6 +76,21 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     @Autowired
     PuestosRepository puestosRepo;
 
+    @Override
+    public RequestGetPersonaDto execute(PersonaDto request) {
+        Persona p = repo.findOne(request.getCui());
+        RequestGetPersonaDto dto = new GetPersonaDtoConverter().toDTO(p);
+        setDpiDto(p, dto);
+        setDatosGenerales(p, dto);
+        setRegistroLaboral(p, dto);
+        setRegistroAcademico(p, dto);
+        setIdiomas(p, dto);
+        setEstudiosSalud(p, dto);
+        setLugarResidencia(p, dto);
+
+        return dto;
+    }
+
     private void setDpiDto(Persona p, RequestGetPersonaDto dto) {
         if (p.getDpiCollection() != null && !p.getDpiCollection().isEmpty()) {
             dto.setDpi(new DpiDtoConverter().toDTO(Collections2.filter(p.getDpiCollection(), new Predicate<Dpi>() {
@@ -153,21 +168,6 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                     }).iterator().next());
         }
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
-    }
-
-    @Override
-    public RequestGetPersonaDto execute(PersonaDto request) {
-        Persona p = repo.findOne(request.getCui());
-        RequestGetPersonaDto dto = new GetPersonaDtoConverter().toDTO(p);
-        setDpiDto(p, dto);
-        setDatosGenerales(p, dto);
-        setRegistroLaboral(p, dto);
-        setRegistroAcademico(p, dto);
-        setIdiomas(p, dto);
-        setEstudiosSalud(p, dto);
-        setLugarResidencia(p, dto);
-
-        return dto;
     }
 
     private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidadId) {
@@ -281,13 +281,13 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
         c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-        if (c != null) {
+        if (!isNull(c)) {
             reg.setUltimoGrado(c.getId());
             reg.setNombreUltimoGrado(c.getValor());
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            if (c != null) {
+            if (!isNull(c)) {
                 reg.setNivelUltimoGrado(c.getId());
                 reg.setNivelUltimoGradoNombre(c.getValor());
             }
@@ -301,13 +301,13 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            if (c != null) {
-                reg.setNivelGradoActual(c.getId());
-                reg.setNivelGradoActualNombre(c.getValor());
+            if (!isNull(c)) {
+                reg.setGradoActual(c.getId());
+                reg.setNombreGradoActual(c.getValor());
 
                 c = (Catalogos) catalogosRepo
                         .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-                if (c != null) {
+                if (!isNull(c)) {
                     reg.setNivelGradoActual(c.getId());
                     reg.setNivelGradoActualNombre(c.getValor());
                 }
