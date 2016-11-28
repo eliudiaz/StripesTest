@@ -78,14 +78,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         Properties properties = new Properties();
         properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
         properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
-        if (true) { //enable cache by flagging
-            properties.put("hibernate.cache.provider_class", "net.sf.ehcache.hibernate.EhCacheProvider");
-            properties.put("hibernate.cache.region.factory_class", "net.sf.ehcache.hibernate.EhCacheRegionFactory");
-            properties.put("hibernate.cache.use_query_cache", true);
-            properties.put("hibernate.cache.use_second_level_cache", true);
-            properties.put("hibernate.cache.use_structured_entries", true);
-            properties.put("hibernate.cache.generate_statistics", true);
-        }
         return properties;
     }
 
