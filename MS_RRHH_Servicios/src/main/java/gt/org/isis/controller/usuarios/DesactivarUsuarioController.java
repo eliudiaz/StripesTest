@@ -30,7 +30,7 @@ public class DesactivarUsuarioController {
     @RequestMapping(value = "/disable/{id}",
             method = RequestMethod.DELETE)
     public HttpEntity modificar(@PathVariable("id") String id) {
-        handler.handle(new Usuario(id));
+        handler.handle(new Usuario(id.trim()));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 }

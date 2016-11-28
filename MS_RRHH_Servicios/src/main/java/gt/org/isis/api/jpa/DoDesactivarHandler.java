@@ -6,6 +6,7 @@
 package gt.org.isis.api.jpa;
 
 import gt.org.isis.api.AbstractRequestHandler;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
@@ -27,9 +28,11 @@ public class DoDesactivarHandler<T extends DesactivableEntity>
     @Override
     public Boolean execute(T e) {
         T r = repo.findOne(e.getId());
-        r.setEstado(Estado.INACTIVO);
-        setUpdateInfo(r);
-        repo.save(r);
+        if (!isNull(r)) {
+            r.setEstado(Estado.INACTIVO);
+            setUpdateInfo(r);
+            repo.save(r);
+        }
         return true;
     }
 

@@ -35,8 +35,6 @@ import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
-import gt.org.isis.model.RegistroAcademico;
-import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.enums.EstadoVariable;
@@ -118,31 +116,25 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     }
 
     public void setRegistroLaboral(Persona p, RequestGetPersonaDto dto) {
-        //registro laboral
-        RegistroLaboralDto currentRL = null;
-        for (RegistroLaboral rl : p.getRegistroLaboralCollection()) {
-            if (rl.getEstado().equals(EstadoVariable.ACTUAL)) {
-                currentRL = new RegistroLaboralConverter().toDTO(rl);
-                fillExpectativa(currentRL);
-                for (RegistroLaboralPuestoDto rp : currentRL.getPuestos()) {
-                    fillRegistroPuesto(rp);
-                }
+        if (!isNull(p.getRegistroLaboralCollection()) && !p.getRegistroLaboralCollection().isEmpty()) {
+            //registro laboral
+            RegistroLaboralDto currentRL = new RegistroLaboralConverter().toDTO(p.getRegistroLaboralCollection().iterator().next());
+            fillExpectativa(currentRL);
+            for (RegistroLaboralPuestoDto rp : currentRL.getPuestos()) {
+                fillRegistroPuesto(rp);
             }
+
+            dto.setRegistroLaboral(currentRL);
         }
-        dto.setRegistroLaboral(currentRL);
     }
 
     private void setRegistroAcademico(Persona p, RequestGetPersonaDto dto) {
-        //registro academico
-        RegistroAcademicoDto currentRA = null;
-        for (RegistroAcademico ra : p.getRegistroAcademicoCollection()) {
-            if (ra.getEstado().equals(EstadoVariable.ACTUAL)) {
-                currentRA = new RegistroAcademicoConverter().toDTO(ra);
-                fillRegistroRA(currentRA);
-            }
+        if (!isNull(p.getRegistroAcademicoCollection()) && !p.getRegistroAcademicoCollection().isEmpty()) {
+            //registro academico
+            RegistroAcademicoDto currentRA = new RegistroAcademicoConverter().toDTO(p.getRegistroAcademicoCollection().iterator().next());
+            fillRegistroRA(currentRA);
+            dto.setRegistroAcademico(currentRA);
         }
-
-        dto.setRegistroAcademico(currentRA);
     }
 
     private void setIdiomas(Persona p, RequestGetPersonaDto dto) {
@@ -157,15 +149,8 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     private void setLugarResidencia(Persona p, RequestGetPersonaDto dto) {
         if (!isNull(p.getLugarResidenciaCollection()) && !p.getLugarResidenciaCollection().isEmpty()) {
-            dto.setLugarResidencia((LugarResidenciaDto) Collections2
-                    .filter(new LugarResidenciaDtoConverter()
-                            .toDTO((List) p.getLugarResidenciaCollection()),
-                            new Predicate<LugarResidenciaDto>() {
-                        @Override
-                        public boolean apply(LugarResidenciaDto t) {
-                            return t.getEstado().equals(EstadoVariable.ACTUAL);
-                        }
-                    }).iterator().next());
+            dto.setLugarResidencia((LugarResidenciaDto) new LugarResidenciaDtoConverter()
+                    .toDTO((List) p.getLugarResidenciaCollection()).iterator().next());
         }
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
     }
@@ -278,15 +263,17 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getUltimoGrado()));
         reg.setCarreraUltimoGradoNombre(c.getValor());
         reg.setCarreraUltimoGrado(c.getId());
-
+        System.out.println(">> carrera >> " + c);
         c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+        System.out.println(">> grado >> " + c);
         if (!isNull(c)) {
             reg.setUltimoGrado(c.getId());
             reg.setNombreUltimoGrado(c.getValor());
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+            System.out.println(">> nivel >> " + c);
             if (!isNull(c)) {
                 reg.setNivelUltimoGrado(c.getId());
                 reg.setNivelUltimoGradoNombre(c.getValor());

@@ -145,6 +145,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
     private PersonaModificarHandler actualizarDatosGenerales(Persona currentPersona, RequestUpdatePersonaDto updateRequest) {
         crearHistoricoPersona(currentPersona);
         BeanUtils.copyProperties(updateRequest, currentPersona);
+        currentPersona.setEstado(Estado.ACTIVO);
         if (updateRequest.isLector()) {
             setDatosGeneralesByLector(currentPersona, updateRequest);
         }
