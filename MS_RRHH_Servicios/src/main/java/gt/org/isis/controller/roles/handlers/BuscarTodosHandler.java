@@ -8,6 +8,7 @@ package gt.org.isis.controller.roles.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.entities.NoDisableEntitiesSpec;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.converters.AccesoDtoConverter;
@@ -38,20 +39,22 @@ public class BuscarTodosHandler extends AbstractRequestHandler<Object, List<Role
 
     @Override
     public List<RoleDto> execute(final Object request) {
-        return new ArrayList<RoleDto>(Collections2.transform(roles.findAll(), new Function<Role, RoleDto>() {
-            @Override
-            public RoleDto apply(Role r) {
-                RoleDto rd = new RoleDtoConverter().toDTO(r);
-                rd.setAccesos(new ArrayList(Collections2.transform(r.getAccesoRoleCollection(),
-                        new Function<AccesoRole, AccesoDto>() {
+        return new ArrayList<RoleDto>(Collections2
+                .transform(roles.findAll(new NoDisableEntitiesSpec<Role>()),
+                        new Function<Role, RoleDto>() {
                     @Override
-                    public AccesoDto apply(AccesoRole f) {
-                        return new AccesoDtoConverter().toDTO(f.getFkAcceso());
+                    public RoleDto apply(Role r) {
+                        RoleDto rd = new RoleDtoConverter().toDTO(r);
+                        rd.setAccesos(new ArrayList(Collections2.transform(r.getAccesoRoleCollection(),
+                                new Function<AccesoRole, AccesoDto>() {
+                            @Override
+                            public AccesoDto apply(AccesoRole f) {
+                                return new AccesoDtoConverter().toDTO(f.getFkAcceso());
+                            }
+                        })));
+                        return rd;
                     }
-                })));
-                return rd;
-            }
-        }));
+                }));
 
     }
 

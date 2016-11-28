@@ -8,6 +8,7 @@ package gt.org.isis.controller.accesos.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.entities.NoDisableEntitiesSpec;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.converters.AccesoDtoConverter;
 import gt.org.isis.model.Acceso;
@@ -32,7 +33,7 @@ public class BuscarAcTodosHandler extends AbstractRequestHandler<Integer, List<A
     @Override
     public List<AccesoDto> execute(final Integer codigoPadre) {
         List accesos = codigoPadre != null ? accesosRepo.findAll(spec.build(codigoPadre))
-                : accesosRepo.findAll();
+                : accesosRepo.findAll(new NoDisableEntitiesSpec<Acceso>());
         return new ArrayList<AccesoDto>(Collections2.transform(accesos,
                 new Function<Acceso, AccesoDto>() {
             @Override
