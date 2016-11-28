@@ -193,21 +193,23 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     private RefAreaGeograficaDto buildByMunicipio(Integer fkMunicipio) {
         RefAreaGeograficaDto refArea = new RefAreaGeograficaDto();
         AreaGeografica ag = areasRepo.findOne(fkMunicipio);
-        refArea.setFkMunicio(ag.getId());
-        refArea.setFkMunicioNombre(ag.getValor());
-
-        ag = areasRepo.findOne(ag.getCodigoPadre());
         if (!isNull(ag)) {
-
-            refArea.setFkDepartamento(ag.getId());
-            refArea.setFkDepartamentoNombre(ag.getValor());
+            refArea.setFkMunicio(ag.getId());
+            refArea.setFkMunicioNombre(ag.getValor());
 
             ag = areasRepo.findOne(ag.getCodigoPadre());
             if (!isNull(ag)) {
-                refArea.setFkPais(ag.getId());
-                refArea.setFkPaisNombre(ag.getValor());
-            }
 
+                refArea.setFkDepartamento(ag.getId());
+                refArea.setFkDepartamentoNombre(ag.getValor());
+
+                ag = areasRepo.findOne(ag.getCodigoPadre());
+                if (!isNull(ag)) {
+                    refArea.setFkPais(ag.getId());
+                    refArea.setFkPaisNombre(ag.getValor());
+                }
+
+            }
         }
         return refArea;
     }
