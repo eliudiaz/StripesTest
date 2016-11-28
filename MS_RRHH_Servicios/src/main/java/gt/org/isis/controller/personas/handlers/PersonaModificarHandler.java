@@ -126,7 +126,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
     private PersonaModificarHandler actualizaLugarResidencia(Persona p, PersonaDto r) {
         LugarResidencia ra;
         crearHistoricoLugarResidencia(ra = p.getLugarResidenciaCollection().iterator().next());
-        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id", "creadoPor", "fechaCreacion", "estado"});
+        BeanUtils.copyProperties(r.getLugarResidencia(), ra, new String[]{"id", "fechaCreacion", "creadoPor", "estado"});
         setUpdateInfo(ra);
 
         registroLaboralRepo.save(ra);
@@ -228,7 +228,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
             RequestUpdatePersonaDto requestModPersona) {
         final RegistroLaboral registroLaboral;
         crearHistoricoRegistroLaboral(registroLaboral = persona.getRegistroLaboralCollection().iterator().next());
-        BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral, new String[]{"id"});
+        BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral, new String[]{"id", "creadoPor", "fechaCreacion", "estado"});
         setUpdateInfo(registroLaboral);
 
         registroLaboral.getPuestoCollection().clear();
