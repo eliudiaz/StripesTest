@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author edcracken
  */
-@Controller("usuariosModificar")
+@Controller
 @RequestMapping("usuarios")
 public class ModificarUsuarioController {
 

@@ -28,6 +28,7 @@ public class DoDesactivarHandler<T extends DesactivableEntity>
     public Boolean execute(T e) {
         T r = repo.findOne(e.getId());
         r.setEstado(Estado.INACTIVO);
+        setUpdateInfo(r);
         repo.save(r);
         return true;
     }

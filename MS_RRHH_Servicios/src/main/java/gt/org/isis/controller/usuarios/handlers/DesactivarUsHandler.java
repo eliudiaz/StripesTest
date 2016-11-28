@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
  *
  * @author edcracken
  */
-@Service("usuariosDesactivar")
+@Service
 public class DesactivarUsHandler extends DoDesactivarHandler<Usuario> {
 
     @Autowired

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author edcracken
  */
-@Controller("usuariosBuscar")
+@Controller
 @RequestMapping("usuarios")
 public class BuscarUsuarioController {
 

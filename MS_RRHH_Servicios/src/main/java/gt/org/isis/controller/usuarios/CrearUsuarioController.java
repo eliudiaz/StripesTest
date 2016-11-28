@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author eliud
  */
-@Controller("usuariosCrear")
+@Controller
 @RequestMapping("usuarios")
 public class CrearUsuarioController {
 

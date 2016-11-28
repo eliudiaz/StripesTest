@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author edcracken
  */
-@Controller("getUsuarios")
+@Controller
 @RequestMapping("usuarios")
-public class BuscarTodosController {
+public class BuscarUsTodosController {
 
     @Autowired
     BuscarUsTodosHandler handler;
