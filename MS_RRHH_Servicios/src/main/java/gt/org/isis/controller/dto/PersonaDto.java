@@ -67,8 +67,8 @@ public class PersonaDto {
     private Integer fkMunicipioCedula;
     private String fkMunicipioCedulaNombre;
     private Estado estado;
-    @NotNull
     private Integer fkMunicipioVecindad;
+    private String fkMunicipioVecindadNombre;
     @NotNull
     private String huellaManoDer;
     @NotNull
@@ -90,8 +90,15 @@ public class PersonaDto {
     @Valid
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
-
     private boolean lector = true;
+
+    public String getFkMunicipioVecindadNombre() {
+        return fkMunicipioVecindadNombre;
+    }
+
+    public void setFkMunicipioVecindadNombre(String fkMunicipioVecindadNombre) {
+        this.fkMunicipioVecindadNombre = fkMunicipioVecindadNombre;
+    }
 
     public boolean isLector() {
         return lector;

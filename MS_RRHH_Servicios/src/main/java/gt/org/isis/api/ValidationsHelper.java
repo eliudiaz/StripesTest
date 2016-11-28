@@ -36,7 +36,7 @@ public class ValidationsHelper {
                 .transform(options, new Function<T, MatchItem>() {
                     @Override
                     public MatchItem apply(T f) {
-                        return new MatchItem(StringUtils.getLevenshteinDistance(param, f.toString()), f);
+                        return new MatchItem(StringUtils.getLevenshteinDistance(param.toLowerCase(), f.toString().toLowerCase()), f);
                     }
                 }));
 

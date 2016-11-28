@@ -169,7 +169,7 @@ public class Catalogos implements Serializable {
 
     @Override
     public String toString() {
-        return "org.ms.rrhh.domain.model.Catalogos[ id=" + id + " ]";
+        return this.valor;
     }
 
 }
