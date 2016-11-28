@@ -249,7 +249,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
         if (c.getCodigoPadre() != null) {
             c = catalogosRepo.findOne(c.getCodigoPadre());
-            if (c != null) {
+            if (!isNull(c)) {
                 refClasificacion.setFkClasificacionServicio(c.getId());
                 refClasificacion.setFkClasificacionServicioNombre(c.getValor());
             }
