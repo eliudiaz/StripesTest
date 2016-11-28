@@ -261,19 +261,28 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     private void fillRegistroRA(RegistroAcademicoDto reg) {
         Catalogos c = (Catalogos) catalogosRepo
                 .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getUltimoGrado()));
-        reg.setCarreraUltimoGradoNombre(c.getValor());
-        reg.setCarreraUltimoGrado(c.getId());
-        System.out.println(">> carrera >> " + c);
-        c = (Catalogos) catalogosRepo
-                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-        System.out.println(">> grado >> " + c);
-        if (!isNull(c)) {
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_CARRERA)) {
+            reg.setCarreraUltimoGradoNombre(c.getValor());
+            reg.setCarreraUltimoGrado(c.getId());
+            c = (Catalogos) catalogosRepo
+                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+            if (!isNull(c)) {
+                reg.setUltimoGrado(c.getId());
+                reg.setNombreUltimoGrado(c.getValor());
+
+                c = (Catalogos) catalogosRepo
+                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+                if (!isNull(c)) {
+                    reg.setNivelUltimoGrado(c.getId());
+                    reg.setNivelUltimoGradoNombre(c.getValor());
+                }
+            }
+        } else {
             reg.setUltimoGrado(c.getId());
             reg.setNombreUltimoGrado(c.getValor());
 
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            System.out.println(">> nivel >> " + c);
             if (!isNull(c)) {
                 reg.setNivelUltimoGrado(c.getId());
                 reg.setNivelUltimoGradoNombre(c.getValor());
@@ -283,12 +292,24 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         if (reg.isEstudiaActualmente()) {
             c = (Catalogos) catalogosRepo
                     .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
-            reg.setCarreraGradoActual(c.getId());
-            reg.setCarreraGradoActualNombre(c.getValor());
+            if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_CARRERA)) {
+                reg.setCarreraGradoActual(c.getId());
+                reg.setCarreraGradoActualNombre(c.getValor());
 
-            c = (Catalogos) catalogosRepo
-                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            if (!isNull(c)) {
+                c = (Catalogos) catalogosRepo
+                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+                if (!isNull(c)) {
+                    reg.setGradoActual(c.getId());
+                    reg.setNombreGradoActual(c.getValor());
+
+                    c = (Catalogos) catalogosRepo
+                            .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
+                    if (!isNull(c)) {
+                        reg.setNivelGradoActual(c.getId());
+                        reg.setNivelGradoActualNombre(c.getValor());
+                    }
+                }
+            } else {
                 reg.setGradoActual(c.getId());
                 reg.setNombreGradoActual(c.getValor());
 
