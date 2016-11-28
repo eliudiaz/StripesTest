@@ -5,7 +5,7 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.api.entities.CustomEntity;
+import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
@@ -14,11 +14,11 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,9 +34,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(name = "role", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r")})
-public class Role implements Serializable, CustomEntity {
+public class Role implements Serializable, DesactivableEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,6 +44,7 @@ public class Role implements Serializable, CustomEntity {
     private Integer id;
     @Column
     private String nombre;
+    @Enumerated(EnumType.STRING)
     @Column
     private Estado estado;
     @Basic(optional = false)

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author eliud
  */
-@Repository
+@Repository("rolesRepository")
 public interface RolesRepository extends JpaRepository<Role, Integer> {
 
 }

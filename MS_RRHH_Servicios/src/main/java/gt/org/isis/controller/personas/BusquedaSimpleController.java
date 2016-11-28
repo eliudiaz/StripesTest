@@ -5,8 +5,8 @@
  */
 package gt.org.isis.controller.personas;
 
-import gt.org.isis.controller.dto.RequestUpdatePersonaDto;
-import gt.org.isis.controller.personas.handlers.PersonaModificarHandler;
+import gt.org.isis.controller.dto.PersonaDto;
+import gt.org.isis.controller.personas.handlers.PersonaBusquedaSimpleHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -15,30 +15,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 @Controller
 @RequestMapping("personas")
-public class Modificar {
+public class BusquedaSimpleController {
 
     @Autowired
-    PersonaModificarHandler handler;
+    PersonaBusquedaSimpleHandler handler;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @RequestMapping(value = "/mod/{cui}",
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @RequestMapping(value = "/get", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity modificar(@PathVariable("cui") String cui, @RequestBody RequestUpdatePersonaDto persona) {
-        persona.setCui(cui);
-        handler.handle(persona);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+    public HttpEntity getPersona(@RequestParam("cui") String cui) {
+        return new ResponseEntity<PersonaDto>(handler.handle(new PersonaDto(cui)), HttpStatus.OK);
     }
 }

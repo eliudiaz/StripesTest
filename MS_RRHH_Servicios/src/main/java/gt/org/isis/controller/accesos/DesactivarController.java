@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.controller.roles;
+package gt.org.isis.controller.accesos;
 
-import gt.org.isis.controller.roles.handlers.DesactivarHandler;
-import gt.org.isis.model.Role;
+import gt.org.isis.controller.accesos.handlers.DesactivarAcHandler;
+import gt.org.isis.model.Acceso;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author eliud
  */
-@Controller("desactivarRole")
-@RequestMapping("roles")
+@Controller("desactivarAcceso")
+@RequestMapping("accesos")
 public class DesactivarController {
 
     @Autowired
-    DesactivarHandler handler;
+    DesactivarAcHandler handler;
 
     @RequestMapping(value = "/disable/{id}", method = RequestMethod.DELETE)
     public HttpEntity modificar(@PathVariable("id") Integer id) {
-        handler.handle(new Role(id));
+        handler.handle(new Acceso(id));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 }

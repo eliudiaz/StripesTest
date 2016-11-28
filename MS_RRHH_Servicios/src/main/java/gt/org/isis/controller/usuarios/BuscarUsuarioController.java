@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller("usuariosBuscar")
 @RequestMapping("usuarios")
-public class BuscarUsuario {
+public class BuscarUsuarioController {
 
     @Autowired
     BuscarUsHandler handler;

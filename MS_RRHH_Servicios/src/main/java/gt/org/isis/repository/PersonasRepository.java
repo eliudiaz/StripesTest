@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author eliud
  */
-@Repository
+@Repository("personasRepository")
 public interface PersonasRepository extends JpaRepository<Persona, String>, JpaSpecificationExecutor<Persona> {
 
 }

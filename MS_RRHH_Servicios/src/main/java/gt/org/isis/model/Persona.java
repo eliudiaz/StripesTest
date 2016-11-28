@@ -5,7 +5,7 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.api.entities.CustomEntity;
+import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoCivil;
 import gt.org.isis.model.enums.Pueblo;
@@ -33,7 +33,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(schema = "public", name = "persona")
-public class Persona implements Serializable, CustomEntity {
+public class Persona implements Serializable, DesactivableEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -505,6 +505,11 @@ public class Persona implements Serializable, CustomEntity {
 
     public void setEdad(Integer edad) {
         this.edad = edad;
+    }
+
+    @Override
+    public Serializable getId() {
+        return getCui();
     }
 
 }

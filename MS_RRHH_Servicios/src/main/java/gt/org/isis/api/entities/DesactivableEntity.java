@@ -6,6 +6,7 @@
 package gt.org.isis.api.entities;
 
 import gt.org.isis.model.enums.Estado;
+import java.io.Serializable;
 
 /**
  *
@@ -13,7 +14,7 @@ import gt.org.isis.model.enums.Estado;
  */
 public interface DesactivableEntity extends CustomEntity {
 
-    public Integer getId();
+    public Serializable getId();
 
     public void setEstado(Estado estado);
 }

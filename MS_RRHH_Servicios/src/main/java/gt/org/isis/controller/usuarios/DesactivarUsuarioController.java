@@ -5,16 +5,14 @@
  */
 package gt.org.isis.controller.usuarios;
 
-import gt.org.isis.controller.dto.UsuarioDto;
-import gt.org.isis.controller.usuarios.handlers.ModificarUsHandler;
+import gt.org.isis.controller.usuarios.handlers.DesactivarUsHandler;
+import gt.org.isis.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -22,20 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author edcracken
  */
-@Controller("usuariosModificar")
+@Controller
 @RequestMapping("usuarios")
-public class ModificarUsuario {
+public class DesactivarUsuarioController {
 
     @Autowired
-    ModificarUsHandler handler;
+    DesactivarUsHandler handler;
 
-    @RequestMapping(value = "/mod/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            method = RequestMethod.PUT)
-    public HttpEntity modificar(@PathVariable("id") String id, @RequestBody UsuarioDto usuario) {
-        usuario.setUsuario(id);
-        handler.handle(usuario);
+    @RequestMapping(value = "/disable/{id}",
+            method = RequestMethod.DELETE)
+    public HttpEntity modificar(@PathVariable("id") String id) {
+        handler.handle(new Usuario(id));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 }

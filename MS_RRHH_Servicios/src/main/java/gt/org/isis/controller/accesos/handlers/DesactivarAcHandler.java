@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.controller.roles.handlers;
+package gt.org.isis.controller.accesos.handlers;
 
 import gt.org.isis.api.jpa.DoDesactivarHandler;
-import gt.org.isis.model.Role;
+import gt.org.isis.model.Acceso;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
  *
  * @author edcracken
  */
-@Service
-public class DesactivarHandler extends DoDesactivarHandler<Role> {
+@Service("accesosDesactivar")
+public class DesactivarAcHandler extends DoDesactivarHandler<Acceso> {
 
     @Autowired
-    public DesactivarHandler(@Qualifier("rolesRepository") JpaRepository<Role, Serializable> repo) {
+    public DesactivarAcHandler(@Qualifier("accesosRepository") JpaRepository<Acceso, Serializable> repo) {
         super(repo);
     }
 

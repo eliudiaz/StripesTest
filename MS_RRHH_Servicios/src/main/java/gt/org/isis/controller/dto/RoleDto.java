@@ -5,6 +5,9 @@
  */
 package gt.org.isis.controller.dto;
 
+import gt.org.isis.api.entities.DesactivableEntity;
+import gt.org.isis.model.enums.Estado;
+import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -13,7 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author eliud
  */
-public class RoleDto {
+public class RoleDto implements DesactivableEntity {
 
     private Integer id;
     @NotNull
@@ -22,6 +25,51 @@ public class RoleDto {
     @NotEmpty
     private List<AccesoDto> accesos;
     private String usuario;
+    private Estado estado;
+    private Date fechaCreacion;
+    private String creadoPor;
+    private Date fechaUltimoCambio;
+    private String ultimoCambioPor;
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    public String getCreadoPor() {
+        return creadoPor;
+    }
+
+    public void setCreadoPor(String creadoPor) {
+        this.creadoPor = creadoPor;
+    }
+
+    public Date getFechaUltimoCambio() {
+        return fechaUltimoCambio;
+    }
+
+    public void setFechaUltimoCambio(Date fechaUltimoCambio) {
+        this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public String getUltimoCambioPor() {
+        return ultimoCambioPor;
+    }
+
+    public void setUltimoCambioPor(String ultimoCambioPor) {
+        this.ultimoCambioPor = ultimoCambioPor;
+    }
 
     public RoleDto() {
     }

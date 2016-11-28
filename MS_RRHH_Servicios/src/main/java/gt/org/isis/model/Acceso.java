@@ -5,7 +5,7 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.api.entities.CustomEntity;
+import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,8 +19,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,9 +30,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Acceso", schema = "public")
-@NamedQueries({
-    @NamedQuery(name = "Acceso.findAll", query = "SELECT a FROM Acceso a")})
-public class Acceso implements Serializable, CustomEntity {
+public class Acceso implements Serializable, DesactivableEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -86,6 +82,7 @@ public class Acceso implements Serializable, CustomEntity {
         this.codigoPadre = codigoPadre;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }

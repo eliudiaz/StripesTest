@@ -5,35 +5,34 @@
  */
 package gt.org.isis.controller.usuarios;
 
-import gt.org.isis.controller.dto.UsuarioLoginDto;
-import gt.org.isis.controller.usuarios.handlers.LoginUsHandler;
+import gt.org.isis.controller.dto.UsuarioDto;
+import gt.org.isis.controller.usuarios.handlers.CrearUsHandler;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
  * @author eliud
  */
-@Controller
+@Controller("usuariosCrear")
 @RequestMapping("usuarios")
-public class LoginUsuario {
+public class CrearUsuarioController {
 
     @Autowired
-    LoginUsHandler handler;
+    CrearUsHandler handler;
 
-    @RequestMapping(value = "/login",
+    @RequestMapping(value = "/crea",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
-    public HttpEntity crear(@RequestBody @Valid UsuarioLoginDto usuario) {
-        return new ResponseEntity(handler.handle(usuario), HttpStatus.OK);
+    public @ResponseBody
+    UsuarioDto crear(@RequestBody @Valid UsuarioDto usuario) {
+        return handler.handle(usuario);
     }
 }

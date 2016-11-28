@@ -5,7 +5,7 @@
  */
 package gt.org.isis.model;
 
-import gt.org.isis.api.entities.CustomEntity;
+import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,8 +19,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,9 +32,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(schema = "public", name = "usuario")
-@NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
-public class Usuario implements Serializable, CustomEntity {
+public class Usuario implements Serializable, DesactivableEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
