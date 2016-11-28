@@ -5,6 +5,8 @@
  */
 package gt.org.isis.controller.home.handlers;
 
+import gt.org.isis.controller.home.handlers.specifications.PuestoPorFiltroAvanzadoQSpec;
+import gt.org.isis.controller.home.handlers.specifications.RegistroLaboralQSpec;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractValidationsRequestHandler;

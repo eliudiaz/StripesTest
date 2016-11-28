@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.controller.home.handlers;
+package gt.org.isis.controller.home.handlers.specifications;
 
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.BusquedaNormalDto;

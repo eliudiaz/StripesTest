@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.controller.home.handlers;
+package gt.org.isis.controller.home.handlers.specifications;
 
 import gt.org.isis.controller.dto.FiltroAvanzadoDto;
 import gt.org.isis.model.Puesto;
-import gt.org.isis.model.Puesto_;
 import gt.org.isis.model.enums.ComparadorBusqueda;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,33 +14,33 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
  * @author edcracken
  */
-public class PuestoQSpec implements Specification<Puesto> {
+public class PuestoPorFiltroAvanzadoQSpec implements Specification<Puesto> {
 
-    private final List<Integer> puestosNominales;
-    private final FiltroAvanzadoDto fa;
+    final private FiltroAvanzadoDto f;
+    final private SingularAttribute attribute;
 
-    public PuestoQSpec(List<Integer> puestosNominales, FiltroAvanzadoDto fa) {
-        this.puestosNominales = puestosNominales;
-        this.fa = fa;
+    public PuestoPorFiltroAvanzadoQSpec(FiltroAvanzadoDto f, SingularAttribute attribute) {
+        this.f = f;
+        this.attribute = attribute;
     }
 
     @Override
     public Predicate toPredicate(Root<Puesto> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
         List<Predicate> ls = new ArrayList<Predicate>();
-        
-        if (puestosNominales != null) {
-            if (fa.getComparador().equals(ComparadorBusqueda.IGUAL)) {
-                ls.add(root.get(Puesto_.fkPuestoNominal).in(puestosNominales));
-            }
-            if (fa.getComparador().equals(ComparadorBusqueda.DIFERENTE)) {
-                ls.add(cb.not(root.get(Puesto_.fkPuestoNominal).in(puestosNominales)));
-            }
+        if (f.getComparador().equals(ComparadorBusqueda.DIFERENTE)) {
+            ls.add(cb.notEqual(root.get(attribute),
+                    Integer.valueOf(f.getValor1())));
+        }
+        if (f.getComparador().equals(ComparadorBusqueda.IGUAL)) {
+            ls.add(cb.equal(root.get(attribute),
+                    Integer.valueOf(f.getValor1())));
         }
 
         return cb.or(ls.toArray(new Predicate[ls.size()]));
