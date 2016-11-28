@@ -76,17 +76,17 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     @Override
     public RequestGetPersonaDto execute(PersonaDto request) {
-        Persona p = repo.findOne(request.getCui());
-        RequestGetPersonaDto dto = new GetPersonaDtoConverter().toDTO(p);
-        setDpiDto(p, dto);
-        setDatosGenerales(p, dto);
-        setRegistroLaboral(p, dto);
-        setRegistroAcademico(p, dto);
-        setIdiomas(p, dto);
-        setEstudiosSalud(p, dto);
-        setLugarResidencia(p, dto);
+        Persona persona = repo.findOne(request.getCui());
+        RequestGetPersonaDto personaDto = new GetPersonaDtoConverter().toDTO(persona);
+        setDpiDto(persona, personaDto);
+        setDatosGenerales(persona, personaDto);
+        setRegistroLaboral(persona, personaDto);
+        setRegistroAcademico(persona, personaDto);
+        setIdiomas(persona, personaDto);
+        setEstudiosSalud(persona, personaDto);
+        setLugarResidencia(persona, personaDto);
 
-        return dto;
+        return personaDto;
     }
 
     private void setDpiDto(Persona p, RequestGetPersonaDto dto) {
