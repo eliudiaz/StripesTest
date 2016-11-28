@@ -6,7 +6,7 @@
 package gt.org.isis.controller.home.handlers;
 
 import gt.org.isis.controller.dto.ExportPersonasRequestDto;
-import gt.org.isis.controller.dto.PersonaDto;
+import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +35,7 @@ public class PersonasExporterHandlerTest {
     public void testExecute() {
         FileOutputStream fo = null;
         try {
-            PersonaDto p = new PersonaDto();
+            PersonaRowsFileDto p = new PersonaRowsFileDto();
             p.setPrimerNombre("sdfsdf");
             p.setSegundoNombre("sdfsdfs");
             p.setPrimerApellido("sdsdfsfd");

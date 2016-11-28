@@ -13,13 +13,13 @@ import java.util.List;
  */
 public class ExportPersonasRequestDto {
 
-    private final List<PersonaDto> personas;
+    private final List<PersonaRowsFileDto> personas;
 
-    public List<PersonaDto> getPersonas() {
+    public List<PersonaRowsFileDto> getPersonas() {
         return personas;
     }
 
-    public ExportPersonasRequestDto(List<PersonaDto> personas) {
+    public ExportPersonasRequestDto(List<PersonaRowsFileDto> personas) {
         this.personas = personas;
     }
 
