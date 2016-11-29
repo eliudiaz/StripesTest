@@ -34,8 +34,6 @@ public class BusquedaNormalController extends DownloadSupportController {
 
     @Autowired
     BusquedaNormalHandler handler;
-    @Autowired
-    FileContentQueue queue;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/busquedaNormal",
@@ -45,7 +43,6 @@ public class BusquedaNormalController extends DownloadSupportController {
             method = RequestMethod.POST)
     public ResponseEntity buscar(@RequestBody @Valid BusquedaNormalDto filtro,
             @RequestParam(value = "download", required = false, defaultValue = "false") boolean download,
-            @RequestParam(value = "sessionId", required = false, defaultValue = "0") String sessionId,
             HttpServletResponse response) {
 
         List<PersonaDto> out = handler.handle(filtro);
@@ -53,7 +50,6 @@ public class BusquedaNormalController extends DownloadSupportController {
             produceResponseContent(response, new PersonaRowsFileDtoConverter().toEntity(out));
             return new ResponseEntity(HttpStatus.OK);
         }
-        queue.push(sessionId, new PersonaRowsFileDtoConverter().toEntity(out));
 
         return new ResponseEntity(handler.handle(filtro), HttpStatus.OK);
     }
