@@ -16,6 +16,7 @@ import gt.org.isis.converters.UsuarioDtoConverter;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.model.UsuarioRoles;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -108,7 +109,7 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
         EntitiesHelper.setDateUpdatedInfo(dbUser);
         dbUser.setNombres(request.getNombres());
         dbUser.setApellidos(request.getApellidos());
-        dbUser.setEstado(request.getEstado());
+        dbUser.setEstado(Estado.ACTIVO);
 
         usuarios.save(dbUser);
 
