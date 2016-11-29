@@ -5,9 +5,12 @@
  */
 package gt.org.isis.controller.personas;
 
+import gt.org.isis.api.web.DownloadSupportController;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.personas.handlers.PersonaBuscarTodosHandler;
+import gt.org.isis.converters.PersonaRowsFileDtoConverter;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -25,15 +29,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("personas")
-public class BuscarTodosController {
+public class BuscarTodosController extends DownloadSupportController {
 
     @Autowired
     PersonaBuscarTodosHandler handler;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/todos", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity getPersona() {
-        return new ResponseEntity<List<PersonaDto>>(handler.handle(null), HttpStatus.OK);
+            produces = {MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    public HttpEntity getPersona(@RequestParam(value = "download", required = false, defaultValue = "false") boolean download,
+            HttpServletResponse response) {
+        List<PersonaDto> out = handler.handle(null);
+        if (download) {
+            produceResponseContent(response, new PersonaRowsFileDtoConverter().toEntity(out));
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity<List<PersonaDto>>(out, HttpStatus.OK);
     }
 }

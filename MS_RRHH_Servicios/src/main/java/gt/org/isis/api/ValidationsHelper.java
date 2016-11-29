@@ -8,7 +8,6 @@ package gt.org.isis.api;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -25,10 +24,6 @@ public class ValidationsHelper {
 
     public static boolean containsAny(String source, String param) {
         return source.equalsIgnoreCase(param);
-    }
-
-    public static void main(String... arg) {
-        System.out.println(ValidationsHelper.findBestMatchItem("test", Arrays.asList("testla1", "testla2", "testla3", "test1", "testMe")));
     }
 
     public static <T> T findBestMatchItem(final String param, List<T> options) {
