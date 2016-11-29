@@ -12,12 +12,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
-import org.springframework.util.Assert;
 
 /**
  *
@@ -42,15 +40,13 @@ public class PersonasExporterHandlerTest {
             p.setSegundoApellido("sdfsdfsdf");
             p.setCui("sdfsdlfksjdlfkjsdf");
             System.out.println("execute");
+            fo = new FileOutputStream(new File("test.xls"));
+
             ExportPersonasRequestDto request = new ExportPersonasRequestDto(Arrays.asList(p));
             PersonasExporterHandler instance = new PersonasExporterHandler();
-            OutputStream result = instance.execute(request);
-            Assert.notNull(result);
-            byte[] c = new byte[((ByteArrayOutputStream) result).size()];
-            fo = new FileOutputStream(new File("test.xls"));
-            fo.write(c);
-            result.close();
-            result.flush();
+            ByteArrayOutputStream result = (ByteArrayOutputStream) instance.execute(request);
+            result.writeTo(fo);
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
