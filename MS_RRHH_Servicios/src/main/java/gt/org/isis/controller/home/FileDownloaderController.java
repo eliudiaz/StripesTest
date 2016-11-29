@@ -40,6 +40,7 @@ public class FileDownloaderController extends DownloadSupportController {
             response.setHeader("Content-Disposition", String.format("inline; filename=out.xls"));
             bOut.writeTo(response.getOutputStream());
         } catch (IOException ex) {
+            ex.printStackTrace(System.err);
             throw ExceptionsManager.newNotFound();
         }
     }
