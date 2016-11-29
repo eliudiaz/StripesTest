@@ -55,6 +55,7 @@ public class DownloadSupportController {
         }
     }
 
+    public byte[] processDownload(List<PersonaRowsFileDto> out) {
         try {
             ByteArrayOutputStream r = (ByteArrayOutputStream) exporter
                     .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,

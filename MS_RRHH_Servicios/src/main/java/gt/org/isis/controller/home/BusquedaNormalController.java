@@ -8,11 +8,10 @@ package gt.org.isis.controller.home;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.home.handlers.BusquedaNormalHandler;
+import gt.org.isis.converters.PersonaRowsFileDtoConverter;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("home")
-public class BusquedaNormalController extends DownloadSupportController {
+public class BusquedaNormalController {
 
     @Autowired
     BusquedaNormalHandler handler;
+    @Autowired
+    FileContentQueue queue;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @RequestMapping(value = "/busquedaNormal",
@@ -41,14 +42,11 @@ public class BusquedaNormalController extends DownloadSupportController {
             produces = {MediaType.APPLICATION_JSON_VALUE,
                 MediaType.APPLICATION_OCTET_STREAM_VALUE},
             method = RequestMethod.POST)
-    public HttpEntity buscar(@RequestBody @Valid BusquedaNormalDto filtro,
-            @RequestParam(value = "download", required = false, defaultValue = "false") boolean download,
-            HttpServletResponse response) {
+    public ResponseEntity buscar(@RequestBody @Valid BusquedaNormalDto filtro,
+            @RequestParam(value = "sessionId", required = false, defaultValue = "0") int sessionId) {
         List<PersonaDto> out = handler.handle(filtro);
-        if (download) {
-            processDownload(out, response);
-            new ResponseEntity(HttpStatus.OK);
-        }
+        queue.push(sessionId, new PersonaRowsFileDtoConverter().toEntity(out));
+
         return new ResponseEntity(handler.handle(filtro), HttpStatus.OK);
     }
 }
