@@ -13,7 +13,7 @@ import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.model.AccesoRole;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.enums.Estado;
-import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.repository.AccesoRoleRepository;
 import gt.org.isis.repository.AccesosRepository;
 import gt.org.isis.repository.RolesRepository;

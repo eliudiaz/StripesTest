@@ -8,7 +8,7 @@ package gt.org.isis.converters;
 
 import gt.org.isis.controller.dto.CatalogoDto;
 import gt.org.isis.model.Catalogos;
-import gt.org.isis.model.utils.BeansConverter;
+import gt.org.isis.api.utils.BeansConverter;
 
 /**
  *

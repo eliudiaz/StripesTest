@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.model.utils;
+package gt.org.isis.api.utils;
 
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,7 +40,7 @@ public class ExcelHelper {
         return result;
     }
 
-    public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data) {
+    public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data, List<FieldDto> fields) {
         HSSFWorkbook workbook = null;
         try {
             workbook = new HSSFWorkbook();
@@ -47,20 +49,17 @@ public class ExcelHelper {
             int rowCount = 0;
             int columnCount = 0;
             Row row = sheet.createRow(rowCount++);
-            List<String> fieldNames = new ArrayList<String>();
-            for (Iterator<String> iterator = data.get(0).keySet().iterator(); iterator.hasNext();) {
-                String val;
+            for (Iterator<FieldDto> it = fields.iterator(); it.hasNext();) {
                 Cell cell = row.createCell(columnCount++);
-                cell.setCellValue(val = iterator.next());
-                fieldNames.add(val);
+                cell.setCellValue(it.next().getTitle());
             }
             for (Map<String, Object> t : data) {
                 row = sheet.createRow(rowCount++);
                 columnCount = 0;
-                for (String fieldName : fieldNames) {
+                for (FieldDto field : fields) {
                     Cell cell = row.createCell(columnCount);
 
-                    Object value = t.get(fieldName);
+                    Object value = t.get(field.getName());
                     System.out.println("writing >> " + value);
                     if (value != null) {
                         if (value instanceof String) {
@@ -80,9 +79,18 @@ public class ExcelHelper {
             }
             workbook.write(out);
             out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
+            throw ExceptionsManager.newInternalErrorException("excel_exporter", "Error generando archivo de excel", e);
         }
+    }
+
+    public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data) {
+        List<FieldDto> fields = new LinkedList<FieldDto>();
+        for (Iterator<Map.Entry<String, Object>> it = data.iterator().next().entrySet().iterator(); it.hasNext();) {
+            fields.add(new FieldDto(it.next().getKey(), it.next().getKey()));
+        }
+        writeMapToExcel(out, data, fields);
     }
 
 }

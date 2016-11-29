@@ -19,7 +19,7 @@ import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Persona;
-import static gt.org.isis.model.utils.EntitiesHelper.parseFechaDPI;
+import static gt.org.isis.api.utils.EntitiesHelper.parseFechaDPI;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import java.util.Calendar;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.model.utils;
+package gt.org.isis.api.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;

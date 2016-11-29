@@ -8,7 +8,7 @@ package gt.org.isis.converters;
 
 import gt.org.isis.controller.dto.LugarResidenciaDto;
 import gt.org.isis.model.LugarResidencia;
-import gt.org.isis.model.utils.BeansConverter;
+import gt.org.isis.api.utils.BeansConverter;
 
 /**
  *

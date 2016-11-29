@@ -26,7 +26,7 @@ import gt.org.isis.model.Puestos_;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.CampoBusquedaAvanzada;
 import gt.org.isis.model.enums.ComparadorBusqueda;
-import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestoRepository;

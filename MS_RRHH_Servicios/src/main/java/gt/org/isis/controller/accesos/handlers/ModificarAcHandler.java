@@ -9,7 +9,7 @@ import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.model.Acceso;
 import gt.org.isis.model.enums.Estado;
-import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.api.utils.EntitiesHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import gt.org.isis.repository.AccesosRepository;

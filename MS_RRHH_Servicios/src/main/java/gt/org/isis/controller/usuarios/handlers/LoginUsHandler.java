@@ -14,7 +14,7 @@ import gt.org.isis.controller.dto.UsuarioLoginDto;
 import gt.org.isis.converters.RoleDtoConverter;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.model.UsuarioRoles;
-import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;

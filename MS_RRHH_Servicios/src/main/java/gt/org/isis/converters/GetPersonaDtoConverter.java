@@ -7,7 +7,7 @@ package gt.org.isis.converters;
 
 import gt.org.isis.controller.dto.RequestGetPersonaDto;
 import gt.org.isis.model.Persona;
-import gt.org.isis.model.utils.BeansConverter;
+import gt.org.isis.api.utils.BeansConverter;
 import org.springframework.stereotype.Component;
 
 /**

@@ -8,7 +8,7 @@ package gt.org.isis.converters;
 
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.model.Idioma;
-import gt.org.isis.model.utils.BeansConverter;
+import gt.org.isis.api.utils.BeansConverter;
 
 /**
  *

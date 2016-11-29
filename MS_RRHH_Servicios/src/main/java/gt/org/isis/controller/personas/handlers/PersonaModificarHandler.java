@@ -34,7 +34,7 @@ import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
-import gt.org.isis.model.utils.EntitiesHelper;
+import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludHistoricoRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;

@@ -10,7 +10,7 @@ import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.controller.dto.ExportPersonasRequestDto;
 import gt.org.isis.controller.dto.PersonaRowsFileDto;
-import gt.org.isis.model.utils.ExcelHelper;
+import gt.org.isis.api.utils.ExcelHelper;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
