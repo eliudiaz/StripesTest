@@ -18,13 +18,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class FileContentQueue {
 
-    private Map<Integer, List<PersonaRowsFileDto>> queue = new LinkedHashMap<Integer, List<PersonaRowsFileDto>>();
+    private Map<String, List<PersonaRowsFileDto>> queue = new LinkedHashMap<String, List<PersonaRowsFileDto>>();
 
-    public synchronized List<PersonaRowsFileDto> pull(Integer key) {
+    public synchronized List<PersonaRowsFileDto> pull(String key) {
         return queue.remove(key);
     }
 
-    public synchronized void push(Integer key, List<PersonaRowsFileDto> feed) {
+    public synchronized void push(String key, List<PersonaRowsFileDto> feed) {
         queue.put(key, feed);
     }
 

@@ -5,11 +5,17 @@
  */
 package gt.org.isis.controller.home.handlers;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.controller.dto.ExportPersonasRequestDto;
+import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import gt.org.isis.model.utils.ExcelHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +28,18 @@ public class PersonasExporterHandler extends AbstractRequestHandler<ExportPerson
     @Override
     public OutputStream execute(ExportPersonasRequestDto request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ExcelHelper.writeToExcel(out, request.getPersonas());
+
+        ExcelHelper.writeMapToExcel(out, new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(), new Function<PersonaRowsFileDto, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> apply(PersonaRowsFileDto f) {
+                try {
+                    f.setFoto(null);
+                    return ExcelHelper.introspect(f);
+                } catch (Exception ex) {
+                    return new HashMap<String, Object>();
+                }
+            }
+        })));
 
         return out;
 

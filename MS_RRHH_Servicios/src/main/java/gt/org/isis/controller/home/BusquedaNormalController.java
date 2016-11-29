@@ -43,7 +43,7 @@ public class BusquedaNormalController {
                 MediaType.APPLICATION_OCTET_STREAM_VALUE},
             method = RequestMethod.POST)
     public ResponseEntity buscar(@RequestBody @Valid BusquedaNormalDto filtro,
-            @RequestParam(value = "sessionId", required = false, defaultValue = "0") int sessionId) {
+            @RequestParam(value = "sessionId", required = false, defaultValue = "0") String sessionId) {
         List<PersonaDto> out = handler.handle(filtro);
         queue.push(sessionId, new PersonaRowsFileDtoConverter().toEntity(out));
 
