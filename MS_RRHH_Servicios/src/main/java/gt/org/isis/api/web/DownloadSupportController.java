@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.isis.controller.home;
+package gt.org.isis.api.web;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public class DownloadSupportController {
 
