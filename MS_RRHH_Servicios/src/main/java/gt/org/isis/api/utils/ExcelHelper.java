@@ -49,9 +49,9 @@ public class ExcelHelper {
             int rowCount = 0;
             int columnCount = 0;
             Row row = sheet.createRow(rowCount++);
-            for (Iterator<FieldDto> it = fields.iterator(); it.hasNext();) {
+            for (FieldDto field : fields) {
                 Cell cell = row.createCell(columnCount++);
-                cell.setCellValue(it.next().getTitle());
+                cell.setCellValue(field.getTitle());
             }
             for (Map<String, Object> t : data) {
                 row = sheet.createRow(rowCount++);
@@ -88,7 +88,8 @@ public class ExcelHelper {
     public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data) {
         List<FieldDto> fields = new LinkedList<FieldDto>();
         for (Iterator<Map.Entry<String, Object>> it = data.iterator().next().entrySet().iterator(); it.hasNext();) {
-            fields.add(new FieldDto(it.next().getKey(), it.next().getKey()));
+            String k;
+            fields.add(new FieldDto(k = it.next().getKey(), k));
         }
         writeMapToExcel(out, data, fields);
     }
