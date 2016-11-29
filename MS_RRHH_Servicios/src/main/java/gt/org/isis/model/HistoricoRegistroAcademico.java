@@ -45,9 +45,7 @@ public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
     private Integer ultimoGrado;
     @Column(name = "estudia_actualmente")
     private Boolean estudiaActualmente;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "grado_actual", nullable = false)
+    @Column(name = "grado_actual")
     private Integer gradoActual;
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
