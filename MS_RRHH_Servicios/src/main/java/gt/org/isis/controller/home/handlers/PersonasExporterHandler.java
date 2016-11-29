@@ -12,7 +12,6 @@ import gt.org.isis.controller.dto.ExportPersonasRequestDto;
 import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import gt.org.isis.model.utils.ExcelHelper;
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +22,10 @@ import org.springframework.stereotype.Service;
  * @author ecracken
  */
 @Service
-public class PersonasExporterHandler extends AbstractRequestHandler<ExportPersonasRequestDto, OutputStream> {
+public class PersonasExporterHandler extends AbstractRequestHandler<ExportPersonasRequestDto, ByteArrayOutputStream> {
 
     @Override
-    public OutputStream execute(ExportPersonasRequestDto request) {
+    public ByteArrayOutputStream execute(ExportPersonasRequestDto request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         ExcelHelper.writeMapToExcel(out, new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(), new Function<PersonaRowsFileDto, Map<String, Object>>() {

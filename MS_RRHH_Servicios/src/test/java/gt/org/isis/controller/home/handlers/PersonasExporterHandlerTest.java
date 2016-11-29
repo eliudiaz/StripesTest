@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -44,9 +45,9 @@ public class PersonasExporterHandlerTest {
 
             ExportPersonasRequestDto request = new ExportPersonasRequestDto(Arrays.asList(p));
             PersonasExporterHandler instance = new PersonasExporterHandler();
-            ByteArrayOutputStream result = (ByteArrayOutputStream) instance.execute(request);
+            ByteArrayOutputStream result = instance.execute(request);
+            Assert.notNull(result);
             result.writeTo(fo);
-
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
