@@ -41,7 +41,7 @@ public class FileDownloaderController extends DownloadSupportController {
             bOut.writeTo(response.getOutputStream());
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
-            throw ExceptionsManager.newNotFound();
+            throw ExceptionsManager.newInternalErrorException("exporting_error", ex.getMessage(), ex);
         }
     }
 }

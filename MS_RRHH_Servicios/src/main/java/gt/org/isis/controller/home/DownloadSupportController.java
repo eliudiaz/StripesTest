@@ -66,4 +66,17 @@ public class DownloadSupportController {
                 }))));
     }
 
+    public void produceResponseContent(HttpServletResponse response, List<PersonaRowsFileDto> content) {
+        try {
+            String mimeType = "application/octet-stream";
+            response.setContentType(mimeType);
+            ByteArrayOutputStream bOut = processDownload(content);
+            response.setHeader("Content-Disposition", String.format("inline; filename=out.xls"));
+            bOut.writeTo(response.getOutputStream());
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+            throw ExceptionsManager.newInternalErrorException("exporting_error", ex.getMessage(), ex);
+        }
+    }
+
 }

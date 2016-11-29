@@ -8,6 +8,7 @@ package gt.org.isis.api.misc.exceptions;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import gt.org.isis.api.misc.exceptions.ext.NotFoundException;
+import gt.org.isis.api.misc.exceptions.ext.UnknownException;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
 import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import java.util.Arrays;
@@ -17,6 +18,10 @@ import java.util.Arrays;
  * @author edcracken
  */
 public class ExceptionsManager {
+
+    public static RuntimeException newInternalErrorException(String cause, String description, Exception e) {
+        return new UnknownException(cause, description, e);
+    }
 
     public static RuntimeException newValidationException(String cause, String[] errors) {
         return new ValidationException(Lists.transform(Arrays.asList(errors),

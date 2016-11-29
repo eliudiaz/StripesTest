@@ -18,4 +18,8 @@ public class UnknownException extends BaseException {
         super(HttpStatus.INTERNAL_SERVER_ERROR, "unknown_error", "Ha ocurrido un error desconocido, por favor intente más tarde");
     }
 
+    public UnknownException(String cause, String description, Throwable er) {
+        super(HttpStatus.INTERNAL_SERVER_ERROR, cause,
+                description.concat(" >> ").concat(er.getMessage()));
+    }
 }

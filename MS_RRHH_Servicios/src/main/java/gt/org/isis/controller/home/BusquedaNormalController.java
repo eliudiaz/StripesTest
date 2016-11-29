@@ -10,6 +10,7 @@ import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.home.handlers.BusquedaNormalHandler;
 import gt.org.isis.converters.PersonaRowsFileDtoConverter;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 @RequestMapping("home")
-public class BusquedaNormalController {
+public class BusquedaNormalController extends DownloadSupportController {
 
     @Autowired
     BusquedaNormalHandler handler;
@@ -43,8 +44,15 @@ public class BusquedaNormalController {
                 MediaType.APPLICATION_OCTET_STREAM_VALUE},
             method = RequestMethod.POST)
     public ResponseEntity buscar(@RequestBody @Valid BusquedaNormalDto filtro,
-            @RequestParam(value = "sessionId", required = false, defaultValue = "0") String sessionId) {
+            @RequestParam(value = "download", required = false, defaultValue = "false") boolean download,
+            @RequestParam(value = "sessionId", required = false, defaultValue = "0") String sessionId,
+            HttpServletResponse response) {
+
         List<PersonaDto> out = handler.handle(filtro);
+        if (download) {
+            produceResponseContent(response, new PersonaRowsFileDtoConverter().toEntity(out));
+            return new ResponseEntity(HttpStatus.OK);
+        }
         queue.push(sessionId, new PersonaRowsFileDtoConverter().toEntity(out));
 
         return new ResponseEntity(handler.handle(filtro), HttpStatus.OK);
