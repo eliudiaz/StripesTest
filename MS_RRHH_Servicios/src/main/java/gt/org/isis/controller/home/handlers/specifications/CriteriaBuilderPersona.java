@@ -79,7 +79,7 @@ public class CriteriaBuilderPersona {
         }
         if (normal.getSegundoApellido() != null) {
             criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.segundoApellido)),
-                    likeExpr(normal.getPrimerApellido())));
+                    likeExpr(normal.getSegundoApellido())));
         }
         if (normal.getSexo() != null) {
             criteria.add(cb.equal(rootPersona.get(Persona_.sexo),

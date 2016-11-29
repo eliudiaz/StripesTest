@@ -14,10 +14,11 @@ import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.converters.PersonaDtoConverter;
-import gt.org.isis.model.Catalogos;
-import gt.org.isis.model.Catalogos_;
+import gt.org.isis.model.AreaGeografica;
+import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.LugarResidencia;
 import gt.org.isis.model.Persona;
+import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
 import gt.org.isis.repository.PersonasRepository;
@@ -48,6 +49,9 @@ public class BusquedaNormalHandler extends AbstractValidationsRequestHandler<Bus
     @Autowired
     CatalogosRepository catsRepo;
 
+    @Autowired
+    AreasGeografRepository areaGeograficaRepo;
+
     @Override
     public List<PersonaDto> execute(final BusquedaNormalDto request) {
 
@@ -68,15 +72,15 @@ public class BusquedaNormalHandler extends AbstractValidationsRequestHandler<Bus
                 || !isNull(request.getMunicipio())) {
             final Collection<Integer> munisLs = new ArrayList();
             if (!isNull(request.getDepartamento()) && isNull(request.getMunicipio())) {
-                munisLs.addAll(Collections2.transform(catsRepo.findAll(new Specification() {
+                munisLs.addAll(Collections2.transform(areaGeograficaRepo.findAll(new Specification() {
                     @Override
                     public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
-                        return cb.equal(root.get(Catalogos_.codigoPadre),
+                        return cb.equal(root.get(AreaGeografica_.codigoPadre),
                                 request.getDepartamento());
                     }
-                }), new Function<Catalogos, Integer>() {
+                }), new Function<AreaGeografica, Integer>() {
                     @Override
-                    public Integer apply(Catalogos f) {
+                    public Integer apply(AreaGeografica f) {
                         return f.getId();
                     }
                 }));
