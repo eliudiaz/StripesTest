@@ -8,6 +8,7 @@ package gt.org.isis.controller.home;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.home.handlers.BusquedaAvanzadaHandler;
+import gt.org.isis.converters.PersonaRowsFileDtoConverter;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class BusquedaAvanzadaController extends DownloadSupportController {
             HttpServletResponse response) {
         List<PersonaDto> out = handler.handle(filtro);
         if (download) {
-            processDownload(out, response);
+            processDownload(new PersonaRowsFileDtoConverter().toEntity(out), response);
             new ResponseEntity(HttpStatus.OK);
         }
         return handler.handle(filtro);

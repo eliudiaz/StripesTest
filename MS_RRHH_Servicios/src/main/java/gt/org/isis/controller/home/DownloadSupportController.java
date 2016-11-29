@@ -32,7 +32,7 @@ public class DownloadSupportController {
     @Autowired
     PersonasExporterHandler exporter;
 
-    public void processDownload(List<PersonaDto> out, HttpServletResponse response) {
+    public void processDownload(List<PersonaRowsFileDto> out, HttpServletResponse response) {
         try {
             ByteArrayOutputStream r = (ByteArrayOutputStream) exporter
                     .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,
@@ -55,25 +55,15 @@ public class DownloadSupportController {
         }
     }
 
-    public byte[] processDownload(List<PersonaRowsFileDto> out) {
-        try {
-            ByteArrayOutputStream r = (ByteArrayOutputStream) exporter
-                    .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,
-                            new Function<PersonaDto, PersonaRowsFileDto>() {
-                        @Override
-                        public PersonaRowsFileDto apply(PersonaDto f) {
-                            return completaDatosPersonaHandler.handle(f);
-                        }
-                    }))));
-            byte[] buffer = new byte[r.size()];
-            r.write(buffer);
-            r.flush();
-            r.close();
-            return buffer;
-        } catch (IOException ex) {
-            ex.printStackTrace(System.err);
-            throw ExceptionsManager.newNotFound();
-        }
+    public ByteArrayOutputStream processDownload(List<PersonaRowsFileDto> out) {
+        return (ByteArrayOutputStream) exporter
+                .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,
+                        new Function<PersonaDto, PersonaRowsFileDto>() {
+                    @Override
+                    public PersonaRowsFileDto apply(PersonaDto f) {
+                        return completaDatosPersonaHandler.handle(f);
+                    }
+                }))));
     }
 
 }

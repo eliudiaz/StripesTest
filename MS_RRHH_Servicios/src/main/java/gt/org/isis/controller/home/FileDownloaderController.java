@@ -6,7 +6,7 @@
 package gt.org.isis.controller.home;
 
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,12 +36,9 @@ public class FileDownloaderController extends DownloadSupportController {
         try {
             String mimeType = "application/octet-stream";
             response.setContentType(mimeType);
-            byte[] out = processDownload(queue.pull(sessionId));
+            ByteArrayOutputStream bOut = processDownload(queue.pull(sessionId));
             response.setHeader("Content-Disposition", String.format("inline; filename=out.xls"));
-            response.setContentLength((int) out.length);
-            ByteArrayInputStream in = new ByteArrayInputStream(out);
-
-            FileCopyUtils.copy(in, response.getOutputStream());
+            bOut.writeTo(response.getOutputStream());
         } catch (IOException ex) {
             throw ExceptionsManager.newNotFound();
         }
