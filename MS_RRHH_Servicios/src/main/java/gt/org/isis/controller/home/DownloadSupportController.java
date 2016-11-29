@@ -42,12 +42,33 @@ public class DownloadSupportController {
                             return completaDatosPersonaHandler.handle(f);
                         }
                     }))));
-            response.setContentType("application/octet-stream");
+            response.setContentType("application/x-download");
+            response.setHeader("Content-Disposition", "attachment; filename=out.xls");
             byte[] buffer = new byte[r.size()];
             r.write(buffer);
             ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(buffer);
             outputStream.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+            throw ExceptionsManager.newNotFound();
+        }
+    }
+
+        try {
+            ByteArrayOutputStream r = (ByteArrayOutputStream) exporter
+                    .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,
+                            new Function<PersonaDto, PersonaRowsFileDto>() {
+                        @Override
+                        public PersonaRowsFileDto apply(PersonaDto f) {
+                            return completaDatosPersonaHandler.handle(f);
+                        }
+                    }))));
+            byte[] buffer = new byte[r.size()];
+            r.write(buffer);
+            r.flush();
+            r.close();
+            return buffer;
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
             throw ExceptionsManager.newNotFound();

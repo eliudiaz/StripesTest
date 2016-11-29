@@ -9,6 +9,7 @@ import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Persona_;
+import gt.org.isis.model.enums.Estado;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -61,6 +62,7 @@ public class CriteriaBuilderPersona {
     }
 
     public Predicate build() {
+
         if (normal.getCui() != null) {
             criteria.add(cb.equal(rootPersona.get(Persona_.cui),
                     normal.getCui()));
@@ -102,6 +104,8 @@ public class CriteriaBuilderPersona {
             criteria.add(cb.equal(rootPersona.get(Persona_.edad),
                     normal.getEdad()));
         }
-        return cb.or(criteria.toArray(new Predicate[criteria.size()]));
+
+        return cb.and(cb.equal(rootPersona.get(Persona_.estado),
+                Estado.ACTIVO), cb.or(criteria.toArray(new Predicate[criteria.size()])));
     }
 }
