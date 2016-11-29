@@ -42,13 +42,13 @@ public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
     @Basic(optional = false)
     @NotNull
     @Column(name = "ultimo_grado", nullable = false)
-    private int ultimoGrado;
+    private Integer ultimoGrado;
     @Column(name = "estudia_actualmente")
     private Boolean estudiaActualmente;
     @Basic(optional = false)
     @NotNull
     @Column(name = "grado_actual", nullable = false)
-    private int gradoActual;
+    private Integer gradoActual;
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private Estado estado;
@@ -86,12 +86,20 @@ public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public int getUltimoGrado() {
+    public Integer getUltimoGrado() {
         return ultimoGrado;
     }
 
-    public void setUltimoGrado(int ultimoGrado) {
+    public void setUltimoGrado(Integer ultimoGrado) {
         this.ultimoGrado = ultimoGrado;
+    }
+
+    public Integer getGradoActual() {
+        return gradoActual;
+    }
+
+    public void setGradoActual(Integer gradoActual) {
+        this.gradoActual = gradoActual;
     }
 
     public Boolean getEstudiaActualmente() {
@@ -100,14 +108,6 @@ public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
 
     public void setEstudiaActualmente(Boolean estudiaActualmente) {
         this.estudiaActualmente = estudiaActualmente;
-    }
-
-    public int getGradoActual() {
-        return gradoActual;
-    }
-
-    public void setGradoActual(int gradoActual) {
-        this.gradoActual = gradoActual;
     }
 
     public Estado getEstado() {
