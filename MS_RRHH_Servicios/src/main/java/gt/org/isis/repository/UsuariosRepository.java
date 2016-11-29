@@ -6,8 +6,6 @@
 package gt.org.isis.repository;
 
 import gt.org.isis.model.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author eliud
  */
 @Repository("usuariosRepository")
-public interface UsuariosRepository extends JpaRepository<Usuario, String>, JpaSpecificationExecutor {
+public interface UsuariosRepository extends CustomRepository<Usuario> {
 
 }
