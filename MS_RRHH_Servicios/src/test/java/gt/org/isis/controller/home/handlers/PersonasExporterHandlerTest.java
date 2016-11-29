@@ -49,6 +49,8 @@ public class PersonasExporterHandlerTest {
             byte[] c = new byte[((ByteArrayOutputStream) result).size()];
             fo = new FileOutputStream(new File("test.xls"));
             fo.write(c);
+            result.close();
+            result.flush();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
