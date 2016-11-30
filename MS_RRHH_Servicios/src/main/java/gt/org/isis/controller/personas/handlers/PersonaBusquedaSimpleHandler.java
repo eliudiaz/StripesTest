@@ -36,7 +36,6 @@ import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
-import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.repository.AreasGeografRepository;
@@ -104,11 +103,11 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     public void setDatosGenerales(Persona p, RequestGetPersonaDto dto) {
         dto.setRefCedula(!isNull(dto.getFkMunicipioCedula())
-                ? buildByMunicipio(dto.getFkMunicipioCedula()) : null);
+                ? buildByMunicipio(dto.getFkMunicipioCedula(), null) : null);
         dto.setRefNacimiento(!isNull(dto.getFkMunicipioNacimiento())
-                ? buildByMunicipio(dto.getFkMunicipioNacimiento()) : null);
+                ? buildByMunicipio(dto.getFkMunicipioNacimiento(), null) : null);
         dto.setRefVecindad(!isNull(dto.getFkMunicipioNacimiento())
-                ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
+                ? buildByMunicipio(dto.getFkMunicipioVecindad(), null) : null);
         fillComunidadLinguistica(dto);
         fillNacionalidad(dto);
         dto.setFechaNacimientoTexto(formatDate(dto.getFechaNacimiento()));
@@ -172,7 +171,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             dto.setLugarResidencia((LugarResidenciaDto) new LugarResidenciaDtoConverter()
                     .toDTO((List) p.getLugarResidenciaCollection()).iterator().next());
         }
-        dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
+        dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio(), null));
     }
 
     private RefUnidadNotificadoraDto getUnidadNotificadora(Integer id) {
@@ -210,61 +209,29 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         return ref;
     }
 
-    @Deprecated
-    private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidadId) {
-        RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
-        UnidadNotificadora un = unidadNotificadora.findOne(fkComunidadId);
-
-        if (un.getTipo().equals(C.CAT_UN_COMUNIDAD2)) {
-            ref.setFkComunidad2(un.getId());
-            ref.setNombreComunidad2(un.getValor());
-            if (!isNull(un.getCodigoPadre())) {
-                un = unidadNotificadora.findOne(un.getCodigoPadre());
-            } else {
-                return ref;
-            }
+    private RefAreaGeograficaDto buildByMunicipio(Integer id, RefAreaGeograficaDto refArea) {
+        if (isNull(id)) {
+            return null;
         }
-
-        ref.setFkComunidad(fkComunidadId);
-        ref.setNombreComunidad(un.getValor());
-
-        un = unidadNotificadora.findOne(un.getCodigoPadre());
-        if (!isNull(un)) {
-            ref.setFkLugarEspecifico(un.getId());
-            ref.setNombreLugarEspecifico(un.getValor());
-
-            un = unidadNotificadora.findOne(un.getCodigoPadre());
-            if (!isNull(un)) {
-                ref.setFkDistrito(un.getId());
-                ref.setNombreDistrito(un.getValor());
-
-                UnidadEjecutora ue = ueRepo.findOne(un.getCodigoPadre());
-                ref.setFkUnidadEjecutora(ue.getId());
-                ref.setFkUnidadEjecutoraNombre(ue.getNombre());
-            }
+        if (isNull(refArea)) {
+            refArea = new RefAreaGeograficaDto();
         }
-        return ref;
-    }
-
-    private RefAreaGeograficaDto buildByMunicipio(Integer fkMunicipio) {
-        RefAreaGeograficaDto refArea = new RefAreaGeograficaDto();
-        AreaGeografica ag = areasRepo.findOne(fkMunicipio);
+        AreaGeografica ag = areasRepo.findOne(id);
         if (!isNull(ag)) {
-            refArea.setFkMunicio(ag.getId());
-            refArea.setFkMunicioNombre(ag.getValor());
-
-            ag = areasRepo.findOne(ag.getCodigoPadre());
-            if (!isNull(ag)) {
-
+            if (ag.getTipo().equalsIgnoreCase(C.CAT_AG_TIPO_MUNICIPIOS)) {
+                refArea.setFkMunicio(ag.getId());
+                refArea.setFkMunicioNombre(ag.getValor());
+            }
+            if (ag.getTipo().equalsIgnoreCase(C.CAT_AG_TIPO_DEPTOS)) {
                 refArea.setFkDepartamento(ag.getId());
                 refArea.setFkDepartamentoNombre(ag.getValor());
-
-                ag = areasRepo.findOne(ag.getCodigoPadre());
-                if (!isNull(ag)) {
-                    refArea.setFkPais(ag.getId());
-                    refArea.setFkPaisNombre(ag.getValor());
-                }
-
+            }
+            if (ag.getTipo().equalsIgnoreCase(C.CAT_AG_TIPO_PAISES)) {
+                refArea.setFkPais(ag.getId());
+                refArea.setFkPaisNombre(ag.getValor());
+            }
+            if (!isNull(ag.getCodigoPadre())) {
+                buildByMunicipio(ag.getCodigoPadre(), refArea);
             }
         }
         return refArea;
