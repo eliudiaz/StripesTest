@@ -35,7 +35,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends AbstractValidationsRequestHandler<T, Q> {
 
