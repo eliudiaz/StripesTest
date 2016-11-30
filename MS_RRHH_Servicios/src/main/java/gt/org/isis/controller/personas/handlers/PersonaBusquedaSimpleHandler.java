@@ -175,6 +175,39 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         dto.getLugarResidencia().setRefLugarResidencia(buildByMunicipio(dto.getLugarResidencia().getFkMunicipio()));
     }
 
+    private RefUnidadNotificadoraDto getUnidadNotificadora(Integer id) {
+        return getUnidadNotificadora(id, null);
+    }
+
+    private RefUnidadNotificadoraDto getUnidadNotificadora(Integer id, RefUnidadNotificadoraDto ref) {
+        if (isNull(ref)) {
+            ref = new RefUnidadNotificadoraDto();
+        }
+        UnidadNotificadora un = unidadNotificadora.findOne(id);
+        if (un.getTipo().equalsIgnoreCase(C.CAT_UN_COMUNIDAD2)) {
+            ref.setFkComunidad2(id);
+            ref.setNombreComunidad2(un.getValor());
+        }
+        if (un.getTipo().equalsIgnoreCase(C.CAT_UN_COMUNIDAD)) {
+            ref.setFkComunidad(id);
+            ref.setNombreComunidad(un.getValor());
+        }
+        if (un.getTipo().equalsIgnoreCase(C.CAT_UN_DISTRITO)) {
+            ref.setFkDistrito(id);
+            ref.setNombreDistrito(un.getValor());
+        }
+        if (un.getTipo().equalsIgnoreCase(C.CAT_UN_LUGAR_ESPEC)) {
+            ref.setFkLugarEspecifico(id);
+            ref.setNombreLugarEspecifico(un.getValor());
+        }
+        if (!isNull(un.getCodigoPadre())) {
+            getUnidadNotificadora(un.getCodigoPadre(), ref);
+        }
+
+        return ref;
+    }
+
+    @Deprecated
     private RefUnidadNotificadoraDto buildByComunidad(Integer fkComunidadId) {
         RefUnidadNotificadoraDto ref = new RefUnidadNotificadoraDto();
         UnidadNotificadora un = unidadNotificadora.findOne(fkComunidadId);
@@ -266,7 +299,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     private void fillRegistroPuesto(RegistroLaboralPuestoDto reg) {
         reg.setRefClasificacionServicio(buildByClasificacionServicio(reg.getFkClasificacionServicio()));
-        reg.setRefUnidadNotificadora(buildByComunidad(reg.getFkComunidad()));
+        reg.setRefUnidadNotificadora(getUnidadNotificadora(reg.getFkComunidad()));
 
         Puestos catPuestos = puestosRepo.findOne(reg.getFkPuestoNominal());
         reg.setNombrePuestoNominal(catPuestos.getValor());
@@ -277,71 +310,54 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
         Catalogos cat = catalogosRepo.findOne(reg.getFkPuestoFuncional());
         reg.setNombrePuestoFuncional(cat.getValor());
-
     }
 
-    private void fillRegistroRA(RegistroAcademicoDto reg) {
+    private RegistroAcademicoDto fillUltimoGrado(RegistroAcademicoDto reg, Integer idCatalogo) {
         Catalogos c = (Catalogos) catalogosRepo
-                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getUltimoGrado()));
+                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, idCatalogo));
         if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_CARRERA)) {
             reg.setCarreraUltimoGradoNombre(c.getValor());
             reg.setCarreraUltimoGrado(c.getId());
-            c = (Catalogos) catalogosRepo
-                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            if (!isNull(c)) {
-                reg.setUltimoGrado(c.getId());
-                reg.setNombreUltimoGrado(c.getValor());
-
-                c = (Catalogos) catalogosRepo
-                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-                if (!isNull(c)) {
-                    reg.setNivelUltimoGrado(c.getId());
-                    reg.setNivelUltimoGradoNombre(c.getValor());
-                }
-            }
-        } else {
+        }
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_GRADO)) {
             reg.setUltimoGrado(c.getId());
             reg.setNombreUltimoGrado(c.getValor());
-
-            c = (Catalogos) catalogosRepo
-                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-            if (!isNull(c)) {
-                reg.setNivelUltimoGrado(c.getId());
-                reg.setNivelUltimoGradoNombre(c.getValor());
-            }
         }
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO)) {
+            reg.setNivelUltimoGrado(c.getId());
+            reg.setNivelUltimoGradoNombre(c.getValor());
+        }
+        if (!isNull(c.getCodigoPadre())) {
+            fillUltimoGrado(reg, c.getCodigoPadre());
+        }
+        return reg;
+    }
 
+    private RegistroAcademicoDto fillGradoActual(RegistroAcademicoDto reg, Integer idCatalogo) {
+        Catalogos c = (Catalogos) catalogosRepo
+                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, idCatalogo));
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_CARRERA)) {
+            reg.setCarreraGradoActualNombre(c.getValor());
+            reg.setCarreraGradoActual(c.getId());
+        }
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_GRADO)) {
+            reg.setGradoActual(c.getId());
+            reg.setNombreGradoActual(c.getValor());
+        }
+        if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO)) {
+            reg.setNivelGradoActual(c.getId());
+            reg.setNivelGradoActualNombre(c.getValor());
+        }
+        if (!isNull(c.getCodigoPadre())) {
+            fillGradoActual(reg, c.getCodigoPadre());
+        }
+        return reg;
+    }
+
+    private void fillRegistroRA(RegistroAcademicoDto reg) {
+        fillUltimoGrado(reg, reg.getUltimoGrado());
         if (reg.isEstudiaActualmente()) {
-            c = (Catalogos) catalogosRepo
-                    .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, reg.getGradoActual()));
-            if (c.getTipo().equals(C.CAT_GEN_NIV_EDUCATIVO_CARRERA)) {
-                reg.setCarreraGradoActual(c.getId());
-                reg.setCarreraGradoActualNombre(c.getValor());
-
-                c = (Catalogos) catalogosRepo
-                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-                if (!isNull(c)) {
-                    reg.setGradoActual(c.getId());
-                    reg.setNombreGradoActual(c.getValor());
-
-                    c = (Catalogos) catalogosRepo
-                            .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-                    if (!isNull(c)) {
-                        reg.setNivelGradoActual(c.getId());
-                        reg.setNivelGradoActualNombre(c.getValor());
-                    }
-                }
-            } else {
-                reg.setGradoActual(c.getId());
-                reg.setNombreGradoActual(c.getValor());
-
-                c = (Catalogos) catalogosRepo
-                        .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, c.getCodigoPadre()));
-                if (!isNull(c)) {
-                    reg.setNivelGradoActual(c.getId());
-                    reg.setNivelGradoActualNombre(c.getValor());
-                }
-            }
+            fillGradoActual(reg, reg.getGradoActual());
         }
     }
 
