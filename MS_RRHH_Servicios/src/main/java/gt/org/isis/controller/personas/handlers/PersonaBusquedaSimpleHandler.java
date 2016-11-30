@@ -36,6 +36,7 @@ import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Dpi;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
+import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.repository.AreasGeografRepository;
@@ -197,6 +198,9 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         if (un.getTipo().equalsIgnoreCase(C.CAT_UN_DISTRITO)) {
             ref.setFkDistrito(id);
             ref.setNombreDistrito(un.getValor());
+            UnidadEjecutora ue = ueRepo.findOne(un.getCodigoPadre());
+            ref.setFkUnidadEjecutora(isNull(ue) ? null : ue.getId());
+            ref.setFkUnidadEjecutoraNombre(isNull(ue) ? null : ue.getNombre());
         }
         if (un.getTipo().equalsIgnoreCase(C.CAT_UN_LUGAR_ESPEC)) {
             ref.setFkLugarEspecifico(id);
