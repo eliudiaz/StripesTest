@@ -184,6 +184,9 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             ref = new RefUnidadNotificadoraDto();
         }
         UnidadNotificadora un = unidadNotificadora.findOne(id);
+        if (isNull(un)) {
+            return ref;
+        }
         if (un.getTipo().equalsIgnoreCase(C.CAT_UN_COMUNIDAD2)) {
             ref.setFkComunidad2(id);
             ref.setNombreComunidad2(un.getValor());
@@ -200,8 +203,8 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
             ref.setFkLugarEspecifico(id);
             ref.setNombreLugarEspecifico(un.getValor());
         }
-        if (!isNull(un.getCodigoPadre())) {
-            getUnidadNotificadora(un.getCodigoPadre(), ref);
+        if (!isNull(un.getCodigoPadre()) && !un.getTipo().equalsIgnoreCase(C.CAT_UN_DISTRITO)) {
+            return getUnidadNotificadora(un.getCodigoPadre(), ref);
         }
 
         return ref;
