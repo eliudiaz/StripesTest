@@ -11,9 +11,11 @@ import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.controller.dto.ExportPersonasRequestDto;
 import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import gt.org.isis.api.utils.ExcelHelper;
+import gt.org.isis.api.utils.FieldDto;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
@@ -24,20 +26,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonasExporterHandler extends AbstractRequestHandler<ExportPersonasRequestDto, ByteArrayOutputStream> {
 
+    private final List<FieldDto> fields = ExcelHelper.getAnnotatedFieldsConfig(PersonaRowsFileDto.class);
+
     @Override
     public ByteArrayOutputStream execute(ExportPersonasRequestDto request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ExcelHelper.writeMapToExcel(out, new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(), new Function<PersonaRowsFileDto, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> apply(PersonaRowsFileDto f) {
-                try {
-                    f.setFoto(null);
-                    return ExcelHelper.introspect(f);
-                } catch (Exception ex) {
-                    return new HashMap<String, Object>();
-                }
-            }
-        })));
+
+        ExcelHelper.writeMapToExcel(out,
+                new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(),
+                        new Function<PersonaRowsFileDto, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> apply(PersonaRowsFileDto f) {
+                        try {
+                            return ExcelHelper.introspect(f);
+                        } catch (Exception ex) {
+                            return new HashMap<String, Object>();
+                        }
+                    }
+                })), fields);
 
         return out;
 

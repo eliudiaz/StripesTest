@@ -5,12 +5,14 @@
  */
 package gt.org.isis.api.utils;
 
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -92,6 +94,18 @@ public class ExcelHelper {
             fields.add(new FieldDto(k = it.next().getKey(), k));
         }
         writeMapToExcel(out, data, fields);
+    }
+
+    public static List<FieldDto> getAnnotatedFieldsConfig(Class c) {
+        LinkedList<FieldDto> lsFields = new LinkedList<FieldDto>();
+        Field[] fields = c.getDeclaredFields();
+        for (Field f : fields) {
+            ExcelCol col;
+            if (!isNull(col = f.getDeclaredAnnotation(ExcelCol.class))) {
+                lsFields.add(new FieldDto(f.getName(), col.title(), col.order()));
+            }
+        }
+        return lsFields;
     }
 
 }
