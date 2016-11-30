@@ -88,7 +88,6 @@ public class PersonaDto {
     @NotEmpty
     @Valid
     private List<IdiomaDto> idiomas;
-    @Valid
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
     private boolean lector = true;

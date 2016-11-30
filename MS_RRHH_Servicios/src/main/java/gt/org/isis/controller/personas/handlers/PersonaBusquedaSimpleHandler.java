@@ -92,12 +92,13 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
 
     private void setDpiDto(Persona p, RequestGetPersonaDto dto) {
         if (p.getDpiCollection() != null && !p.getDpiCollection().isEmpty()) {
-            dto.setDpi(new DpiDtoConverter().toDTO(Collections2.filter(p.getDpiCollection(), new Predicate<Dpi>() {
+
+            dto.setDpi(new DpiDtoConverter().toDTO(p.getDpiCollection().size() > 1 ? Collections2.filter(p.getDpiCollection(), new Predicate<Dpi>() {
                 @Override
                 public boolean apply(Dpi t) {
                     return t.getEstado().equals(EstadoVariable.ACTUAL);
                 }
-            }).iterator().next()));
+            }).iterator().next() : p.getDpiCollection().iterator().next()));
         }
     }
 
@@ -124,7 +125,8 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     }
 
     private void fillComunidadLinguistica(PersonaDto p) {
-        p.setFkComunidadLinguisticaNombre(findById(p.getFkComunidadLinguistica()).getValor());
+        Catalogos c = findById(p.getFkComunidadLinguistica());
+        p.setFkComunidadLinguisticaNombre(isNull(c) ? "No tiene" : c.getValor());
     }
 
     private void fillExpectativa(RegistroLaboralDto rl) {

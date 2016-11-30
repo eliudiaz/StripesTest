@@ -150,7 +150,7 @@ public class PersonaCrearHandler extends PersonasBaseHandler<RequestCreatePerson
     }
 
     private PersonaCrearHandler guardarEstudiosSalud(RequestCreatePersonaDto r, final Persona currentPersona) {
-        if (!isNull(currentPersona.getEstudioSaludCollection())) {
+        if (!isNull(r.getEstudiosSalud())) {
             estudiosRepo.save(
                     Collections2.transform(r.getEstudiosSalud(),
                             new Function<EstudioSaludDto, EstudioSalud>() {

@@ -12,8 +12,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -77,7 +79,7 @@ public class ExcelHelper {
                             cell.setCellValue((Integer) value);
                         } else if (value instanceof Double) {
                             cell.setCellValue((Double) value);
-                        } else if (value instanceof Boolean) {
+                        } else {
                             cell.setCellValue(value.toString());
                         }
                     }
@@ -106,8 +108,10 @@ public class ExcelHelper {
         LinkedList<FieldDto> lsFields = new LinkedList<FieldDto>();
         Field[] fields = c.getDeclaredFields();
         for (Field f : fields) {
-            ExcelCol col;
-            if (!isNull(col = f.getDeclaredAnnotation(ExcelCol.class))) {
+            Annotation[] ans = f.getDeclaredAnnotations();
+            System.out.println(Arrays.toString(ans));
+            for (Annotation an : ans) {
+                ExcelCol col = (ExcelCol) an;
                 lsFields.add(new FieldDto(f.getName(), col.title(), col.order()));
             }
         }

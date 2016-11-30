@@ -26,12 +26,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonasExporterHandler extends AbstractRequestHandler<ExportPersonasRequestDto, ByteArrayOutputStream> {
 
-    private final List<FieldDto> fields = ExcelHelper.getAnnotatedFieldsConfig(PersonaRowsFileDto.class);
-
     @Override
     public ByteArrayOutputStream execute(ExportPersonasRequestDto request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-
+        List<FieldDto> fields = ExcelHelper.getAnnotatedFieldsConfig(PersonaRowsFileDto.class);
         ExcelHelper.writeMapToExcel(out,
                 new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(),
                         new Function<PersonaRowsFileDto, Map<String, Object>>() {
