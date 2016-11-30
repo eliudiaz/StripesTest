@@ -105,7 +105,22 @@ public class PersonaCompletarDatosHandler extends AbstractRequestHandler<Persona
                     .withUnidadEjecutora(puestoPrincipal.getRefUnidadNotificadora().getFkUnidadEjecutoraNombre())
                     .withClasificacionServicio(puestoPrincipal.getRefClasificacionServicio().getFkClasificacionServicioNombre())
                     .withComisionado(translateBool(rl.isComisionado()))
-                    .withPuestoAdicional(translateBool(rl.getPuestos().size() > 1));
+                    .withPuestoAdicional(translateBool(rl.getPuestos().size() > 1))
+                    .withUnidadEjecutora(puestoPrincipal
+                            .getRefUnidadNotificadora()
+                            .getFkUnidadEjecutoraNombre().concat("-")
+                            .concat(puestoPrincipal
+                                    .getRefUnidadNotificadora()
+                                    .getNombreDistrito().concat("-"))
+                            .concat(puestoPrincipal
+                                    .getRefUnidadNotificadora()
+                                    .getNombreComunidad())
+                            .concat(!isNull(puestoPrincipal
+                                    .getRefUnidadNotificadora()
+                                    .getNombreComunidad2()) ? puestoPrincipal
+                                                    .getRefUnidadNotificadora()
+                                                    .getNombreComunidad2() : "")
+                    );
         }
         return builder.build();
     }

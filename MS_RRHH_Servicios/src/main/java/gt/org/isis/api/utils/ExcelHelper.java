@@ -81,6 +81,7 @@ public class ExcelHelper {
                             cell.setCellValue(value.toString());
                         }
                     }
+                    sheet.autoSizeColumn(columnCount);
                     columnCount++;
                 }
             }

@@ -41,13 +41,15 @@ public class PersonasExporterHandlerTest {
             p.setSegundoApellido("sdfsdfsdf");
             p.setCui("sdfsdlfksjdlfkjsdf");
             System.out.println("execute");
-            fo = new FileOutputStream(new File("test.xls"));
+            File f;
+            fo = new FileOutputStream(f = new File("test.xls"));
 
             ExportPersonasRequestDto request = new ExportPersonasRequestDto(Arrays.asList(p));
             PersonasExporterHandler instance = new PersonasExporterHandler();
             ByteArrayOutputStream result = instance.execute(request);
             Assert.notNull(result);
             result.writeTo(fo);
+            Assert.isTrue(f.exists());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
