@@ -42,7 +42,7 @@ public class BuscarTodosController extends DownloadSupportController {
             HttpServletResponse response) {
         List<PersonaDto> out = handler.handle(null);
         if (download) {
-            produceResponseContent(response, new PersonaRowsFileDtoConverter().toEntity(out));
+            produceResponseContent(response, out);
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity<List<PersonaDto>>(out, HttpStatus.OK);

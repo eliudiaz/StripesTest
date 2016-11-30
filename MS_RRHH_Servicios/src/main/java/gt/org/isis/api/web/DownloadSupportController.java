@@ -31,7 +31,7 @@ public class DownloadSupportController {
     @Autowired
     PersonasExporterHandler exporter;
 
-    public ByteArrayOutputStream processDownload(List<PersonaRowsFileDto> out) {
+    public ByteArrayOutputStream generateDownload(List<PersonaDto> out) {
         return (ByteArrayOutputStream) exporter
                 .handle(new ExportPersonasRequestDto(
                         new ArrayList(Collections2.transform(out,
@@ -43,11 +43,11 @@ public class DownloadSupportController {
                         }))));
     }
 
-    public void produceResponseContent(HttpServletResponse response, List<PersonaRowsFileDto> content) {
+    public void produceResponseContent(HttpServletResponse response, List<PersonaDto> content) {
         try {
             String mimeType = "application/octet-stream";
             response.setContentType(mimeType);
-            ByteArrayOutputStream bOut = processDownload(content);
+            ByteArrayOutputStream bOut = generateDownload(content);
             response.setHeader("Content-Disposition", String.format("inline; filename=out.xls"));
             bOut.writeTo(response.getOutputStream());
         } catch (IOException ex) {

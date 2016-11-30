@@ -9,7 +9,6 @@ import gt.org.isis.api.web.DownloadSupportController;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.home.handlers.BusquedaNormalHandler;
-import gt.org.isis.converters.PersonaRowsFileDtoConverter;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -48,7 +47,7 @@ public class BusquedaNormalController extends DownloadSupportController {
 
         List<PersonaDto> out = handler.handle(filtro);
         if (download) {
-            produceResponseContent(response, new PersonaRowsFileDtoConverter().toEntity(out));
+            produceResponseContent(response, out);
             return new ResponseEntity(HttpStatus.OK);
         }
 
