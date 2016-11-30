@@ -11,6 +11,7 @@ import gt.org.isis.api.AbstractRequestHandler;
 import gt.org.isis.api.C;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.SingularAttrSpecificationBased;
+import static gt.org.isis.api.utils.EntitiesHelper.formatDate;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.LugarResidenciaDto;
@@ -107,6 +108,23 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
                 ? buildByMunicipio(dto.getFkMunicipioNacimiento()) : null);
         dto.setRefVecindad(!isNull(dto.getFkMunicipioNacimiento())
                 ? buildByMunicipio(dto.getFkMunicipioVecindad()) : null);
+        fillComunidadLinguistica(dto);
+        fillNacionalidad(dto);
+        dto.setFechaNacimientoTexto(formatDate(dto.getFechaNacimiento()));
+    }
+
+    private Catalogos findById(Integer id) {
+        Catalogos c = (Catalogos) catalogosRepo
+                .findOne(new SingularAttrSpecificationBased<Catalogos>(Catalogos_.id, id));
+        return c;
+    }
+
+    private void fillNacionalidad(PersonaDto p) {
+        p.setFkNacionalidadNombre(findById(p.getFkNacionalidad()).getValor());
+    }
+
+    private void fillComunidadLinguistica(PersonaDto p) {
+        p.setFkComunidadLinguisticaNombre(findById(p.getFkComunidadLinguistica()).getValor());
     }
 
     private void fillExpectativa(RegistroLaboralDto rl) {

@@ -69,11 +69,11 @@ public class PersonaCompletarDatosHandler extends AbstractRequestHandler<Persona
                 .withCui(persona.getCui())
                 .withSexo(persona.getSexo())
                 .withEstadoCivil(persona.getEstadoCivil())
-                .withFkNacionalidadNombre(persona.getFkNacionalidadNombre()) //check
+                .withFkNacionalidadNombre(persona.getFkNacionalidadNombre())
                 .withLimitacionesFisicas(persona.getLimitacionesFisicas())
                 .withSabeLeer(translateBool(persona.isSabeLeer()))
                 .withSabeEscribir(translateBool(persona.isSabeLeer()))
-                .withFechaNacimientoTexto(persona.getFechaNacimientoTexto()) //check
+                .withFechaNacimientoTexto(persona.getFechaNacimientoTexto())
                 .withEdad(persona.getEdad())
                 .withIdiomas(!isNull(persona.getIdiomas())
                         ? Arrays.toString(persona.getIdiomas().toArray(new IdiomaDto[persona.getIdiomas().size()]))
@@ -85,7 +85,7 @@ public class PersonaCompletarDatosHandler extends AbstractRequestHandler<Persona
                     .withMunicipioResidencia(refResidencia.getFkMunicioNombre())
                     .withDireccion(persona.getLugarResidencia().getDireccion())
                     .withPueblo(persona.getFkPueblo().toString())
-                    .withComunidadLinguistica(persona.getFkComunidadLinguisticaNombre()); //check
+                    .withComunidadLinguistica(persona.getFkComunidadLinguisticaNombre());
         }
 
         if (!isNull(ra)) {

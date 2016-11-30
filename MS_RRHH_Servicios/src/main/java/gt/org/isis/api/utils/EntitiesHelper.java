@@ -7,6 +7,7 @@ package gt.org.isis.api.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ext.UnknownException;
 import gt.org.isis.api.entities.CustomEntity;
 import gt.org.isis.model.Persona;
@@ -38,6 +39,13 @@ public class EntitiesHelper {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static String formatDate(Date date) {
+        String format;
+        SimpleDateFormat sd = new SimpleDateFormat(!isNull(format = System.getProperty("customPrintDateFormat"))
+                ? format : "dd/MM/yyyy");
+        return sd.format(date);
     }
 
     public static Date parseFechaDPI(String text) {
