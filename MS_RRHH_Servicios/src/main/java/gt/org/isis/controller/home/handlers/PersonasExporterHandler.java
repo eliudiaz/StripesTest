@@ -27,7 +27,6 @@ public class PersonasExporterHandler extends AbstractRequestHandler<ExportPerson
     @Override
     public ByteArrayOutputStream execute(ExportPersonasRequestDto request) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-
         ExcelHelper.writeMapToExcel(out, new ArrayList<Map<String, Object>>(Collections2.transform(request.getPersonas(), new Function<PersonaRowsFileDto, Map<String, Object>>() {
             @Override
             public Map<String, Object> apply(PersonaRowsFileDto f) {

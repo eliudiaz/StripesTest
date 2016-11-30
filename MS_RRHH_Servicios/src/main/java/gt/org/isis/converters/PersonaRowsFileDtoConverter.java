@@ -16,4 +16,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PersonaRowsFileDtoConverter extends BeansConverter<PersonaRowsFileDto, PersonaDto> {
+
+    @Override
+    public PersonaRowsFileDto toEntity(PersonaDto iB) {
+        PersonaRowsFileDto fileRow = super.toEntity(iB);
+
+        return fileRow;
+    }
 }

@@ -71,4 +71,9 @@ public class IdiomaDto {
         this.creadoPor = creadoPor;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
 }

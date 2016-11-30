@@ -61,6 +61,7 @@ public class PersonaDto {
     @NotNull
     private Pueblo fkPueblo;
     private Integer fkComunidadLinguistica;
+    private String fkComunidadLinguisticaNombre;
     @NotNull
     private String mrz;
     private String noCedula;
@@ -91,6 +92,14 @@ public class PersonaDto {
     private List<EstudioSaludDto> estudiosSalud;
     private String observaciones;
     private boolean lector = true;
+
+    public String getFkComunidadLinguisticaNombre() {
+        return fkComunidadLinguisticaNombre;
+    }
+
+    public void setFkComunidadLinguisticaNombre(String fkComunidadLinguisticaNombre) {
+        this.fkComunidadLinguisticaNombre = fkComunidadLinguisticaNombre;
+    }
 
     public String getFkMunicipioVecindadNombre() {
         return fkMunicipioVecindadNombre;

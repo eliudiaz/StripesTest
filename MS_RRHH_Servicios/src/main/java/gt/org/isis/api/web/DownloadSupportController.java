@@ -33,13 +33,14 @@ public class DownloadSupportController {
 
     public ByteArrayOutputStream processDownload(List<PersonaRowsFileDto> out) {
         return (ByteArrayOutputStream) exporter
-                .handle(new ExportPersonasRequestDto(new ArrayList(Collections2.transform(out,
-                        new Function<PersonaDto, PersonaRowsFileDto>() {
-                    @Override
-                    public PersonaRowsFileDto apply(PersonaDto f) {
-                        return completaDatosPersonaHandler.handle(f);
-                    }
-                }))));
+                .handle(new ExportPersonasRequestDto(
+                        new ArrayList(Collections2.transform(out,
+                                new Function<PersonaDto, PersonaRowsFileDto>() {
+                            @Override
+                            public PersonaRowsFileDto apply(PersonaDto f) {
+                                return completaDatosPersonaHandler.handle(f);
+                            }
+                        }))));
     }
 
     public void produceResponseContent(HttpServletResponse response, List<PersonaRowsFileDto> content) {
