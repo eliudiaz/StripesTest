@@ -5,6 +5,7 @@
  */
 package gt.org.isis.api.misc.exceptions.ext;
 
+import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.BaseException;
 import org.springframework.http.HttpStatus;
 
@@ -20,6 +21,6 @@ public class UnknownException extends BaseException {
 
     public UnknownException(String cause, String description, Throwable er) {
         super(HttpStatus.INTERNAL_SERVER_ERROR, cause,
-                description.concat(" >> ").concat(er.getMessage()));
+                description.concat(" >> ").concat(!isNull(er.getMessage()) ? er.getMessage() : "Unknown"));
     }
 }

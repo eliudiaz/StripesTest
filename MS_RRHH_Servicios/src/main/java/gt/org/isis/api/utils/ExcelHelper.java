@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.springframework.util.Assert;
 
 /**
  *
@@ -43,6 +45,9 @@ public class ExcelHelper {
     }
 
     public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data, List<FieldDto> fields) {
+        if (fields.isEmpty()) {
+            throw ExceptionsManager.newInternalErrorException("fields_config", "Configuracion de campos de excel no es valida!", null);
+        }
         HSSFWorkbook workbook = null;
         try {
             workbook = new HSSFWorkbook();
@@ -51,6 +56,7 @@ public class ExcelHelper {
             int rowCount = 0;
             int columnCount = 0;
             Row row = sheet.createRow(rowCount++);
+            Collections.sort(fields);
             for (FieldDto field : fields) {
                 Cell cell = row.createCell(columnCount++);
                 cell.setCellValue(field.getTitle());

@@ -40,6 +40,7 @@ public class PersonasExporterHandler extends AbstractRequestHandler<ExportPerson
                         try {
                             return ExcelHelper.introspect(f);
                         } catch (Exception ex) {
+                            ex.printStackTrace(System.err);
                             return new HashMap<String, Object>();
                         }
                     }
