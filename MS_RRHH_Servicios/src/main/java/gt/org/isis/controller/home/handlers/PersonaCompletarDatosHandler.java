@@ -98,7 +98,7 @@ public class PersonaCompletarDatosHandler extends AbstractRequestHandler<Persona
                             ? Arrays.toString(persona.getEstudiosSalud().toArray(new EstudioSaludDto[persona.getEstudiosSalud().size()]))
                             : "");
         }
-        if (!isNull(rl)) {
+        if (!isNull(rl) && !isNull(puestoPrincipal)) {
             builder.withAnioIngreso(rl.getAnioIngreso().toString())
                     .withPuestoFunciones(puestoPrincipal.getNombrePuestoFuncional())
                     .withRenglon(puestoPrincipal.getNombrePuestoNominalRenglon())
@@ -112,9 +112,18 @@ public class PersonaCompletarDatosHandler extends AbstractRequestHandler<Persona
                             .concat(puestoPrincipal
                                     .getRefUnidadNotificadora()
                                     .getNombreDistrito().concat("-"))
-                            .concat(puestoPrincipal
+                            .concat(!isNull(puestoPrincipal
+                                    .getRefUnidadNotificadora()
+                                    .getNombreLugarEspecifico())
+                                            ? puestoPrincipal
+                                                    .getRefUnidadNotificadora()
+                                                    .getNombreLugarEspecifico() : "")
+                            .concat(!isNull(puestoPrincipal
                                     .getRefUnidadNotificadora()
                                     .getNombreComunidad())
+                                            ? puestoPrincipal
+                                                    .getRefUnidadNotificadora()
+                                                    .getNombreComunidad() : "")
                             .concat(!isNull(puestoPrincipal
                                     .getRefUnidadNotificadora()
                                     .getNombreComunidad2()) ? puestoPrincipal
