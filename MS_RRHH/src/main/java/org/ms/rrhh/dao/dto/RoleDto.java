@@ -16,10 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class RoleDto {
 
     private Integer id;
-    @NotNull
     private String nombre;
-    @NotNull
-    @NotEmpty
     private List<AccesoDto> accesos;
     private String usuario;
 

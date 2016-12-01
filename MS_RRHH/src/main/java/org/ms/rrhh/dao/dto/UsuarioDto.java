@@ -22,7 +22,6 @@ public class UsuarioDto {
     private String apellidos;
     private String clave;
     private boolean root;
-    private PersonaDto persona;
     private List<RoleDto> roles;
 
     public UsuarioDto(String usuario, String clave) {
@@ -91,14 +90,6 @@ public class UsuarioDto {
         this.clave = clave;
     }
 
-    public PersonaDto getPersona() {
-        return persona;
-    }
-
-    public void setPersona(PersonaDto persona) {
-        this.persona = persona;
-    }
-
     public UsuarioDto() {
     }
 
@@ -108,7 +99,6 @@ public class UsuarioDto {
         this.nombres = builder.nombres;
         this.apellidos = builder.apellidos;
         this.clave = builder.clave;
-        this.persona = builder.persona;
         this.roles = builder.roles;
     }
 
@@ -123,7 +113,6 @@ public class UsuarioDto {
         private String nombres;
         private String apellidos;
         private String clave;
-        private PersonaDto persona;
         private List<RoleDto> roles;
 
         public Builder withUsuario(String usuario) {
@@ -148,11 +137,6 @@ public class UsuarioDto {
 
         public Builder withClave(String clave) {
             this.clave = clave;
-            return this;
-        }
-
-        public Builder withPersona(PersonaDto persona) {
-            this.persona = persona;
             return this;
         }
 

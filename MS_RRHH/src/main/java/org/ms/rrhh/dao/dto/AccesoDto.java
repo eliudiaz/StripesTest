@@ -15,9 +15,7 @@ import javax.validation.constraints.NotNull;
 public class AccesoDto {
 
     private Integer id;
-    @NotNull
     private String valor;
-    @NotNull
     private String tipo;
     private Date fechaCreacion;
     private String creadoPor;
