@@ -13,7 +13,6 @@ import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.model.AccesoRole;
 import gt.org.isis.model.Role;
 import gt.org.isis.model.enums.Estado;
-import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.repository.AccesoRoleRepository;
 import gt.org.isis.repository.AccesosRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -38,23 +37,20 @@ public class ModificarHandler extends AbstractRequestHandler<RoleDto, RoleDto> {
     public RoleDto execute(final RoleDto request) {
         final Role r = roles.findOne(request.getId());
         r.setNombre(request.getNombre());
-        for (AccesoRole ar : r.getAccesoRoleCollection()) {
-            accesosRole.delete(ar);
-        }
+        accesosRole.delete(r.getAccesoRoleCollection());
         r.setEstado(Estado.ACTIVO);
         final Role r2 = roles.save(r);
-        r.setAccesoRoleCollection(Collections2.transform(request.getAccesos(), new Function<AccesoDto, AccesoRole>() {
+        r2.setAccesoRoleCollection(Collections2.transform(request.getAccesos(), new Function<AccesoDto, AccesoRole>() {
             @Override
             public AccesoRole apply(AccesoDto f) {
                 AccesoRole acceso = new AccesoRole();
                 acceso.setFkAcceso(accesos.findOne(f.getId()));
                 acceso.setFkRole(r2);
-                EntitiesHelper.setDateCreatedInfo(acceso);
+                setCreateInfo(acceso);
                 return acceso;
             }
         }));
-        EntitiesHelper.setDateUpdatedInfo(r2);
-
+        accesosRole.save(r2.getAccesoRoleCollection());
         return request;
     }
 
