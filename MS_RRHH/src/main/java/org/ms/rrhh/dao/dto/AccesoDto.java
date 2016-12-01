@@ -6,7 +6,6 @@
 package org.ms.rrhh.dao.dto;
 
 import java.util.Date;
-import javax.validation.constraints.NotNull;
 
 /**
  *

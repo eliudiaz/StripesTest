@@ -22,6 +22,7 @@ public class UsuarioDto {
     private String apellidos;
     private String clave;
     private boolean root;
+    private List<AccesoDto> accesos;
     private List<RoleDto> roles;
 
     public UsuarioDto(String usuario, String clave) {
@@ -31,6 +32,14 @@ public class UsuarioDto {
 
     public boolean isRoot() {
         return root;
+    }
+
+    public List<AccesoDto> getAccesos() {
+        return accesos;
+    }
+
+    public void setAccesos(List<AccesoDto> accesos) {
+        this.accesos = accesos;
     }
 
     public void setRoot(boolean root) {
