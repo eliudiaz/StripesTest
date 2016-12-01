@@ -9,12 +9,12 @@ import gt.org.isis.controller.dto.ExportPersonasRequestDto;
 import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.springframework.util.Assert;
 
@@ -50,10 +50,8 @@ public class PersonasExporterHandlerTest {
             Assert.notNull(result);
             result.writeTo(fo);
             Assert.isTrue(f.exists());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(PersonasExporterHandlerTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail("file generation fail!");
         } finally {
             try {
                 fo.close();
