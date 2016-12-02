@@ -86,13 +86,16 @@ public class LoginActionBean extends BaseActionBean {
                     && (usuario.getRoles() == null || usuario.getRoles().isEmpty())) {
                 throw new Exception("Usuario no tiene roles asignados");
             }
-            Map<String, AccesoDto> accesos = new HashMap<String, AccesoDto>();
-            for (RoleDto r : usuario.getRoles()) {
-                for (AccesoDto a : r.getAccesos()) {
-                    accesos.put(a.getValor(), a);
+            if (!usuario.isRoot()) {
+                Map<String, AccesoDto> accesos = new HashMap<String, AccesoDto>();
+                for (RoleDto r : usuario.getRoles()) {
+                    for (AccesoDto a : r.getAccesos()) {
+                        accesos.put(a.getValor(), a);
+                    }
                 }
+                usuario.setAccesos(new ArrayList<AccesoDto>(accesos.values()));
             }
-            usuario.setAccesos(new ArrayList<AccesoDto>(accesos.values()));
+
             getContext().getRequest().getSession().setAttribute("currentUser", usuario);
             setApplicationContext();
 
