@@ -34,7 +34,8 @@ import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
-import gt.org.isis.api.utils.EntitiesHelper;
+import gt.org.isis.controller.dto.PuestoDto;
+import gt.org.isis.model.HistoricoPuesto;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludHistoricoRepository;
 import gt.org.isis.repository.EstudiosSaludRepository;
@@ -55,8 +56,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import gt.org.isis.repository.PersonasHistoricoRepository;
+import gt.org.isis.repository.PuestoHistoricoRepository;
 import gt.org.isis.repository.RegistroAcademicoHistoricoRepository;
 import gt.org.isis.repository.RegistroLaboralHistoricoRepository;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -161,11 +164,16 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
             List<EstudioSalud> estudios;
             crearHistoricoEstudiosSalud((estudios = (List) p.getEstudioSaludCollection()));
             estudiosRepo.deleteInBatch(estudios);
+            estudios = new ArrayList<EstudioSalud>();
             for (EstudioSaludDto t : r.getEstudiosSalud()) {
                 EstudioSalud i = new EstudiosSaludConverter().toEntity(t);
                 i.setFkPersona(p);
-                EntitiesHelper.setDateCreatedInfo(i);
+                setCreateInfo(i);
+                setUpdateInfo(i);
+                estudios.add(i);
             }
+            estudiosRepo.save(estudios);
+
         }
         return this;
     }
@@ -184,7 +192,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
 
     private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
         crearHistoricoIdiomas((List) p.getIdiomaCollection());
-        idiomasRepo.delete((List) p.getIdiomaCollection()); // clean after make history
+        idiomasRepo.delete(p.getIdiomaCollection()); // clean after make history
         for (IdiomaDto t : r.getIdiomas()) {
             Idioma i = new IdiomaDtoConverter().toEntity(t);
             i.setFkPersona(p);
@@ -231,10 +239,9 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
         BeanUtils.copyProperties(requestModPersona.getRegistroLaboral(), registroLaboral, new String[]{"id", "creadoPor", "fechaCreacion", "estado"});
         setUpdateInfo(registroLaboral);
 
+        puestoRepo.delete((List) registroLaboral.getPuestoCollection());
         registroLaboral.getPuestoCollection().clear();
         rLabRepository.save(registroLaboral);
-
-        puestoRepo.delete((List) registroLaboral.getPuestoCollection());
         puestoRepo.save((Collection) Collections2
                 .transform(requestModPersona.getRegistroLaboral().getPuestos(),
                         new Function<RegistroLaboralPuestoDto, Puesto>() {
@@ -249,11 +256,25 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
         return this;
     }
 
+    @Autowired
+    PuestoHistoricoRepository puestoHistorico;
+
     private void crearHistoricoRegistroLaboral(RegistroLaboral actual) {
         HistoricoRegistroLaboral historico = new HistoricoRegistroLaboral();
         BeanUtils.copyProperties(actual, historico);
         setCreateInfo(historico);
-        registroLabHistoricoRepo.save(historico);
+        final HistoricoRegistroLaboral hisParent = registroLabHistoricoRepo.save(historico);
+        puestoHistorico.save(new ArrayList(Collections2.transform(actual.getPuestoCollection(), new Function<Puesto, HistoricoPuesto>() {
+            @Override
+            public HistoricoPuesto apply(Puesto f) {
+                HistoricoPuesto hp = new HistoricoPuesto();
+                BeanUtils.copyProperties(f, hp, new String[]{"fkRegistroLaboral", "id"});
+                hp.setFkRegistroLaboral(hisParent);
+                setCreateInfo(hp);
+                return hp;
+            }
+
+        })));
     }
 
     private PersonaModificarHandler actualizaDpi(Persona p, final RequestUpdatePersonaDto r) {
