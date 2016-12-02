@@ -83,7 +83,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         r.setId(request.getUsuario());
         EntitiesHelper.setDateCreatedInfo(r);
         r.setCreadoPor("test");
-
+        r.setSuperUsuario(request.isRoot());
         if (request.getRoles() != null && !request.getRoles().isEmpty()) {
             List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2
                     .transform(request.getRoles(),

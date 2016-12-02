@@ -76,7 +76,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             request.setFoto(r.getFkPersona().getFoto());
         }
         request.setRoot(r.getSuperUsuario() != null && r.getSuperUsuario());
-        if (r.getSuperUsuario()) {
+        if (request.isRoot()) {
             request.setAccesos(new ArrayList(Collections2.transform(accesos.findAll(),
                     new Function<Acceso, AccesoDto>() {
                 @Override
