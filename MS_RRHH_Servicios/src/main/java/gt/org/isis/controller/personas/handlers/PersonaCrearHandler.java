@@ -6,8 +6,10 @@
 package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
@@ -41,6 +43,7 @@ import gt.org.isis.repository.RegistroAcademicoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -151,6 +154,15 @@ public class PersonaCrearHandler extends PersonasBaseHandler<RequestCreatePerson
 
     private PersonaCrearHandler guardarEstudiosSalud(RequestCreatePersonaDto r, final Persona currentPersona) {
         if (!isNull(r.getEstudiosSalud())) {
+
+            if (!Collections2.filter(r.getEstudiosSalud(), new Predicate<EstudioSaludDto>() {
+                @Override
+                public boolean apply(EstudioSaludDto t) {
+                    return isNull(t.getAnioEstudio());
+                }
+            }).isEmpty()) {
+                throw ExceptionsManager.newValidationException("anio_estudio", "Los estudios de salud deben tener el año correspondiente!");
+            }
             estudiosRepo.save(
                     Collections2.transform(r.getEstudiosSalud(),
                             new Function<EstudioSaludDto, EstudioSalud>() {
