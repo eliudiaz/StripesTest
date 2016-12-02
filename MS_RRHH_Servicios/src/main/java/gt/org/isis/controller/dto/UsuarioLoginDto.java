@@ -21,7 +21,16 @@ public class UsuarioLoginDto {
     private String nombres;
     private String foto;
     private List<RoleDto> roles;
+    private List<AccesoDto> accesos;
     private boolean root;
+
+    public List<AccesoDto> getAccesos() {
+        return accesos;
+    }
+
+    public void setAccesos(List<AccesoDto> accesos) {
+        this.accesos = accesos;
+    }
 
     public boolean isRoot() {
         return root;
