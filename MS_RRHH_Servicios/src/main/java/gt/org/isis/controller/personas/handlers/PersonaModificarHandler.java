@@ -34,7 +34,6 @@ import gt.org.isis.model.RegistroAcademico;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.Estado;
 import gt.org.isis.model.enums.EstadoVariable;
-import gt.org.isis.controller.dto.PuestoDto;
 import gt.org.isis.model.HistoricoPuesto;
 import gt.org.isis.repository.DpiRepository;
 import gt.org.isis.repository.EstudiosSaludHistoricoRepository;
@@ -153,7 +152,6 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
             setDatosGeneralesByLector(currentPersona, updateRequest);
         }
         setUpdateInfo(currentPersona);
-
         repo.save(currentPersona);
 
         return this;
@@ -190,15 +188,18 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
         }));
     }
 
-    private PersonaModificarHandler actualizarIdiomas(Persona p, PersonaDto r) {
+    private PersonaModificarHandler actualizarIdiomas(final Persona p, PersonaDto r) {
         crearHistoricoIdiomas((List) p.getIdiomaCollection());
-        idiomasRepo.delete(p.getIdiomaCollection()); // clean after make history
-        for (IdiomaDto t : r.getIdiomas()) {
-            Idioma i = new IdiomaDtoConverter().toEntity(t);
-            i.setFkPersona(p);
-            setCreateInfo(i);
-            idiomasRepo.save(i);
-        }
+        idiomasRepo.deleteByPersona(p.getCui());
+        idiomasRepo.save(Collections2.transform(r.getIdiomas(), new Function<IdiomaDto, Idioma>() {
+            @Override
+            public Idioma apply(IdiomaDto f) {
+                Idioma i = new IdiomaDtoConverter().toEntity(f);
+                i.setFkPersona(p);
+                setCreateInfo(i);
+                return i;
+            }
+        }));
         return this;
     }
 
