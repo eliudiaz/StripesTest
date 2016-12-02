@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 @Service
 public class UsuariosDao {
@@ -34,11 +34,11 @@ public class UsuariosDao {
             headers.setContentType(MediaType.APPLICATION_JSON);
             String r = new Gson().toJson(UsuarioDto.builder().withUsuario(username).withClave(password).build());
             HttpEntity<String> entity = new HttpEntity<String>(r, headers);
-
             System.out.println(">> " + r);
-
-            ResponseEntity<String> re = rt.exchange(C.LOGIN_PATH != null ? C.SERVICIOS_CONTEXT.concat(C.LOGIN_PATH)
-                    : "http://localhost:41825/MS_RRHH_Servicios/usuarios/login",
+            String servicesCtx;
+            System.out.println(">> login to >> " + (servicesCtx = C.SERVICIOS_CONTEXT == null
+                    ? "http://localhost:41825/MS_RRHH_Servicios/" : C.SERVICIOS_CONTEXT));
+            ResponseEntity<String> re = rt.exchange(servicesCtx.concat("usuarios/login"),
                     HttpMethod.POST, entity, String.class);
             System.out.println(">> " + re.getBody());
             Gson g = new GsonBuilder().setDateFormat("dd-MM-yyyy").create();
