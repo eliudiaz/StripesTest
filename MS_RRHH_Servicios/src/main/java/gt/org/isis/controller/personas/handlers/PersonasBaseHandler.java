@@ -5,11 +5,11 @@
  */
 package gt.org.isis.controller.personas.handlers;
 
-import gt.org.isis.api.AbstractValidationsRequestHandler;
+import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
 import gt.org.isis.api.C;
-import gt.org.isis.api.ValidationsHelper;
-import static gt.org.isis.api.ValidationsHelper.containsAny;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.ValidationsHelper;
+import static gt.org.isis.api.requesting.ValidationsHelper.containsAny;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.DpiDto;
 import gt.org.isis.controller.dto.PersonaDto;

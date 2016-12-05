@@ -7,7 +7,7 @@ package gt.org.isis.controller.home.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.ExportPersonasRequestDto;
 import gt.org.isis.controller.dto.PersonaRowsFileDto;
 import gt.org.isis.api.utils.ExcelHelper;

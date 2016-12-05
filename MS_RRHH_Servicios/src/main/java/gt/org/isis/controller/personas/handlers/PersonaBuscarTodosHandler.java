@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.personas.handlers;
 
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.api.entities.NoDisableEntitiesSpec;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.converters.PersonaDtoConverter;

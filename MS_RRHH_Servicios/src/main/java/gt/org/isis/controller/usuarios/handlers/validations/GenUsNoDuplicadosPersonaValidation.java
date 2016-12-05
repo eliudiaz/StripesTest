@@ -5,9 +5,9 @@
  */
 package gt.org.isis.controller.usuarios.handlers.validations;
 
-import gt.org.isis.api.GenericValidationRequest;
-import gt.org.isis.api.ValidationRequestContext;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.GenericValidationRequest;
+import gt.org.isis.api.requesting.ValidationRequestContext;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.ManySpecificationANDHandler;
 import gt.org.isis.api.jpa.SingleFieldSpecification;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;

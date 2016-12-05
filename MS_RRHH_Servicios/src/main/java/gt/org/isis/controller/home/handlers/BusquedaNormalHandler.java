@@ -9,8 +9,8 @@ import gt.org.isis.controller.home.handlers.specifications.CriteriaBuilderLugarR
 import gt.org.isis.controller.home.handlers.specifications.CriteriaBuilderPersona;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractValidationsRequestHandler;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.converters.PersonaDtoConverter;

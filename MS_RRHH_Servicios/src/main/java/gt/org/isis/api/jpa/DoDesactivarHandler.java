@@ -5,8 +5,8 @@
  */
 package gt.org.isis.api.jpa;
 
-import gt.org.isis.api.AbstractRequestHandler;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.entities.DesactivableEntity;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.model.enums.Estado;

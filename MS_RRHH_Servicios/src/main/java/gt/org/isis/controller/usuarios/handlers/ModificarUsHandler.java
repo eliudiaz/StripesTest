@@ -7,8 +7,8 @@ package gt.org.isis.controller.usuarios.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractValidationsRequestHandler;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioDto;

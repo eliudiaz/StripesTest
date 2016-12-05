@@ -7,7 +7,7 @@ package gt.org.isis.controller.unidadesejecutoras.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.UnidadEjecutoraDto;
 import gt.org.isis.converters.UnidadEjecutoraConverter;
 import gt.org.isis.model.UnidadEjecutora;

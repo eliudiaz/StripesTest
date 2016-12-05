@@ -7,7 +7,7 @@ package gt.org.isis.api.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ext.UnknownException;
 import gt.org.isis.api.entities.CustomEntity;
 import gt.org.isis.model.Persona;

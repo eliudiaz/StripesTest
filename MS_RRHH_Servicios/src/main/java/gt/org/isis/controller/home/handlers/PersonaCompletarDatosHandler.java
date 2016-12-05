@@ -7,8 +7,8 @@ package gt.org.isis.controller.home.handlers;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.PersonaDto;

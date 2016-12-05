@@ -7,7 +7,7 @@ package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
 import gt.org.isis.controller.dto.PersonaDto;

@@ -5,8 +5,8 @@
  */
 package gt.org.isis.controller.personas.handlers.validations;
 
-import gt.org.isis.api.GenericValidationRequest;
-import gt.org.isis.api.ValidationRequestContext;
+import gt.org.isis.api.requesting.GenericValidationRequest;
+import gt.org.isis.api.requesting.ValidationRequestContext;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.dto.RegistroLaboralDto;

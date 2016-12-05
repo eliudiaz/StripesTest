@@ -7,9 +7,9 @@ package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.api.C;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.jpa.SingularAttrSpecificationBased;
 import static gt.org.isis.api.utils.EntitiesHelper.formatDate;
 import gt.org.isis.controller.dto.EstudioSaludDto;
