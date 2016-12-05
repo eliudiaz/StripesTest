@@ -8,6 +8,7 @@ package gt.org.isis.controller.usuarios.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.AbstractValidationsRequestHandler;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.RoleDto;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDto> {
+public class CrearUsHandler extends AbstractValidationsRequestHandler<UsuarioDto, UsuarioDto> {
 
     @Autowired
     RolesRepository roles;
@@ -81,8 +82,7 @@ public class CrearUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDt
         r.setClave(EntitiesHelper.md5Gen(request.getClave()));
 
         r.setId(request.getUsuario());
-        EntitiesHelper.setDateCreatedInfo(r);
-        r.setCreadoPor("test");
+        setCreateInfo(r);
         r.setSuperUsuario(request.isRoot());
         if (request.getRoles() != null && !request.getRoles().isEmpty()) {
             List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2

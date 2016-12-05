@@ -43,7 +43,6 @@ import gt.org.isis.repository.RegistroAcademicoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

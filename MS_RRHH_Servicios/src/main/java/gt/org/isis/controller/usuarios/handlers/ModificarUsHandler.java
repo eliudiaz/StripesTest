@@ -7,7 +7,7 @@ package gt.org.isis.controller.usuarios.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.AbstractValidationsRequestHandler;
 import static gt.org.isis.api.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.RoleDto;
@@ -38,7 +38,7 @@ import org.springframework.util.DigestUtils;
  * @author edcracken
  */
 @Service
-public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, UsuarioDto> {
+public class ModificarUsHandler extends AbstractValidationsRequestHandler<UsuarioDto, UsuarioDto> {
 
     @Autowired
     RolesRepository roles;
@@ -73,9 +73,12 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             throw ExceptionsManager.newValidationException("clave_no_coincide",
                     new String[]{"usuario,Clave confirmacion y clave deben coincidir!"});
         }
+
         UsuarioDtoConverter bc = new UsuarioDtoConverter();
         final Usuario dbUser = ls.get(0); //usuarios.findOne(request.getUsuario());
-
+        if (!isNull(request.getCui()) && !request.getCui().isEmpty()) {
+            dbUser.setFkPersona(personas.findOne(request.getCui()));
+        }
         List<UsuarioRoles> lsRoles = new ArrayList<UsuarioRoles>(Collections2.transform(request.getRoles(),
                 new Function<RoleDto, UsuarioRoles>() {
             @Override
@@ -95,12 +98,7 @@ public class ModificarUsHandler extends AbstractRequestHandler<UsuarioDto, Usuar
             uRoles.deleteInBatch((List) dbUser.getUsuarioRolesCollection());
             dbUser.setUsuarioRolesCollection(lsRoles);
         }
-        if (request.getCui() != null && request.getCui().isEmpty()) {
-            if (dbUser.getFkPersona() == null || !dbUser.getFkPersona()
-                    .getCui().equals(request.getCui())) {
-                dbUser.setFkPersona(personas.findOne(request.getCui()));
-            }
-        }
+
         if (request.isResetClave()) {
             String newPass = new String(DigestUtils.md5Digest(request.getClave().getBytes()));
             dbUser.setClave(newPass);
