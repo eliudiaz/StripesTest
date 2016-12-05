@@ -18,6 +18,7 @@ import gt.org.isis.model.AreaGeografica;
 import gt.org.isis.model.AreaGeografica_;
 import gt.org.isis.model.LugarResidencia;
 import gt.org.isis.model.Persona;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import gt.org.isis.repository.LugarResidenciaRepository;
@@ -86,7 +87,7 @@ public class BusquedaNormalHandler extends AbstractValidationsRequestHandler<Bus
                 }));
             }
             (s1 = (s1 == null ? new ArrayList<Persona>() : s1))
-                    .addAll(Collections2.transform(lugarRepo.findAll(new Specification<LugarResidencia>() {
+                    .addAll(Collections2.filter(Collections2.transform(lugarRepo.findAll(new Specification<LugarResidencia>() {
                         @Override
                         public Predicate toPredicate(Root<LugarResidencia> root, CriteriaQuery<?> cq,
                                 CriteriaBuilder cb) {
@@ -103,6 +104,11 @@ public class BusquedaNormalHandler extends AbstractValidationsRequestHandler<Bus
                         @Override
                         public Persona apply(LugarResidencia f) {
                             return f.getFkPersona();
+                        }
+                    }), new com.google.common.base.Predicate<Persona>() {
+                        @Override
+                        public boolean apply(Persona t) {
+                            return t.getEstado().equals(Estado.ACTIVO);
                         }
                     }));
         }
