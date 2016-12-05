@@ -68,7 +68,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         List<ValidationError> errors = new ArrayList<ValidationError>();
 
         for (FieldError fieldError : fieldErrors) {
-            errors.add(new ValidationError(fieldError.getField().replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase(), fieldError.getDefaultMessage()
+            errors.add(new ValidationError(fieldError
+                    .getField()
+                    .replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase(), fieldError.getDefaultMessage()
             ));
         }
 

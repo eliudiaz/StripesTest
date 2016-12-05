@@ -7,7 +7,7 @@ package gt.org.isis.controller.catalogos.unidadesnotificadoras.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.CatalogoDto;
 import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.controller.dto.UnidadNotificadoraDto;

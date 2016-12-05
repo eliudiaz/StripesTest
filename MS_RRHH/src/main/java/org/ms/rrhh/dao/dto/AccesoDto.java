@@ -6,7 +6,6 @@
 package org.ms.rrhh.dao.dto;
 
 import java.util.Date;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -15,9 +14,7 @@ import javax.validation.constraints.NotNull;
 public class AccesoDto {
 
     private Integer id;
-    @NotNull
     private String valor;
-    @NotNull
     private String tipo;
     private Date fechaCreacion;
     private String creadoPor;

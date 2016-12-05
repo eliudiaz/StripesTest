@@ -8,7 +8,11 @@ package gt.org.isis.repository;
 import gt.org.isis.model.Idioma;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -17,4 +21,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IdiomaRepository extends JpaRepository<Idioma, Integer>, JpaSpecificationExecutor {
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Idioma i WHERE  i.fkPersona.cui=:cui")
+    public void deleteByPersona(@Param("cui") String cui);
 }

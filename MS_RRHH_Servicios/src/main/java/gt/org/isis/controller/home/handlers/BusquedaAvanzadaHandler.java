@@ -9,9 +9,9 @@ import gt.org.isis.controller.home.handlers.specifications.PuestoPorFiltroAvanza
 import gt.org.isis.controller.home.handlers.specifications.RegistroLaboralQSpec;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractValidationsRequestHandler;
-import static gt.org.isis.api.ValidationsHelper.isNull;
-import gt.org.isis.api.jpa.ManySpecificationHandler;
+import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
+import gt.org.isis.api.jpa.ManySpecificationANDHandler;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.FiltroAvanzadoDto;
@@ -84,9 +84,8 @@ public class BusquedaAvanzadaHandler
                         Puesto_.fkPuestoNominal));
             }
             personas.addAll(EntitiesHelper
-                    .getPersonas(new ArrayList<PersonaChildEntity>(Collections2.transform(
-                            puestosRepo
-                                    .findAll(new ManySpecificationHandler<Puesto>(puestoSpecs)),
+                    .getPersonas(new ArrayList<PersonaChildEntity>(Collections2.transform(puestosRepo
+                                    .findAll(new ManySpecificationANDHandler<Puesto>(puestoSpecs)),
                             new Function<Puesto, RegistroLaboral>() {
                         @Override
                         public RegistroLaboral apply(Puesto f) {

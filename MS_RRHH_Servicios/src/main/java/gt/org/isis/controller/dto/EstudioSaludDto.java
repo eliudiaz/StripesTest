@@ -71,4 +71,9 @@ public class EstudioSaludDto {
         this.creadoPor = creadoPor;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
 }

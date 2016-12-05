@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.accesos.handlers;
 
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.model.Acceso;
 import gt.org.isis.model.enums.Estado;

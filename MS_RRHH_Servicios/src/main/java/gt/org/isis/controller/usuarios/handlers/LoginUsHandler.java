@@ -7,7 +7,7 @@ package gt.org.isis.controller.usuarios.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.dto.UsuarioLoginDto;
@@ -15,6 +15,10 @@ import gt.org.isis.converters.RoleDtoConverter;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.model.UsuarioRoles;
 import gt.org.isis.api.utils.EntitiesHelper;
+import gt.org.isis.controller.dto.AccesoDto;
+import gt.org.isis.converters.AccesoDtoConverter;
+import gt.org.isis.model.Acceso;
+import gt.org.isis.repository.AccesosRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
 import gt.org.isis.repository.UsuariosRepository;
@@ -41,6 +45,8 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
     UsuariosRepository usuarios;
     @Autowired
     PersonasRepository personas;
+    @Autowired
+    AccesosRepository accesos;
 
     @Override
     public UsuarioLoginDto execute(final UsuarioLoginDto request) {
@@ -70,15 +76,24 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             request.setFoto(r.getFkPersona().getFoto());
         }
         request.setRoot(r.getSuperUsuario() != null && r.getSuperUsuario());
-        request.setRoles(new ArrayList<RoleDto>());
-        request.getRoles().addAll(Collections2.transform(r.getUsuarioRolesCollection(),
-                new Function<UsuarioRoles, RoleDto>() {
-            @Override
-            public RoleDto apply(UsuarioRoles f) {
-                return new RoleDtoConverter().toDTO(f.getFkRole());
-            }
-        }));
-
+        if (request.isRoot()) {
+            request.setAccesos(new ArrayList(Collections2.transform(accesos.findAll(),
+                    new Function<Acceso, AccesoDto>() {
+                @Override
+                public AccesoDto apply(Acceso f) {
+                    return new AccesoDtoConverter().toDTO(f);
+                }
+            })));
+        } else {
+            request.setRoles(new ArrayList<RoleDto>());
+            request.getRoles().addAll(Collections2.transform(r.getUsuarioRolesCollection(),
+                    new Function<UsuarioRoles, RoleDto>() {
+                @Override
+                public RoleDto apply(UsuarioRoles f) {
+                    return new RoleDtoConverter().toDTO(f.getFkRole());
+                }
+            }));
+        }
         request.setClave("");
         return request;
     }

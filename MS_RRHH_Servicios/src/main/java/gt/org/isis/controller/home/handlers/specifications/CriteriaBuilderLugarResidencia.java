@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.home.handlers.specifications;
 
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.BusquedaNormalDto;
 import gt.org.isis.model.LugarResidencia;
 import gt.org.isis.model.LugarResidencia_;

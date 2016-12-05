@@ -5,7 +5,7 @@
  */
 package gt.org.isis.api.misc.exceptions.ext;
 
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.BaseException;
 import org.springframework.http.HttpStatus;
 

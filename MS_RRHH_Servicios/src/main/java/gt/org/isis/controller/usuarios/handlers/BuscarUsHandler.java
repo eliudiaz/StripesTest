@@ -5,7 +5,7 @@
  */
 package gt.org.isis.controller.usuarios.handlers;
 
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.converters.UsuarioDtoConverter;
 import gt.org.isis.model.Usuario;

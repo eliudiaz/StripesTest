@@ -5,12 +5,13 @@
  */
 package gt.org.isis.controller.personas.handlers.validations;
 
-import gt.org.isis.api.GenericValidationRequest;
-import gt.org.isis.api.ValidationRequestContext;
-import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.requesting.GenericValidationRequest;
+import gt.org.isis.api.requesting.ValidationRequestContext;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
 import gt.org.isis.api.misc.exceptions.ext.ValidationException;
+import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.controller.dto.PersonaDto;
 import java.util.ArrayList;
 import org.joda.time.DateTime;
@@ -29,6 +30,14 @@ public class DatosPersonaValidation<T extends PersonaDto> extends GenericValidat
             if (isNull(persona.getFkNacionalidad())) {
                 throw ExceptionsManager.newValidationException("nacionalidad", "Nacionadlidad es requerida!");
             }
+            if (isNull(persona.getFkMunicipioNacimiento())) {
+                throw ExceptionsManager.newValidationException("invalid_lugar_nacimiento",
+                        new String[]{"lugar_nac_requerido,Lugar de nacimiento es requerido!"});
+            }
+            if (isNull(persona.getFechaNacimiento())) {
+                throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
+                        new String[]{"feha_nac_requerido,Fecha de nacimiento es requerido!"});
+            }
             if (!isNull(persona.getFechaNacimiento())) {
                 DateTime f = new DateTime(persona.getFechaNacimiento());
                 if (f.getYear() >= DateTime.now().getYear()) {
@@ -43,7 +52,29 @@ public class DatosPersonaValidation<T extends PersonaDto> extends GenericValidat
                     throw ex;
                 }
             }
+        } else {
+            if (isNull(persona.getFkMunicipioNacimientoNombre())) {
+                throw ExceptionsManager.newValidationException("invalid_lugar_nacimiento",
+                        new String[]{"lugar_nac_requerido,Lugar de nacimiento es requerido!"});
+            }
+            if (isNull(persona.getFkNacionalidadNombre())) {
+                throw ExceptionsManager.newValidationException("invalid_lugar_nacimiento",
+                        new String[]{"lugar_nac_requerido,Lugar de nacimiento es requerido!"});
+            }
+            if (isNull(persona.getFechaNacimientoTexto())) {
+                throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
+                        new String[]{"feha_nac_requerido,Fecha de nacimiento es requerido!"});
+            } else {
+                try {
+                    EntitiesHelper.parseFechaDPI(persona.getFechaNacimientoTexto());
+                } catch (Exception e) {
+                    e.printStackTrace(System.err);
+                    throw ExceptionsManager.newValidationException("invalid_fecha_nacimiento",
+                            new String[]{"feha_nac_invalido,Fecha de nacimiento es invalida!"});
+                }
+            }
         }
+
     }
 
 }

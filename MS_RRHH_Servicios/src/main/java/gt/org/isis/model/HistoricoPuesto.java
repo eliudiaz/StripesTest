@@ -6,11 +6,14 @@
 package gt.org.isis.model;
 
 import gt.org.isis.api.entities.CustomEntity;
+import gt.org.isis.model.enums.TipoPuesto;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,9 +39,9 @@ public class HistoricoPuesto implements Serializable, CustomEntity {
 
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Size(max = 50)
-    @Column(name = "tipo", length = 50)
-    private String tipo;
+    @Column(name = "tipo")
+    @Enumerated(EnumType.STRING)
+    private TipoPuesto tipo;
     @Column(name = "fk_puesto_nominal")
     private Integer fkPuestoNominal;
     @Column(name = "fk_comunidad")
@@ -79,11 +82,11 @@ public class HistoricoPuesto implements Serializable, CustomEntity {
         this.id = id;
     }
 
-    public String getTipo() {
+    public TipoPuesto getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoPuesto tipo) {
         this.tipo = tipo;
     }
 

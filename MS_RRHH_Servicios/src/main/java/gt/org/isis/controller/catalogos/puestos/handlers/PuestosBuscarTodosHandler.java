@@ -7,7 +7,7 @@ package gt.org.isis.controller.catalogos.puestos.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.AbstractRequestHandler;
+import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.controller.dto.CatalogosRequestDto;
 import gt.org.isis.controller.dto.PuestoDto;
 import gt.org.isis.converters.PuestosDtoConverter;

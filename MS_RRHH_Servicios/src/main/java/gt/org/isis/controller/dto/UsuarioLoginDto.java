@@ -20,9 +20,17 @@ public class UsuarioLoginDto {
     private String clave;
     private String nombres;
     private String foto;
-    private PersonaDto persona;
     private List<RoleDto> roles;
+    private List<AccesoDto> accesos;
     private boolean root;
+
+    public List<AccesoDto> getAccesos() {
+        return accesos;
+    }
+
+    public void setAccesos(List<AccesoDto> accesos) {
+        this.accesos = accesos;
+    }
 
     public boolean isRoot() {
         return root;
@@ -46,14 +54,6 @@ public class UsuarioLoginDto {
 
     public void setFoto(String foto) {
         this.foto = foto;
-    }
-
-    public PersonaDto getPersona() {
-        return persona;
-    }
-
-    public void setPersona(PersonaDto persona) {
-        this.persona = persona;
     }
 
     public List<RoleDto> getRoles() {

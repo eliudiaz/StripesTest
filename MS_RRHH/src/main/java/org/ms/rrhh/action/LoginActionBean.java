@@ -15,6 +15,9 @@
  */
 package org.ms.rrhh.action;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontValidate;
@@ -27,6 +30,8 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationError;
 import org.ms.rrhh.action.exceptions.StripesValidationException;
 import org.ms.rrhh.dao.UsuariosDao;
+import org.ms.rrhh.dao.dto.AccesoDto;
+import org.ms.rrhh.dao.dto.RoleDto;
 import org.ms.rrhh.dao.dto.UsuarioDto;
 import org.ms.rrhh.utils.C;
 
@@ -81,6 +86,16 @@ public class LoginActionBean extends BaseActionBean {
                     && (usuario.getRoles() == null || usuario.getRoles().isEmpty())) {
                 throw new Exception("Usuario no tiene roles asignados");
             }
+            if (!usuario.isRoot()) {
+                Map<String, AccesoDto> accesos = new HashMap<String, AccesoDto>();
+                for (RoleDto r : usuario.getRoles()) {
+                    for (AccesoDto a : r.getAccesos()) {
+                        accesos.put(a.getValor(), a);
+                    }
+                }
+                usuario.setAccesos(new ArrayList<AccesoDto>(accesos.values()));
+            }
+
             getContext().getRequest().getSession().setAttribute("currentUser", usuario);
             setApplicationContext();
 

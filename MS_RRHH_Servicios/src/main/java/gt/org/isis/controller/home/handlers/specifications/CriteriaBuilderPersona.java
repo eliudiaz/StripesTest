@@ -77,7 +77,7 @@ public class CriteriaBuilderPersona {
         }
         if (normal.getPrimerApellido() != null) {
             criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.primerApellido)),
-                    likeExpr(normal.getPrimerNombre())));
+                    likeExpr(normal.getPrimerApellido())));
         }
         if (normal.getSegundoApellido() != null) {
             criteria.add(cb.like(cb.lower(rootPersona.get(Persona_.segundoApellido)),
