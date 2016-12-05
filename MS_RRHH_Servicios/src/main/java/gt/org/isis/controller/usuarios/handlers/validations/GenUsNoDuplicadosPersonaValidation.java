@@ -8,15 +8,19 @@ package gt.org.isis.controller.usuarios.handlers.validations;
 import gt.org.isis.api.GenericValidationRequest;
 import gt.org.isis.api.ValidationRequestContext;
 import static gt.org.isis.api.ValidationsHelper.isNull;
+import gt.org.isis.api.jpa.ManySpecificationANDHandler;
 import gt.org.isis.api.jpa.SingleFieldSpecification;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Usuario;
 import gt.org.isis.model.Usuario_;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.UsuariosRepository;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -43,8 +47,12 @@ public class GenUsNoDuplicadosPersonaValidation<T extends UsuarioDto> extends Ge
             if (isNull(p)) {
                 throw ExceptionsManager.newValidationException("cui_invalido", "Cui es invalido!");
             }
-            if (!usuarios.findAll(new SingleFieldSpecification<Usuario, Persona>(Usuario_.fkPersona,
-                    p)).isEmpty()) {
+
+            ArrayList<Specification<Usuario>> ls = new ArrayList<Specification<Usuario>>();
+            ls.add(new SingleFieldSpecification<Usuario, Persona>(Usuario_.fkPersona, p));
+            ls.add(new SingleFieldSpecification<Usuario, Estado>(Usuario_.estado, Estado.ACTIVO));
+
+            if (!usuarios.findAll(new ManySpecificationANDHandler<Usuario>(ls)).isEmpty()) {
                 throw ExceptionsManager.newValidationException("cui_invalido", "No puede asignar una persona a dos usuarios!");
             }
         }

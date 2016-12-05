@@ -19,17 +19,17 @@ import org.springframework.data.jpa.domain.Specification;
  * @author edcracken
  * @param <T>
  */
-public class ManySpecificationHandler<T> implements Specification<T> {
+public class ManySpecificationANDHandler<T> implements Specification<T> {
 
     private final List<Specification<T>> specs;
 
-    public ManySpecificationHandler(List<Specification<T>> specs) {
+    public ManySpecificationANDHandler(List<Specification<T>> specs) {
         this.specs = specs;
     }
 
     @Override
     public Predicate toPredicate(final Root<T> root, final CriteriaQuery<?> cq, final CriteriaBuilder cb) {
-        return cb.or(Collections2.transform(specs, new Function<Specification, Predicate>() {
+        return cb.and(Collections2.transform(specs, new Function<Specification, Predicate>() {
             @Override
             public Predicate apply(Specification f) {
                 return f.toPredicate(root, cq, cb);
