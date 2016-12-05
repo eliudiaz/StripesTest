@@ -36,8 +36,10 @@ public class ModificarHandler extends AbstractRequestHandler<RoleDto, RoleDto> {
     @Override
     public RoleDto execute(final RoleDto request) {
         final Role r = roles.findOne(request.getId());
+        accesosRole.deleteInBatch(r.getAccesoRoleCollection());
+
         r.setNombre(request.getNombre());
-        accesosRole.delete(r.getAccesoRoleCollection());
+        r.setAccesoRoleCollection(null);
         r.setEstado(Estado.ACTIVO);
         final Role r2 = roles.save(r);
         r2.setAccesoRoleCollection(Collections2.transform(request.getAccesos(), new Function<AccesoDto, AccesoRole>() {

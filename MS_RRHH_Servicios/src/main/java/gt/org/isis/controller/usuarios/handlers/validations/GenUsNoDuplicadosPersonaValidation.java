@@ -19,6 +19,7 @@ import gt.org.isis.model.enums.Estado;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.UsuariosRepository;
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -51,11 +52,13 @@ public class GenUsNoDuplicadosPersonaValidation<T extends UsuarioDto> extends Ge
             ArrayList<Specification<Usuario>> ls = new ArrayList<Specification<Usuario>>();
             ls.add(new SingleFieldSpecification<Usuario, Persona>(Usuario_.fkPersona, p));
             ls.add(new SingleFieldSpecification<Usuario, Estado>(Usuario_.estado, Estado.ACTIVO));
-
-            if (!usuarios.findAll(new ManySpecificationANDHandler<Usuario>(ls)).isEmpty()) {
-                throw ExceptionsManager.newValidationException("cui_invalido", "No puede asignar una persona a dos usuarios!");
+            List us = usuarios.findAll(new ManySpecificationANDHandler<Usuario>(ls));
+            if (!us.isEmpty()) {
+                if (!(us.size() == 1 && ((Usuario) us.iterator().next()).getId().equals(request.getUsuario()))) {
+                    throw ExceptionsManager.newValidationException("cui_invalido", "No puede asignar una persona a dos usuarios!");
+                }
             }
         }
-    }
 
+    }
 }
