@@ -13,11 +13,11 @@ import org.codehaus.jackson.annotate.JsonValue;
  * @author edcracken
  */
 public enum EstadoCivil {
-
+    SOLTERA("soltera"),
     SOLTERO("soltero"),
-    CASADO("casado"),
-    DIVORCIADO("divorciado"),
-    VIUDO("viudo"), UNIDO("unido");
+    CASADO("casado"), CASADA("casada"),
+    DIVORCIADO("divorciado"), DIVORCIADA("divorciada"),
+    VIUDO("viudo"), VIUDA("viuda"), UNIDO("unido"), UNIDA("unida");
 
     private String value;
 
