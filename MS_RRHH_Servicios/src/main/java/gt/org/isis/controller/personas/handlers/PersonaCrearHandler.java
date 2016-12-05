@@ -153,7 +153,12 @@ public class PersonaCrearHandler extends PersonasBaseHandler<RequestCreatePerson
 
     private PersonaCrearHandler guardarEstudiosSalud(RequestCreatePersonaDto r, final Persona currentPersona) {
         if (!isNull(r.getEstudiosSalud())) {
-
+            if (r.getEstudiosSalud().size() == 1) {
+                EstudioSaludDto es = r.getEstudiosSalud().iterator().next();
+                if (isNull(es.getAnioEstudio()) && isNull(es.getFkEstudioSalud())) {
+                    return this;
+                }
+            }
             if (!Collections2.filter(r.getEstudiosSalud(), new Predicate<EstudioSaludDto>() {
                 @Override
                 public boolean apply(EstudioSaludDto t) {
