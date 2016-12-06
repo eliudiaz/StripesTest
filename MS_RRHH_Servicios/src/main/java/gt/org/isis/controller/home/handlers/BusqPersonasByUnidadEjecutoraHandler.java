@@ -13,9 +13,7 @@ import gt.org.isis.api.jpa.SingleFieldSpecification;
 import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.FiltroAvanzadoDto;
-import gt.org.isis.controller.dto.PersonaDto;
 import gt.org.isis.controller.home.handlers.specifications.UnidadEjectoraQSpec;
-import gt.org.isis.converters.PersonaDtoConverter;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puesto;
 import gt.org.isis.model.Puesto_;
@@ -34,11 +32,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author eliud
  */
+@Component
 public class BusqPersonasByUnidadEjecutoraHandler
         extends AbstractValidationsRequestHandler<BusquedaAvanzadaDto, List<Persona>> {
 
