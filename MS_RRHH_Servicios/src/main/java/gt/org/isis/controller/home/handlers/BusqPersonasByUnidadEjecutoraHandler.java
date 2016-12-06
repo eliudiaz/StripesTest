@@ -13,7 +13,6 @@ import gt.org.isis.api.jpa.SingleFieldSpecification;
 import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.FiltroAvanzadoDto;
-import gt.org.isis.controller.home.handlers.specifications.UnidadEjectoraQSpec;
 import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puesto;
 import gt.org.isis.model.Puesto_;
@@ -21,12 +20,12 @@ import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
 import gt.org.isis.model.UnidadNotificadora_;
 import gt.org.isis.model.enums.CampoBusquedaAvanzada;
+import gt.org.isis.model.enums.ComparadorBusqueda;
 import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.UnidadEjecutoraRepository;
 import gt.org.isis.repository.UnidadNotificadoraRepository;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -63,30 +62,24 @@ public class BusqPersonasByUnidadEjecutoraHandler
         List<Persona> r = new ArrayList<Persona>();
         if (!filtros.isEmpty()) {
             for (final FiltroAvanzadoDto fa : filtros) {
+                final UnidadEjecutora ue = unidadEjecutoraRepo.findOne(fa.getValor1());
+                final List<UnidadNotificadora> unidades = new ArrayList<UnidadNotificadora>();
+                unidades.addAll(getHijos(ue.getId(), C.CAT_UN_COMUNIDAD2));
+                unidades.addAll(getHijos(ue.getId(), C.CAT_UN_COMUNIDAD));
+
                 r.addAll(Collections2
                         .transform(puestosPersonasRepo.findAll(new Specification<Puesto>() {
                             @Override
                             public javax.persistence.criteria.Predicate toPredicate(Root<Puesto> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                                Iterator it = Collections2
-                                        .transform(unidadEjecutoraRepo.findAll(new UnidadEjectoraQSpec(fa.getValor1(), fa)),
-                                                new Function<UnidadEjecutora, List<UnidadNotificadora>>() {
-                                            @Override
-                                            public List<UnidadNotificadora> apply(UnidadEjecutora f) {
-                                                List<UnidadNotificadora> r = new ArrayList<UnidadNotificadora>();
-                                                r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD2));
-                                                r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD));
-                                                return r;
-                                            }
-                                        }).iterator();
                                 List<Integer> ids = new LinkedList<Integer>();
-                                while (it.hasNext()) {
-                                    List<UnidadNotificadora> r = (List<UnidadNotificadora>) it.next();
-                                    ids.addAll(Collections2.transform(r, new Function<UnidadNotificadora, Integer>() {
-                                        @Override
-                                        public Integer apply(UnidadNotificadora f) {
-                                            return f.getId();
-                                        }
-                                    }));
+                                ids.addAll(Collections2.transform(unidades, new Function<UnidadNotificadora, Integer>() {
+                                    @Override
+                                    public Integer apply(UnidadNotificadora f) {
+                                        return f.getId();
+                                    }
+                                }));
+                                if (fa.getComparador().equals(ComparadorBusqueda.DIFERENTE)) {
+                                    return cb.not(root.get(Puesto_.fkComunidad).in(ids));
                                 }
                                 return root.get(Puesto_.fkComunidad).in(ids);
                             }
@@ -105,11 +98,12 @@ public class BusqPersonasByUnidadEjecutoraHandler
     public List<UnidadNotificadora> getHijos(Integer parent, String tipoDestino) {
         List<UnidadNotificadora> unidades = unidadNotificadoraRepo
                 .findAll(new SingleFieldSpecification<UnidadNotificadora, Integer>(UnidadNotificadora_.codigoPadre, parent));
-
+        System.out.println(">> padre >> " + parent);
         if (!unidades.isEmpty() && !unidades.iterator().next().getTipo().equalsIgnoreCase(tipoDestino)) {
             List<UnidadNotificadora> childs = new ArrayList<UnidadNotificadora>();
             for (UnidadNotificadora un : unidades) {
                 childs.addAll(getHijos(un.getId(), tipoDestino));
+                System.out.println(">> hijos >> " + childs.size());
             }
             return childs;
         } else {
