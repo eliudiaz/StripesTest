@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author eliud
+ * @author ecracken
  */
 @Repository
 public interface UnidadNotificadoraRepository
