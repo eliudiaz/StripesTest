@@ -18,6 +18,7 @@ import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.converters.AccesoDtoConverter;
 import gt.org.isis.model.Acceso;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.repository.AccesosRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -68,6 +69,9 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             throw usuarioInvalido;
         }
         Usuario r = ls.get(0);
+        if (r.getEstado().equals(Estado.INACTIVO)) {
+            throw usuarioInvalido;
+        }
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
