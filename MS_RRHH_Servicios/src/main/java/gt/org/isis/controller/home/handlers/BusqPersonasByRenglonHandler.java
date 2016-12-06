@@ -9,6 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.isis.api.C;
 import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
+import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.FiltroAvanzadoDto;
@@ -48,36 +49,38 @@ public class BusqPersonasByRenglonHandler extends AbstractValidationsRequestHand
     @Override
     public List<Persona> execute(BusquedaAvanzadaDto request) {
         List<Persona> personas = new ArrayList();
-        List<FiltroAvanzadoDto> filtros = (List<FiltroAvanzadoDto>) Collections2.filter(request.getFiltros(),
+        List<FiltroAvanzadoDto> filtros = new ArrayList<FiltroAvanzadoDto>(Collections2.filter(request.getFiltros(),
                 new com.google.common.base.Predicate<FiltroAvanzadoDto>() {
             @Override
             public boolean apply(FiltroAvanzadoDto t) {
                 return t.getCampo().equals(CampoBusquedaAvanzada.REGLON);
             }
-        });
+        }));
         for (final FiltroAvanzadoDto filtro : filtros) {
             if (filtro.getCampo().equals(CampoBusquedaAvanzada.REGLON)) {
                 final List<Integer> catRenglonesIds = new ArrayList();
+                final Puestos inicio = puestosRepo.findOne(filtro.getValor1());
                 catRenglonesIds.addAll(Collections2.transform(puestosRepo.findAll(new Specification() {
                     @Override
                     public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
 
                         if (filtro.getComparador().equals(ComparadorBusqueda.MAYOR)) {
-                            return cb.greaterThanOrEqualTo(root.get(Puestos_.valorNum), filtro.getValor1());
+                            return cb.greaterThanOrEqualTo(root.get(Puestos_.valorNum), inicio.getValorNum());
                         }
                         if (filtro.getComparador().equals(ComparadorBusqueda.MENOR)) {
-                            return cb.lessThanOrEqualTo(root.get(Puestos_.valorNum), filtro.getValor1());
+                            return cb.lessThanOrEqualTo(root.get(Puestos_.valorNum), inicio.getValorNum());
                         }
                         if (filtro.getComparador().equals(ComparadorBusqueda.IGUAL)) {
-                            return cb.equal(root.get(Puestos_.valorNum), filtro.getValor1());
+                            return cb.equal(root.get(Puestos_.valorNum), inicio.getValorNum());
                         }
                         if (filtro.getComparador().equals(ComparadorBusqueda.DIFERENTE)) {
-                            return cb.notEqual(root.get(Puestos_.valorNum), filtro.getValor1());
+                            return cb.notEqual(root.get(Puestos_.valorNum), inicio.getValorNum());
                         }
+                        final Puestos fin = isNull(filtro.getValor2()) ? null : puestosRepo.findOne(filtro.getValor2());
                         return cb.and(
                                 cb.like(root.get(Puestos_.tipo), C.CAT_PUESTOS_RENGLON),
-                                cb.greaterThanOrEqualTo(root.get(Puestos_.valorNum), filtro.getValor1()),
-                                cb.lessThanOrEqualTo(root.get(Puestos_.valorNum), filtro.getValor2()));
+                                cb.greaterThanOrEqualTo(root.get(Puestos_.valorNum), inicio.getValorNum()),
+                                cb.lessThanOrEqualTo(root.get(Puestos_.valorNum), fin.getValorNum()));
 
                     }
                 }), new Function<Puestos, Integer>() {

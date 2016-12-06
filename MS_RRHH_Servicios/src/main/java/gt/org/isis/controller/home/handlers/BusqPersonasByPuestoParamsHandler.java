@@ -20,7 +20,7 @@ import gt.org.isis.model.Puesto;
 import gt.org.isis.model.Puesto_;
 import gt.org.isis.model.RegistroLaboral;
 import gt.org.isis.model.enums.CampoBusquedaAvanzada;
-import gt.org.isis.repository.PuestosRepository;
+import gt.org.isis.repository.PuestoRepository;
 import gt.org.isis.repository.RegistroLaboralRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +38,14 @@ public class BusqPersonasByPuestoParamsHandler extends AbstractValidationsReques
     @Autowired
     RegistroLaboralRepository rLaboralRepo;
     @Autowired
-    PuestosRepository puestosRepo;
+    PuestoRepository puestoRepo;
 
     @Override
     public List<Persona> execute(BusquedaAvanzadaDto request) {
         List<Persona> personas = new ArrayList();
         List<Specification<Puesto>> puestoSpecs = new ArrayList();
         for (final FiltroAvanzadoDto filtro : request.getFiltros()) {
+
             if (filtro.getCampo().equals(CampoBusquedaAvanzada.CLASIFICACION_SERVICIO)) {
                 puestoSpecs.add(new PuestoPorFiltroAvanzadoQSpec(filtro,
                         Puesto_.fkClasificacionServicio));
@@ -58,8 +59,15 @@ public class BusqPersonasByPuestoParamsHandler extends AbstractValidationsReques
                 puestoSpecs.add(new PuestoPorFiltroAvanzadoQSpec(filtro,
                         Puesto_.fkPuestoNominal));
             }
+            if (filtro.getCampo().equals(CampoBusquedaAvanzada.ANIO_INGRESO)) {
+                personas.addAll(EntitiesHelper
+                        .getPersonas(rLaboralRepo
+                                .findAll(new RegistroLaboralQSpec(filtro))));
+            }
+        }
+        if (!puestoSpecs.isEmpty()) {
             personas.addAll(EntitiesHelper
-                    .getPersonas(new ArrayList<PersonaChildEntity>(Collections2.transform(puestosRepo
+                    .getPersonas(new ArrayList<PersonaChildEntity>(Collections2.transform(puestoRepo
                             .findAll(new ManySpecificationANDHandler<Puesto>(puestoSpecs)),
                             new Function<Puesto, RegistroLaboral>() {
                         @Override
@@ -67,12 +75,6 @@ public class BusqPersonasByPuestoParamsHandler extends AbstractValidationsReques
                             return f.getFkRegistroLaboral();
                         }
                     }))));
-
-            if (filtro.getCampo().equals(CampoBusquedaAvanzada.ANIO_INGRESO)) {
-                personas.addAll(EntitiesHelper
-                        .getPersonas(rLaboralRepo
-                                .findAll(new RegistroLaboralQSpec(filtro))));
-            }
         }
         return personas;
     }
