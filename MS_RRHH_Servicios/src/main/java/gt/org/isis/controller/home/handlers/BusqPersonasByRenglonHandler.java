@@ -53,11 +53,11 @@ public class BusqPersonasByRenglonHandler extends AbstractValidationsRequestHand
                 new com.google.common.base.Predicate<FiltroAvanzadoDto>() {
             @Override
             public boolean apply(FiltroAvanzadoDto t) {
-                return t.getCampo().equals(CampoBusquedaAvanzada.REGLON);
+                return t.getCampo().equals(CampoBusquedaAvanzada.RENGLON);
             }
         }));
         for (final FiltroAvanzadoDto filtro : filtros) {
-            if (filtro.getCampo().equals(CampoBusquedaAvanzada.REGLON)) {
+            if (filtro.getCampo().equals(CampoBusquedaAvanzada.RENGLON)) {
                 final List<Integer> catRenglonesIds = new ArrayList();
                 final Puestos inicio = puestosRepo.findOne(filtro.getValor1());
                 catRenglonesIds.addAll(Collections2.transform(puestosRepo.findAll(new Specification() {
