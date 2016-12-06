@@ -26,6 +26,8 @@ import gt.org.isis.repository.UnidadEjecutoraRepository;
 import gt.org.isis.repository.UnidadNotificadoraRepository;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -65,23 +67,28 @@ public class BusqPersonasByUnidadEjecutoraHandler
                         .transform(puestosPersonasRepo.findAll(new Specification<Puesto>() {
                             @Override
                             public javax.persistence.criteria.Predicate toPredicate(Root<Puesto> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                                return root.get(Puesto_.fkComunidad).in(Collections2
-                                        .transform(Collections2
-                                                .transform(unidadEjecutoraRepo.findAll(new UnidadEjectoraQSpec(fa.getValor1(), fa)),
-                                                        new Function<UnidadEjecutora, List<UnidadNotificadora>>() {
-                                                    @Override
-                                                    public List<UnidadNotificadora> apply(UnidadEjecutora f) {
-                                                        List<UnidadNotificadora> r = new ArrayList<UnidadNotificadora>();
-                                                        r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD2));
-                                                        r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD));
-                                                        return r;
-                                                    }
-                                                }), new Function<UnidadNotificadora, Integer>() {
+                                Iterator it = Collections2
+                                        .transform(unidadEjecutoraRepo.findAll(new UnidadEjectoraQSpec(fa.getValor1(), fa)),
+                                                new Function<UnidadEjecutora, List<UnidadNotificadora>>() {
                                             @Override
-                                            public Integer apply(UnidadNotificadora f) {
-                                                return f.getId();
+                                            public List<UnidadNotificadora> apply(UnidadEjecutora f) {
+                                                List<UnidadNotificadora> r = new ArrayList<UnidadNotificadora>();
+                                                r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD2));
+                                                r.addAll(getHijos(f.getId(), C.CAT_UN_COMUNIDAD));
+                                                return r;
                                             }
-                                        }));
+                                        }).iterator();
+                                List<Integer> ids = new LinkedList<Integer>();
+                                while (it.hasNext()) {
+                                    List<UnidadNotificadora> r = (List<UnidadNotificadora>) it.next();
+                                    ids.addAll(Collections2.transform(r, new Function<UnidadNotificadora, Integer>() {
+                                        @Override
+                                        public Integer apply(UnidadNotificadora f) {
+                                            return f.getId();
+                                        }
+                                    }));
+                                }
+                                return root.get(Puesto_.fkComunidad).in(ids);
                             }
                         }), new Function<Puesto, Persona>() {
                             @Override
