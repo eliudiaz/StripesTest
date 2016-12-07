@@ -40,6 +40,16 @@ public class RegistroLaboralQSpec implements Specification<RegistroLaboral> {
                     cb.lessThanOrEqualTo(root.get(RegistroLaboral_.anioIngreso),
                             f.getValor2())));
         }
+        if (f.getComparador().equals(ComparadorBusqueda.MAYOR)) {
+            ls.add(
+                    cb.greaterThanOrEqualTo(root.get(RegistroLaboral_.anioIngreso),
+                            f.getValor1()));
+        }
+        if (f.getComparador().equals(ComparadorBusqueda.MENOR)) {
+            ls.add(
+                    cb.lessThanOrEqualTo(root.get(RegistroLaboral_.anioIngreso),
+                            f.getValor2()));
+        }
         if (f.getComparador().equals(ComparadorBusqueda.DIFERENTE)) {
             ls.add(cb.notEqual(root.get(RegistroLaboral_.anioIngreso),
                     f.getValor1()));
