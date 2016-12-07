@@ -5,6 +5,7 @@
  */
 package gt.org.isis.controller.home.handlers;
 
+import com.google.common.collect.Sets;
 import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
 import gt.org.isis.controller.dto.BusquedaAvanzadaDto;
 import gt.org.isis.controller.dto.PersonaDto;
@@ -36,7 +37,7 @@ public class BusquedaAvanzadaHandler
         personas.addAll(unidadEjecutoraBusqHandler.handle(request));
         personas.addAll(personasByRenglonHandler.handle(request));
         personas.addAll(personasByPuestoParams.handle(request));
-        return new PersonaDtoConverter().toDTO(personas);
+        return new ArrayList<PersonaDto>(Sets.newHashSet(new PersonaDtoConverter().toDTO(personas)));
     }
 
 }
