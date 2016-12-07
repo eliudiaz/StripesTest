@@ -51,6 +51,6 @@ public class BusquedaNormalController extends DownloadSupportController {
             return new ResponseEntity(HttpStatus.OK);
         }
 
-        return new ResponseEntity(handler.handle(filtro), HttpStatus.OK);
+        return new ResponseEntity(out, HttpStatus.OK);
     }
 }
