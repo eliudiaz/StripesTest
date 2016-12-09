@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BaseController {
 
-    public void configureSession(Object o, HttpServletRequest request) {
+    public void configureSesion(Object o, HttpServletRequest request) {
         if (o instanceof SessionEntity) {
             String s;
             if (!isNull(s = request.getParameter("sesion"))) {

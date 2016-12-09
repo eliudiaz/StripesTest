@@ -6,7 +6,6 @@
 package gt.org.isis.api.requesting;
 
 import gt.org.isis.api.entities.CustomEntity;
-import com.google.gson.Gson;
 import gt.org.isis.api.entities.SessionEntity;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.SecureRequestDto;
@@ -36,6 +35,10 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
 
     @Override
     public void after(T request, Q response) {
+    }
+
+    @Override
+    public void before(T request) {
         if (request instanceof SessionEntity) {
             final String sesion = ((SessionEntity) request).getSesion();
             List<Usuario> r = usuarios.findAll(new Specification<Usuario>() {
@@ -59,11 +62,6 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
         Q response = execute(request);
         after(request, response);
         return response;
-    }
-
-    @Override
-    public void before(T request) {
-        System.out.println(">> in >> " + new Gson().toJson(request));
     }
 
     public void setUpdateInfo(CustomEntity entity) {

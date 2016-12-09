@@ -38,7 +38,7 @@ public class CrearPersonaController extends BaseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity crear(@RequestBody @Valid RequestCreatePersonaDto persona, HttpServletRequest request) {
-        configureSession(persona, request);
+        configureSesion(persona, request);
         handler.handle(persona);
         return new ResponseEntity(HttpStatus.CREATED);
     }

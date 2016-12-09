@@ -121,7 +121,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
         historicoPersona.setFkPersona(persona);
         historicoPersona.setEstado(Estado.ACTIVO);
         setUpdateInfo(historicoPersona);
-
+        setCreateInfo(historicoPersona);
         historicoRepo.save(historicoPersona);
     }
 
