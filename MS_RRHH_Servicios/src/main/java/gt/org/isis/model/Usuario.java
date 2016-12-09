@@ -52,6 +52,8 @@ public class Usuario implements Serializable, DesactivableEntity {
     private String apellidos;
     @Column
     private String clave;
+    @Column
+    private String sesion;
     @Basic(optional = false)
     @Column(name = "fecha_creacion", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -81,6 +83,14 @@ public class Usuario implements Serializable, DesactivableEntity {
         this.id = id;
         this.fechaCreacion = fechaCreacion;
         this.fechaUltimoCambio = fechaUltimoCambio;
+    }
+
+    public String getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(String sesion) {
+        this.sesion = sesion;
     }
 
     public Collection<UsuarioRoles> getUsuarioRolesCollection() {

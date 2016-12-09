@@ -56,9 +56,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
                     new String[]{"usuario,Usuario es requerido!"});
         }
 
-        RuntimeException usuarioInvalido = ExceptionsManager.newValidationException("usuario_invalido",
-                new String[]{"usuario,Usuario invalido!"});
-
+        RuntimeException usuarioInvalido = ExceptionsManager.newValidationException("usuario_invalido", "Usuario invalido!");
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
@@ -99,6 +97,8 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             }));
         }
         request.setClave("");
+        r.setSesion(request.getSesion());
+        usuarios.save(r);
         return request;
     }
 
