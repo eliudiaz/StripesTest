@@ -25,6 +25,9 @@ public class DatosPersonaValidation<T extends PersonaDto> extends GenericValidat
 
     @Override
     public void validate(final T persona, ValidationRequestContext ctx) {
+        if (persona.getRegistroLaboral().isComisionado() && isNull(persona.getRegistroLaboral().getFkComunidadComisionado())) {
+            throw ExceptionsManager.newValidationException("unidad_notificadora_comisionado", "Debe indicar una unidad notificadora para comisionado!");
+        }
         ValidationException ex = new ValidationException(new ArrayList<ValidationError>());
         if (!persona.isLector()) {
             if (isNull(persona.getFkNacionalidad())) {

@@ -24,12 +24,20 @@ public class RegistroLaboralDto {
     private Integer fkExpectativa;
     private String fkExpectativaNombre;
     private Integer fkComunidadComisionado;
-    private String nombreComunidadComisionado;
+    private RefUnidadNotificadoraDto refUnidadNotificadoraComisionado;
     private String observaciones;
     @NotNull
     @Valid
     private List<RegistroLaboralPuestoDto> puestos;
     private List<RegistroLaboralDto> historial;
+
+    public RefUnidadNotificadoraDto getRefUnidadNotificadoraComisionado() {
+        return refUnidadNotificadoraComisionado;
+    }
+
+    public void setRefUnidadNotificadoraComisionado(RefUnidadNotificadoraDto refUnidadNotificadoraComisionado) {
+        this.refUnidadNotificadoraComisionado = refUnidadNotificadoraComisionado;
+    }
 
     public String getFkExpectativaNombre() {
         return fkExpectativaNombre;
@@ -69,14 +77,6 @@ public class RegistroLaboralDto {
 
     public void setHistorial(List<RegistroLaboralDto> historial) {
         this.historial = historial;
-    }
-
-    public String getNombreComunidadComisionado() {
-        return nombreComunidadComisionado;
-    }
-
-    public void setNombreComunidadComisionado(String nombreComunidadComisionado) {
-        this.nombreComunidadComisionado = nombreComunidadComisionado;
     }
 
     public Integer getId() {

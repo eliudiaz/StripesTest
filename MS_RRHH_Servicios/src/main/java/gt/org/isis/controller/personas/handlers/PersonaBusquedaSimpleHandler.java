@@ -139,6 +139,9 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         if (!isNull(p.getRegistroLaboralCollection()) && !p.getRegistroLaboralCollection().isEmpty()) {
             //registro laboral
             RegistroLaboralDto currentRL = new RegistroLaboralConverter().toDTO(p.getRegistroLaboralCollection().iterator().next());
+            if (currentRL.isComisionado()) {
+                currentRL.setRefUnidadNotificadoraComisionado(getUnidadNotificadora(currentRL.getFkComunidadComisionado()));
+            }
             fillExpectativa(currentRL);
             for (RegistroLaboralPuestoDto rp : currentRL.getPuestos()) {
                 fillRegistroPuesto(rp);

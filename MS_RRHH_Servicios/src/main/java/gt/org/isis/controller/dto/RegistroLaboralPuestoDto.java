@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author eliud
+ * @author eliu
  */
 public class RegistroLaboralPuestoDto {
 
