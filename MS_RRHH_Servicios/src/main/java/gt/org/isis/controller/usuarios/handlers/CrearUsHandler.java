@@ -7,7 +7,6 @@ package gt.org.isis.controller.usuarios.handlers;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.isis.api.requesting.AbstractRequestHandler;
 import gt.org.isis.api.requesting.AbstractValidationsRequestHandler;
 import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.api.misc.exceptions.ExceptionsManager;

@@ -8,6 +8,7 @@ package gt.org.isis.api.requesting;
 import gt.org.isis.api.entities.CustomEntity;
 import com.google.gson.Gson;
 import gt.org.isis.api.entities.SessionEntity;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import gt.org.isis.controller.dto.SecureRequestDto;
 import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.controller.dto.LoggedUserDto;
@@ -45,6 +46,9 @@ public abstract class AbstractRequestHandler<T, Q> extends SecureRequestDto impl
             });
             if (!r.isEmpty()) {
                 setLoggedUser(new LoggedUserDto(r.iterator().next().getId()));
+            } else {
+                throw ExceptionsManager.newValidationException("sesion_invalida",
+                        "Para realizar esta accion se requiere que el usuario inicie sesion valida!");
             }
         }
     }
