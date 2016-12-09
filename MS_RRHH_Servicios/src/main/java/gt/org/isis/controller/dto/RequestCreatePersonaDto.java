@@ -5,9 +5,22 @@
  */
 package gt.org.isis.controller.dto;
 
+import gt.org.isis.api.entities.SessionEntity;
+
 /**
  *
  * @author edcracken
  */
-public class RequestCreatePersonaDto extends PersonaDto {
+public class RequestCreatePersonaDto extends PersonaDto implements SessionEntity {
+
+    private String sesion;
+
+    public String getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(String sesion) {
+        this.sesion = sesion;
+    }
+
 }

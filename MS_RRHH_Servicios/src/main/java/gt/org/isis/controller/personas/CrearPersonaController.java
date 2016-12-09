@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.personas;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.RequestCreatePersonaDto;
 import gt.org.isis.controller.personas.handlers.PersonaCrearHandler;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("personas")
-public class CrearPersonaController {
+public class CrearPersonaController extends BaseController {
 
     @Autowired
     PersonaCrearHandler handler;
@@ -35,7 +37,8 @@ public class CrearPersonaController {
     @RequestMapping(value = "/crea", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity crear(@RequestBody @Valid RequestCreatePersonaDto persona) {
+    public HttpEntity crear(@RequestBody @Valid RequestCreatePersonaDto persona, HttpServletRequest request) {
+        configureSession(persona, request);
         handler.handle(persona);
         return new ResponseEntity(HttpStatus.CREATED);
     }
