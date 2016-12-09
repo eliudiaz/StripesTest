@@ -26,13 +26,17 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UsuariosDao {
 
-    public UsuarioDto doLogin(String username, String password) throws Exception {
+    public UsuarioDto doLogin(String username, String password, String sesion) throws Exception {
         try {
             RestTemplate rt = new RestTemplate();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            String r = new Gson().toJson(UsuarioDto.builder().withUsuario(username).withClave(password).build());
+            String r = new Gson().toJson(UsuarioDto.builder()
+                    .withUsuario(username)
+                    .withClave(password)
+                    .withSesion(sesion)
+                    .build());
             HttpEntity<String> entity = new HttpEntity<String>(r, headers);
             System.out.println(">> " + r);
             String servicesCtx;

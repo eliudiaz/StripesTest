@@ -81,7 +81,7 @@ public class LoginActionBean extends BaseActionBean {
     public Resolution login() {
         UsuarioDto usuario;
         try {
-            usuario = usuariosRepo.doLogin(username, password);
+            usuario = usuariosRepo.doLogin(username, password, getContext().getRequest().getSession().getId());
             if (!usuario.isRoot()
                     && (usuario.getRoles() == null || usuario.getRoles().isEmpty())) {
                 throw new Exception("Usuario no tiene roles asignados");
