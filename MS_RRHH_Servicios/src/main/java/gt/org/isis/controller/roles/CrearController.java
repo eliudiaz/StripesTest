@@ -5,9 +5,11 @@
  */
 package gt.org.isis.controller.roles;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.roles.handlers.CrearHandler;
 import gt.org.isis.converters.RoleDtoConverter;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author eliud
  */
-@Controller("crearAccesos")
+@Controller("crearRoles")
 @RequestMapping("roles")
-public class CrearController {
+public class CrearController extends BaseController {
 
     @Autowired
     CrearHandler crear;
@@ -35,7 +37,9 @@ public class CrearController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public @ResponseBody
-    RoleDto crear(@RequestBody RoleDto persona) {
-        return new RoleDtoConverter().toDTO(crear.handle(persona));
+    RoleDto crear(@RequestBody RoleDto item,
+            HttpServletRequest request) {
+        configureSesion(item, request);
+        return new RoleDtoConverter().toDTO(crear.handle(item));
     }
 }
