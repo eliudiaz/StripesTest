@@ -29,7 +29,7 @@ public class BuscarUsTodosController {
     @RequestMapping(value = "/get/all", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    List<UsuarioDto> getRole() {
-        return handler.handle(new UsuarioDto());
+    List<UsuarioDto> getAll() {
+        return handler.handle(null);
     }
 }
