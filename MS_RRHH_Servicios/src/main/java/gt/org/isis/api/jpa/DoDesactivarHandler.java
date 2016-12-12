@@ -49,9 +49,10 @@ public class DoDesactivarHandler<T extends DesactivableEntity>
             r = repo.findOne(e.getId());
         }
         if (!isNull(r)) {
-            r.setEstado(Estado.INACTIVO);
-            setUpdateInfo(r);
-            repo.save(r);
+//            r.setEstado(Estado.INACTIVO);
+//            setUpdateInfo(r);
+//            repo.save(r);
+            repo.delete(r);
         } else {
             throw ExceptionsManager.newValidationException("entity_not_found", "No existe registro con ese ID");
         }
