@@ -5,8 +5,11 @@
  */
 package gt.org.isis.controller.personas;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.RequestUpdatePersonaDto;
 import gt.org.isis.controller.personas.handlers.PersonaModificarHandler;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("personas")
-public class ModificarPersonaController {
+public class ModificarPersonaController extends BaseController {
 
     @Autowired
     PersonaModificarHandler handler;
@@ -36,7 +39,9 @@ public class ModificarPersonaController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity modificar(@PathVariable("cui") String cui, @RequestBody RequestUpdatePersonaDto persona) {
+    public HttpEntity modificar(@PathVariable("cui") String cui, @Valid @RequestBody RequestUpdatePersonaDto persona,
+            HttpServletRequest request) {
+        configureSesion(persona, request);
         persona.setCui(cui);
         handler.handle(persona);
         return new ResponseEntity(HttpStatus.ACCEPTED);

@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UsuarioDto {
 
     private String usuario;
+    private String sesion;
     private String correo;
     private String nombres;
     private String apellidos;
@@ -29,6 +30,14 @@ public class UsuarioDto {
     public UsuarioDto(String usuario, String clave) {
         this.usuario = usuario;
         this.clave = clave;
+    }
+
+    public String getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(String sesion) {
+        this.sesion = sesion;
     }
 
     public boolean isRoot() {
@@ -118,6 +127,7 @@ public class UsuarioDto {
         this.apellidos = builder.apellidos;
         this.clave = builder.clave;
         this.roles = builder.roles;
+        this.sesion = builder.sesion;
     }
 
     public static Builder builder() {
@@ -127,6 +137,7 @@ public class UsuarioDto {
     public static class Builder {
 
         private String usuario;
+        private String sesion;
         private String correo;
         private String nombres;
         private String apellidos;
@@ -135,6 +146,11 @@ public class UsuarioDto {
 
         public Builder withUsuario(String usuario) {
             this.usuario = usuario;
+            return this;
+        }
+
+        public Builder withSesion(String sesion) {
+            this.sesion = sesion;
             return this;
         }
 
