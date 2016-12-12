@@ -31,11 +31,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.MediaType;
 
 /**
- * this class is used to handle any Exception, you must create your owns
- * exceptions based in the BaseException class, this handle requires you to
- * declare a custom error code based in the API documentation, in worse cases it
- * will response a http error code 500
- *
  * @author edcracken
  */
 @ControllerAdvice
@@ -89,7 +84,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ex instanceof ValidationException) {
             errors = ((ValidationException) ex).getErrors();
         } else {
-            errors = Arrays.asList(new ValidationError("internal_error", ExceptionUtils.getStackTrace(ex.getCause())));
+            errors = Arrays.asList(new ValidationError("internal_error",
+                    ExceptionUtils.getStackTrace(ex.getCause() != null ? ex.getCause() : ex)));
         }
         StringBuffer sb = new StringBuffer("<div style='color:#b72222; font-weight: bold'>")
                 .append("Listado errores:</div><ol>");
