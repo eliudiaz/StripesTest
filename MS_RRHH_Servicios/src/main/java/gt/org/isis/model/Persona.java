@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -125,25 +126,25 @@ public class Persona implements Serializable, DesactivableEntity {
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Idioma> idiomaCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
     private Collection<HistoricoIdioma> hisIdiomaCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
     private Collection<HistoricoPersona> hisPersonaCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
     private Collection<HistoricoRegistroAcademico> hisRegAcademicoCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
     private Collection<HistoricoRegistroLaboral> hisRegLaboralCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
     private Collection<HistoricoLugarResidencia> hisLugarResidenciaCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<RegistroAcademico> registroAcademicoCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<EstudioSalud> estudioSaludCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)

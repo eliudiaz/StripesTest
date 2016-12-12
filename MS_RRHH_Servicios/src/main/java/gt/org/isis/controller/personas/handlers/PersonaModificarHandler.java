@@ -187,7 +187,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
     }
 
     private void crearHistoricoEstudiosSalud(List<EstudioSalud> estudios) {
-        estudiosHisRepo.save((Collection) Collections2.transform(estudios, new Function<EstudioSalud, HistoricoEstudioSalud>() {
+        estudiosHisRepo.save(new ArrayList(Collections2.transform(estudios, new Function<EstudioSalud, HistoricoEstudioSalud>() {
             @Override
             public HistoricoEstudioSalud apply(EstudioSalud f) {
                 HistoricoEstudioSalud hEs = new HistoricoEstudioSalud();
@@ -195,13 +195,13 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
                 setCreateInfo(hEs);
                 return hEs;
             }
-        }));
+        })));
     }
 
     private PersonaModificarHandler actualizarIdiomas(final Persona p, PersonaDto r) {
-        crearHistoricoIdiomas((List) p.getIdiomaCollection());
+        crearHistoricoIdiomas(p.getIdiomaCollection());
         idiomasRepo.deleteByPersona(p.getCui());
-        idiomasRepo.save(Collections2.transform(r.getIdiomas(), new Function<IdiomaDto, Idioma>() {
+        idiomasRepo.save(new ArrayList(Collections2.transform(r.getIdiomas(), new Function<IdiomaDto, Idioma>() {
             @Override
             public Idioma apply(IdiomaDto f) {
                 Idioma i = new IdiomaDtoConverter().toEntity(f);
@@ -209,21 +209,23 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
                 setCreateInfo(i);
                 return i;
             }
-        }));
+        })));
         return this;
     }
 
-    public void crearHistoricoIdiomas(List<Idioma> idiomas) {
-        idiomasHisRepo.save((Collection) Collections2.transform(idiomas,
-                new Function<Idioma, HistoricoIdioma>() {
-            @Override
-            public HistoricoIdioma apply(Idioma f) {
-                HistoricoIdioma hId = new HistoricoIdioma();
-                BeanUtils.copyProperties(f, hId);
-                setCreateInfo(hId);
-                return hId;
-            }
-        }));
+    public void crearHistoricoIdiomas(Collection<Idioma> idiomas) {
+        if (!isNull(idiomas)) {
+            idiomasHisRepo.save(new ArrayList(Collections2.transform(idiomas,
+                    new Function<Idioma, HistoricoIdioma>() {
+                @Override
+                public HistoricoIdioma apply(Idioma f) {
+                    HistoricoIdioma hId = new HistoricoIdioma();
+                    BeanUtils.copyProperties(f, hId);
+                    setCreateInfo(hId);
+                    return hId;
+                }
+            })));
+        }
     }
 
     private PersonaModificarHandler actualizaRegistroAcademico(Persona p, PersonaDto r) {
@@ -253,7 +255,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
         puestoRepo.delete((List) registroLaboral.getPuestoCollection());
         registroLaboral.getPuestoCollection().clear();
         rLabRepository.save(registroLaboral);
-        puestoRepo.save((Collection) Collections2
+        puestoRepo.save(new ArrayList(Collections2
                 .transform(requestModPersona.getRegistroLaboral().getPuestos(),
                         new Function<RegistroLaboralPuestoDto, Puesto>() {
                     @Override
@@ -263,7 +265,7 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
                         setCreateInfo(puesto);
                         return puesto;
                     }
-                }));
+                })));
         return this;
     }
 

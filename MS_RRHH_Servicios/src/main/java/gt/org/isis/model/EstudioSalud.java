@@ -46,7 +46,7 @@ public class EstudioSalud implements Serializable, CustomEntity {
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private Persona fkPersona;
 
     public EstudioSalud() {

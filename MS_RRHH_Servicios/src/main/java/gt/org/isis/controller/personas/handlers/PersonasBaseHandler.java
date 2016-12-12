@@ -20,10 +20,13 @@ import gt.org.isis.model.Catalogos;
 import gt.org.isis.model.Catalogos_;
 import gt.org.isis.model.Persona;
 import static gt.org.isis.api.utils.EntitiesHelper.parseFechaDPI;
+import gt.org.isis.model.enums.EstadoCivil;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -116,6 +119,7 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
         } else {
             throw ExceptionsManager.newValidationException("nacionalidad", "Nacionalidad es requerido!");
         }
+
         DpiDto dpiDto;
         if (!isNull(dpiDto = r.getDpi())) {
             if (!isNull(dpiDto.getFechaEmisionTexto()) && !isNull(dpiDto.getFechaVencimientoTexto())) {
@@ -131,4 +135,5 @@ public abstract class PersonasBaseHandler<T extends PersonaDto, Q> extends Abstr
                     new String[]{"dpi,Lectura de DPI es invalida, datos del DPI son requeridos!"});
         }
     }
+
 }

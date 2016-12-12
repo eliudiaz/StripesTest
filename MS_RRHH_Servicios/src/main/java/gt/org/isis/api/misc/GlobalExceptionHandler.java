@@ -51,6 +51,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     protected ResponseEntity<Object> handleUnknownException(Exception ex, WebRequest request) {
         LOG.error("Unknown exception has been thrown", ex);
+        ex.printStackTrace(System.err);
+
         return handleException(new UnknownException());
     }
 
@@ -69,7 +71,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         for (FieldError fieldError : fieldErrors) {
             errors.add(new ValidationError(fieldError
                     .getField()
-                    .replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase(), fieldError.getDefaultMessage()
+                    .replaceAll("(.)(\\p{Upper})", "$1_$2").toLowerCase(), translateValidationMessage(fieldError.getDefaultMessage())
             ));
         }
 
@@ -78,8 +80,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleException(ve);
     }
 
+    private String translateValidationMessage(String msg) {
+        int i;
+        if ((i = msg.indexOf("may not be null")) >= 0) {
+            return msg.substring(0, i) + " no puede ser nulo!";
+        }
+        return msg;
+    }
+
     protected ResponseEntity handleException(BaseException ex) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
         List<ValidationError> errors;
         if (ex instanceof ValidationException) {
             errors = ((ValidationException) ex).getErrors();
@@ -90,7 +99,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         StringBuffer sb = new StringBuffer("<div style='color:#b72222; font-weight: bold'>")
                 .append("Listado errores:</div><ol>");
         for (ValidationError e : errors) {
-            sb = sb.append("<li style='color: #b72222;'>").append(e.getMessage()).append("</li>");
+            sb = sb.append("<li style='color: #b72222;'>").append(e.getPath()).append(e.getMessage()).append("</li>");
         }
         sb.append("</ol>");
         HttpHeaders responseHeaders = new HttpHeaders();

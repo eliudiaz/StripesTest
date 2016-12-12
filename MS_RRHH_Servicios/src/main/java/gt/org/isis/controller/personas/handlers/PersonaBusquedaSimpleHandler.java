@@ -38,6 +38,7 @@ import gt.org.isis.model.Persona;
 import gt.org.isis.model.Puestos;
 import gt.org.isis.model.UnidadEjecutora;
 import gt.org.isis.model.UnidadNotificadora;
+import gt.org.isis.model.enums.EstadoCivil;
 import gt.org.isis.model.enums.EstadoVariable;
 import gt.org.isis.repository.AreasGeografRepository;
 import gt.org.isis.repository.CatalogosRepository;
@@ -46,7 +47,9 @@ import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.PuestosRepository;
 import gt.org.isis.repository.UnidadEjecutoraRepository;
 import gt.org.isis.repository.UnidadNotificadoraRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -74,6 +77,20 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
     IdiomaRepository idiomasRepo;
     @Autowired
     PuestosRepository puestosRepo;
+    Map<String, EstadoCivil> mapFemToMas = new HashMap<String, EstadoCivil>();
+
+    {
+        mapFemToMas.put(EstadoCivil.CASADA.toString(), EstadoCivil.CASADO);
+        mapFemToMas.put(EstadoCivil.SOLTERA.toString(), EstadoCivil.SOLTERO);
+        mapFemToMas.put(EstadoCivil.VIUDA.toString(), EstadoCivil.VIUDO);
+    }
+
+    public EstadoCivil convertEstadoCivil(EstadoCivil estado) {
+        if (mapFemToMas.containsKey(estado.toString())) {
+            return mapFemToMas.get(estado.toString());
+        }
+        return estado;
+    }
 
     @Override
     public RequestGetPersonaDto execute(PersonaDto request) {
@@ -112,6 +129,7 @@ public class PersonaBusquedaSimpleHandler extends AbstractRequestHandler<Persona
         fillComunidadLinguistica(dto);
         fillNacionalidad(dto);
         dto.setFechaNacimientoTexto(formatDate(dto.getFechaNacimiento()));
+        dto.setEstadoCivil(convertEstadoCivil(p.getEstadoCivil()));
     }
 
     private Catalogos findById(Integer id) {
