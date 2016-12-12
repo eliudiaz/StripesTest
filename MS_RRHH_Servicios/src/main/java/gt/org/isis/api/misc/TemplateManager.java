@@ -5,11 +5,20 @@
  */
 package gt.org.isis.api.misc;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
+import com.mitchellbosecke.pebble.PebbleEngine;
+import com.mitchellbosecke.pebble.error.PebbleException;
+import com.mitchellbosecke.pebble.template.PebbleTemplate;
+import gt.org.isis.api.misc.exceptions.ext.ValidationError;
+import gt.org.isis.api.misc.exceptions.ext.ValidationException;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,9 +27,20 @@ import java.io.PrintWriter;
 public class TemplateManager {
 
     public static void createContent(OutputStream out, Object model, String template) {
-        MustacheFactory mf = new DefaultMustacheFactory();
-        Mustache m = mf.compile(template);
-        m.execute(new PrintWriter(out), model);
+        try {
+            ValidationException ex = new ValidationException(Arrays.asList(new ValidationError("test", "test")));
+            PebbleEngine engine = new PebbleEngine.Builder().build();
+            PebbleTemplate compiledTemplate = engine.getTemplate("errores.html");
+            Writer writer = new StringWriter();
+            Map<String, Object> context = new HashMap<String, Object>();
+            context.put("errors", ex.getErrors());
+            compiledTemplate.evaluate(writer, context);
+            out.write(writer.toString().getBytes());
+        } catch (PebbleException ex1) {
+            Logger.getLogger(TemplateManager.class.getName()).log(Level.SEVERE, null, ex1);
+        } catch (IOException ex) {
+            Logger.getLogger(TemplateManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
