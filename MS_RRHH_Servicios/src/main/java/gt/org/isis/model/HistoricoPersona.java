@@ -13,6 +13,7 @@ import gt.org.isis.model.enums.Sexo;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -115,7 +116,7 @@ public class HistoricoPersona implements Serializable, CustomEntity {
     @Column(name = "creado_por", nullable = false)
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Persona fkPersona;
     @Column(name = "foto")
     private String foto;

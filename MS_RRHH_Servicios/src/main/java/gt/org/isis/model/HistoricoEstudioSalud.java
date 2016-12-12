@@ -8,6 +8,7 @@ package gt.org.isis.model;
 import gt.org.isis.api.entities.CustomEntity;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class HistoricoEstudioSalud implements Serializable, CustomEntity {
     @Column(name = "fk_estudio_salud")
     private Integer fkEstudioSalud;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona fkPersona;
 
     public HistoricoEstudioSalud() {

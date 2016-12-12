@@ -10,6 +10,7 @@ import gt.org.isis.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -59,7 +60,7 @@ public class HistoricoRegistroAcademico implements Serializable, CustomEntity {
     @Column(name = "creado_por", length = 50)
     private String creadoPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona fkPersona;
 
     public HistoricoRegistroAcademico() {

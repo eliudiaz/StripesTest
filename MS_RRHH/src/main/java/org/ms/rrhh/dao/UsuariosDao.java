@@ -49,12 +49,10 @@ public class UsuariosDao {
             return g.fromJson(re.getBody(), UsuarioDto.class);
 
         } catch (HttpClientErrorException rc) {
-            if (rc.getStatusCode().toString().equals("500")) {
-                throw new Exception("Servicio de autenticacion no disponible");
-            } else if (rc.getStatusCode().toString().equals("422")) {
+            if (rc.getStatusCode().toString().equals("422")) {
                 throw ServerMessagesHelper.parseValidationHttpErrorMessage(rc.getResponseBodyAsString());
             } else {
-                throw new Exception(rc.getResponseBodyAsString());
+                throw new Exception("Servicio de autenticacion no disponible");
             }
         }
     }

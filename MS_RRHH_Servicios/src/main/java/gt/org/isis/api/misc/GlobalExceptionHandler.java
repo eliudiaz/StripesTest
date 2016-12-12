@@ -89,7 +89,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         if (ex instanceof ValidationException) {
             errors = ((ValidationException) ex).getErrors();
         } else {
-            errors = Arrays.asList(new ValidationError("internal_error", ExceptionUtils.getStackTrace(ex)));
+            errors = Arrays.asList(new ValidationError("internal_error", ExceptionUtils.getStackTrace(ex.getCause())));
         }
         StringBuffer sb = new StringBuffer("<div style='color:#b72222; font-weight: bold'>")
                 .append("Listado errores:</div><ol>");
