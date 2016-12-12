@@ -11,6 +11,7 @@ import gt.org.isis.api.misc.exceptions.ext.MalformedJsonException;
 import gt.org.isis.api.misc.exceptions.ext.UnknownException;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
 import gt.org.isis.api.misc.exceptions.ext.ValidationException;
+import java.io.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +25,10 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.http.MediaType;
 
 /**
  * this class is used to handle any Exception, you must create your owns
@@ -80,6 +84,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     protected ResponseEntity handleException(BaseException ex) {
-        return new ResponseEntity(ex, ex.getHttpStatus());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        List<ValidationError> errors;
+        if (ex instanceof ValidationException) {
+            errors = ((ValidationException) ex).getErrors();
+        } else {
+            errors = Arrays.asList(new ValidationError("internal_error", ExceptionUtils.getStackTrace(ex)));
+        }
+        TemplateManager.createContent(out, errors,
+                "errores.html");
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
+
+        return new ResponseEntity<String>(new String(out.toByteArray()),
+                responseHeaders,
+                ex.getHttpStatus());
     }
 }

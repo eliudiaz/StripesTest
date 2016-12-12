@@ -6,7 +6,6 @@
 package gt.org.isis.api.misc;
 
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
-import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import org.junit.Test;
@@ -24,11 +23,9 @@ public class TemplateManagerTest {
     public void testCreateContent() {
         System.out.println("createContent");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ValidationException ex = new ValidationException(Arrays.asList(new ValidationError("test", "test")));
         String template = "errores.html";
-        TemplateManager.createContent(out, ex, template);
+        TemplateManager.createContent(out, Arrays.asList(new ValidationError("test", "test")), template);
         System.out.println(">> " + new String(out.toByteArray()));
-
     }
 
 }

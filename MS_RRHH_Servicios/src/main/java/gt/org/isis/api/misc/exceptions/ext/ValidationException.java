@@ -31,7 +31,6 @@ public class ValidationException extends BaseException {
      * @param errors
      */
     public ValidationException(List<ValidationError> errors) {
-        //super(HttpStatus.UNPROCESSABLE_ENTITY,"validation_error", "There is a validation issue with your request see [errors] for more info");
         super(HttpStatus.UNPROCESSABLE_ENTITY, "validation_error", "Hay un problema de validación con su solicitud, ver [errores] para obtener más información.");
         this.errors = errors;
     }

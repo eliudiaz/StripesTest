@@ -9,13 +9,12 @@ import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.error.PebbleException;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import gt.org.isis.api.misc.exceptions.ext.ValidationError;
-import gt.org.isis.api.misc.exceptions.ext.ValidationException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,14 +25,13 @@ import java.util.logging.Logger;
  */
 public class TemplateManager {
 
-    public static void createContent(OutputStream out, Object model, String template) {
+    public static void createContent(OutputStream out, List<ValidationError> errors, String template) {
         try {
-            ValidationException ex = new ValidationException(Arrays.asList(new ValidationError("test", "test")));
             PebbleEngine engine = new PebbleEngine.Builder().build();
             PebbleTemplate compiledTemplate = engine.getTemplate(template);
             Writer writer = new StringWriter();
             Map<String, Object> context = new HashMap<String, Object>();
-            context.put("errors", ex.getErrors());
+            context.put("errors", errors);
             compiledTemplate.evaluate(writer, context);
             out.write(writer.toString().getBytes());
         } catch (PebbleException ex1) {
