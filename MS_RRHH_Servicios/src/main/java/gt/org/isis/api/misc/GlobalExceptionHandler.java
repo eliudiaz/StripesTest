@@ -91,11 +91,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         } else {
             errors = Arrays.asList(new ValidationError("internal_error", ExceptionUtils.getStackTrace(ex)));
         }
-        StringBuffer sb = new StringBuffer("<div style=\"color:#b72222; font-weight: bold\">")
+        StringBuffer sb = new StringBuffer("<div style='color:#b72222; font-weight: bold'>")
                 .append("Listado errores:</div><ol>");
         for (ValidationError e : errors) {
-            sb = sb.append("<li style=\"color: #b72222;\">").append(e.getMessage()).append("</li>");
+            sb = sb.append("<li style='color: #b72222;'>").append(e.getMessage()).append("</li>");
         }
+        sb.append("</ol>");
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_HTML);
 
