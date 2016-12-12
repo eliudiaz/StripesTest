@@ -30,7 +30,7 @@ public class TemplateManager {
         try {
             ValidationException ex = new ValidationException(Arrays.asList(new ValidationError("test", "test")));
             PebbleEngine engine = new PebbleEngine.Builder().build();
-            PebbleTemplate compiledTemplate = engine.getTemplate("errores.html");
+            PebbleTemplate compiledTemplate = engine.getTemplate(template);
             Writer writer = new StringWriter();
             Map<String, Object> context = new HashMap<String, Object>();
             context.put("errors", ex.getErrors());
