@@ -6,7 +6,9 @@
 package gt.org.isis.controller.personas.handlers;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import gt.org.isis.api.misc.exceptions.ExceptionsManager;
 import static gt.org.isis.api.requesting.ValidationsHelper.isNull;
 import gt.org.isis.controller.dto.EstudioSaludDto;
 import gt.org.isis.controller.dto.IdiomaDto;
@@ -159,6 +161,14 @@ public class PersonaModificarHandler extends PersonasBaseHandler<RequestUpdatePe
 
     private PersonaModificarHandler actualizarEstudiosSalud(Persona p, PersonaDto r) {
         if (!isNull(r.getEstudiosSalud())) {
+            if (!Collections2.filter(r.getEstudiosSalud(), new Predicate<EstudioSaludDto>() {
+                @Override
+                public boolean apply(EstudioSaludDto t) {
+                    return isNull(t.getAnioEstudio());
+                }
+            }).isEmpty()) {
+                throw ExceptionsManager.newValidationException("anio_estudio", "Los estudios de salud deben tener el año correspondiente!");
+            }
             List<EstudioSalud> estudios;
             crearHistoricoEstudiosSalud((estudios = (List) p.getEstudioSaludCollection()));
             estudiosRepo.deleteInBatch(estudios);
