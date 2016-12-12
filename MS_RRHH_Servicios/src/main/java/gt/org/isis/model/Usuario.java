@@ -66,7 +66,7 @@ public class Usuario implements Serializable, DesactivableEntity {
     @Column(name = "ultimo_cambio_por")
     private String ultimoCambioPor;
     @JoinColumn(name = "fk_persona", referencedColumnName = "cui")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     private Persona fkPersona;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkUsuario", cascade = CascadeType.ALL)

@@ -139,8 +139,19 @@ public class Persona implements Serializable, DesactivableEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Dpi> dpiCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<Usuario> usuariosCollection;
 
     public Persona() {
+    }
+
+    public Collection<Usuario> getUsuariosCollection() {
+        return usuariosCollection;
+    }
+
+    public void setUsuariosCollection(Collection<Usuario> usuariosCollection) {
+        this.usuariosCollection = usuariosCollection;
     }
 
     public Persona(String cui) {
