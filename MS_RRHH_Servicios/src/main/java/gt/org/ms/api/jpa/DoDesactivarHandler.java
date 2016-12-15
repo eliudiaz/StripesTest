@@ -8,7 +8,7 @@ package gt.org.ms.api.jpa;
 import gt.org.ms.api.requesting.AbstractRequestHandler;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import gt.org.ms.api.entities.DesactivableEntity;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.model.enums.Estado;
 import gt.org.ms.repository.CustomRepository;
 import java.io.Serializable;

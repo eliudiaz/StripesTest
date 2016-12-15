@@ -6,6 +6,8 @@
 package gt.org.ms.controller.dto;
 
 import java.util.List;
+import javax.validation.Valid;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -13,6 +15,8 @@ import java.util.List;
  */
 public class BusquedaAvanzadaDto {
 
+    @Valid
+    @NotEmpty
     private List<FiltroAvanzadoDto> filtros;
 
     public List<FiltroAvanzadoDto> getFiltros() {

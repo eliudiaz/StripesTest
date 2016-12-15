@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.ms.api.misc.exceptions.ext;
+package gt.org.ms.api.global.exceptions.ext;
 
-import gt.org.ms.api.misc.exceptions.BaseException;
+import gt.org.ms.api.global.exceptions.BaseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;

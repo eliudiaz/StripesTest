@@ -8,7 +8,7 @@ package gt.org.ms.controller.personas.handlers.validations;
 import gt.org.ms.api.requesting.GenericValidationRequest;
 import gt.org.ms.api.requesting.ValidationRequestContext;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.PersonaDto;
 import gt.org.ms.repository.PersonasRepository;
 import java.util.Arrays;

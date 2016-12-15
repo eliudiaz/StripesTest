@@ -8,7 +8,7 @@ package gt.org.ms.controller.usuarios.handlers;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.ms.api.requesting.AbstractRequestHandler;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.RoleDto;
 import gt.org.ms.controller.dto.UsuarioLoginDto;
 import gt.org.ms.converters.RoleDtoConverter;

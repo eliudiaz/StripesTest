@@ -1,7 +1,7 @@
-package gt.org.ms.api.misc.exceptions.ext;
+package gt.org.ms.api.global.exceptions.ext;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import gt.org.ms.api.misc.exceptions.BaseException;
+import gt.org.ms.api.global.exceptions.BaseException;
 import org.springframework.http.HttpStatus;
 
 /**

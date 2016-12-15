@@ -5,7 +5,7 @@
  */
 package gt.org.ms.api.requesting;
 
-import gt.org.ms.api.misc.GlobalExceptionHandler;
+import gt.org.ms.api.global.GlobalExceptionHandler;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

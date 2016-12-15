@@ -10,7 +10,7 @@ import gt.org.ms.api.C;
 import gt.org.ms.api.requesting.ValidationsHelper;
 import static gt.org.ms.api.requesting.ValidationsHelper.containsAny;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.DpiDto;
 import gt.org.ms.controller.dto.PersonaDto;
 import gt.org.ms.controller.dto.RequestCreatePersonaDto;

@@ -5,7 +5,7 @@
  */
 package gt.org.ms.controller.home.handlers.specifications;
 
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.BusquedaNormalDto;
 import gt.org.ms.model.Persona;
 import gt.org.isis.model.Persona_;

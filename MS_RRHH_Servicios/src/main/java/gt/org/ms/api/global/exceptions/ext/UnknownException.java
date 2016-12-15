@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.ms.api.misc.exceptions.ext;
+package gt.org.ms.api.global.exceptions.ext;
 
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.misc.exceptions.BaseException;
+import gt.org.ms.api.global.exceptions.BaseException;
 import org.springframework.http.HttpStatus;
 
 /**

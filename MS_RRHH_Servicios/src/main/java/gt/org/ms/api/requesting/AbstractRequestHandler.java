@@ -7,7 +7,7 @@ package gt.org.ms.api.requesting;
 
 import gt.org.ms.api.entities.CustomEntity;
 import gt.org.ms.api.entities.SessionEntity;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.SecureRequestDto;
 import gt.org.ms.api.utils.EntitiesHelper;
 import gt.org.ms.controller.dto.LoggedUserDto;

@@ -6,7 +6,7 @@
 package gt.org.ms.api.requesting;
 
 import gt.org.ms.api.entities.SessionEntity;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import javax.servlet.http.HttpServletRequest;
 

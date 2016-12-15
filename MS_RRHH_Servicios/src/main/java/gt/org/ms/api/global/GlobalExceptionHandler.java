@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.ms.api.misc;
+package gt.org.ms.api.global;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import gt.org.ms.api.misc.exceptions.BaseException;
-import gt.org.ms.api.misc.exceptions.ext.MalformedJsonException;
-import gt.org.ms.api.misc.exceptions.ext.UnknownException;
-import gt.org.ms.api.misc.exceptions.ext.ValidationError;
-import gt.org.ms.api.misc.exceptions.ext.ValidationException;
+import gt.org.ms.api.global.exceptions.BaseException;
+import gt.org.ms.api.global.exceptions.ext.MalformedJsonException;
+import gt.org.ms.api.global.exceptions.ext.UnknownException;
+import gt.org.ms.api.global.exceptions.ext.ValidationError;
+import gt.org.ms.api.global.exceptions.ext.ValidationException;
 import java.io.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

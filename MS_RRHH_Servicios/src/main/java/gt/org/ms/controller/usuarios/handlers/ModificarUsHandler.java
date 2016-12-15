@@ -9,7 +9,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import gt.org.ms.api.requesting.AbstractValidationsRequestHandler;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.RoleDto;
 import gt.org.ms.controller.dto.UsuarioDto;
 import gt.org.ms.converters.UsuarioDtoConverter;

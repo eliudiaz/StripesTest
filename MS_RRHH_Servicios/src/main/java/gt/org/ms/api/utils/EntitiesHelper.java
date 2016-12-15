@@ -8,7 +8,7 @@ package gt.org.ms.api.utils;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.misc.exceptions.ext.UnknownException;
+import gt.org.ms.api.global.exceptions.ext.UnknownException;
 import gt.org.ms.api.entities.CustomEntity;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.PersonaChildEntity;

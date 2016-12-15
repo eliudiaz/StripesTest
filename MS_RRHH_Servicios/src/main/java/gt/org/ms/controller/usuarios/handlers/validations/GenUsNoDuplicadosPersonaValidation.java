@@ -10,7 +10,7 @@ import gt.org.ms.api.requesting.ValidationRequestContext;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import gt.org.ms.api.jpa.ManySpecificationANDHandler;
 import gt.org.ms.api.jpa.SingleFieldSpecification;
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.UsuarioDto;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.Usuario;

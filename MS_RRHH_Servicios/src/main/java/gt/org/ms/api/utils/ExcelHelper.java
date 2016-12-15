@@ -5,7 +5,7 @@
  */
 package gt.org.ms.api.utils;
 
-import gt.org.ms.api.misc.exceptions.ExceptionsManager;
+import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -46,7 +46,8 @@ public class ExcelHelper {
 
     public static <T> void writeMapToExcel(OutputStream out, List<Map<String, Object>> data, List<FieldDto> fields) {
         if (fields.isEmpty()) {
-            throw ExceptionsManager.newInternalErrorException("fields_config", "Configuracion de campos de excel no es valida!", null);
+            throw ExceptionsManager.newInternalErrorException("fields_config",
+                    "Configuracion de campos de excel no es valida!", null);
         }
         HSSFWorkbook workbook = null;
         try {
@@ -90,7 +91,8 @@ public class ExcelHelper {
             out.flush();
         } catch (IOException e) {
             e.printStackTrace(System.err);
-            throw ExceptionsManager.newInternalErrorException("excel_exporter", "Error generando archivo de excel", e);
+            throw ExceptionsManager.newInternalErrorException("excel_exporter",
+                    "Error generando archivo de excel", e);
         }
     }
 

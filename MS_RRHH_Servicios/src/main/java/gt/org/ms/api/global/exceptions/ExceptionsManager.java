@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.ms.api.misc.exceptions;
+package gt.org.ms.api.global.exceptions;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import gt.org.ms.api.misc.exceptions.ext.NotFoundException;
-import gt.org.ms.api.misc.exceptions.ext.UnknownException;
-import gt.org.ms.api.misc.exceptions.ext.ValidationError;
-import gt.org.ms.api.misc.exceptions.ext.ValidationException;
+import gt.org.ms.api.global.exceptions.ext.NotFoundException;
+import gt.org.ms.api.global.exceptions.ext.UnknownException;
+import gt.org.ms.api.global.exceptions.ext.ValidationError;
+import gt.org.ms.api.global.exceptions.ext.ValidationException;
 import java.util.Arrays;
 
 /**

@@ -7,7 +7,7 @@ package gt.org.ms.api.utils;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import gt.org.ms.api.misc.Singleton;
+import gt.org.ms.api.global.Singleton;
 import gt.org.ms.api.entities.CustomEntity;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
