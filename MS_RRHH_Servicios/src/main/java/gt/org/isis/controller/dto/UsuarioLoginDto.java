@@ -18,11 +18,21 @@ public class UsuarioLoginDto {
     private String usuario;
     @NotNull
     private String clave;
+    @NotNull
+    private String sesion;
     private String nombres;
     private String foto;
     private List<RoleDto> roles;
     private List<AccesoDto> accesos;
     private boolean root;
+
+    public String getSesion() {
+        return sesion;
+    }
+
+    public void setSesion(String sesion) {
+        this.sesion = sesion;
+    }
 
     public List<AccesoDto> getAccesos() {
         return accesos;

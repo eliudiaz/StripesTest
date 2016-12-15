@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.accesos;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.accesos.handlers.ModificarAcHandler;
 import gt.org.isis.controller.dto.AccesoDto;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller("modificarAcceso")
 @RequestMapping("accesos")
-public class ModificarController {
+public class ModificarController extends BaseController {
 
     @Autowired
     ModificarAcHandler handler;
@@ -32,7 +34,9 @@ public class ModificarController {
     @RequestMapping(value = "/mod/{id}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity modificar(@PathVariable("id") Integer id, @RequestBody AccesoDto acceso) {
+    public HttpEntity modificar(@PathVariable("id") Integer id, @RequestBody AccesoDto acceso,
+            HttpServletRequest request) {
+        configureSesion(acceso, request);
         acceso.setId(id);
         handler.handle(acceso);
         return new ResponseEntity(HttpStatus.ACCEPTED);

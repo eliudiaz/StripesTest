@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.roles;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.RoleDto;
 import gt.org.isis.controller.roles.handlers.ModificarHandler;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller("modificarRole")
 @RequestMapping("roles")
-public class ModificarController {
+public class ModificarController extends BaseController {
 
     @Autowired
     ModificarHandler handler;
@@ -35,7 +37,9 @@ public class ModificarController {
     @RequestMapping(value = "/mod/{id}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity modificar(@PathVariable("id") Integer id, @RequestBody RoleDto role) {
+    public HttpEntity modificar(@PathVariable("id") Integer id, @RequestBody RoleDto role,
+            HttpServletRequest request) {
+        configureSesion(role, request);
         role.setId(id);
         handler.handle(role);
         return new ResponseEntity(HttpStatus.ACCEPTED);

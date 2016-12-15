@@ -6,6 +6,7 @@
 package gt.org.isis.controller.dto;
 
 import gt.org.isis.api.entities.DesactivableEntity;
+import gt.org.isis.api.entities.SessionEntityImpl;
 import gt.org.isis.model.enums.Estado;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author eliud
  */
-public class RoleDto implements DesactivableEntity {
+public class RoleDto extends SessionEntityImpl implements DesactivableEntity {
 
     private Integer id;
     @NotNull

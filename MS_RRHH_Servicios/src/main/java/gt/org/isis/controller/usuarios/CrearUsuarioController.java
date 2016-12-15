@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.usuarios;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.controller.usuarios.handlers.CrearUsHandler;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("usuarios")
-public class CrearUsuarioController {
+public class CrearUsuarioController extends BaseController {
 
     @Autowired
     CrearUsHandler handler;
@@ -32,7 +34,9 @@ public class CrearUsuarioController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public @ResponseBody
-    UsuarioDto crear(@RequestBody @Valid UsuarioDto usuario) {
+    UsuarioDto crear(@RequestBody @Valid UsuarioDto usuario,
+            HttpServletRequest request) {
+        configureSesion(usuario, request);
         return handler.handle(usuario);
     }
 }

@@ -10,6 +10,7 @@ import gt.org.isis.model.enums.TipoPuesto;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,7 +24,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -59,7 +59,7 @@ public class HistoricoPuesto implements Serializable, CustomEntity {
     @Column(name = "fk_clasificacin_servicio")
     private Integer fkClasificacinServicio;
     @JoinColumn(name = "fk_registro_laboral", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private HistoricoRegistroLaboral fkRegistroLaboral;
 
     public HistoricoPuesto() {

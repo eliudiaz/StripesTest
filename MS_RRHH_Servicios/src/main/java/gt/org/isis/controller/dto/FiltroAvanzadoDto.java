@@ -16,8 +16,26 @@ public class FiltroAvanzadoDto {
 
     private CampoBusquedaAvanzada campo;
     private ComparadorBusqueda comparador;
-    private String valor1;
-    private String valor2;
+    private Integer valor1;
+    private Integer valor2;
+    private String valorTexto1;
+    private String valorTexto2;
+
+    public String getValorTexto1() {
+        return valorTexto1;
+    }
+
+    public void setValorTexto1(String valorTexto1) {
+        this.valorTexto1 = valorTexto1;
+    }
+
+    public String getValorTexto2() {
+        return valorTexto2;
+    }
+
+    public void setValorTexto2(String valorTexto2) {
+        this.valorTexto2 = valorTexto2;
+    }
 
     public CampoBusquedaAvanzada getCampo() {
         return campo;
@@ -27,19 +45,19 @@ public class FiltroAvanzadoDto {
         this.campo = campo;
     }
 
-    public String getValor1() {
+    public Integer getValor1() {
         return valor1;
     }
 
-    public void setValor1(String valor1) {
+    public void setValor1(Integer valor1) {
         this.valor1 = valor1;
     }
 
-    public String getValor2() {
+    public Integer getValor2() {
         return valor2;
     }
 
-    public void setValor2(String valor2) {
+    public void setValor2(Integer valor2) {
         this.valor2 = valor2;
     }
 

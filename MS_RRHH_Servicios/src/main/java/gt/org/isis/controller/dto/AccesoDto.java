@@ -5,6 +5,7 @@
  */
 package gt.org.isis.controller.dto;
 
+import gt.org.isis.api.entities.SessionEntityImpl;
 import gt.org.isis.model.enums.Estado;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author edcracken
  */
-public class AccesoDto {
+public class AccesoDto extends SessionEntityImpl {
 
     private Integer id;
     @NotNull

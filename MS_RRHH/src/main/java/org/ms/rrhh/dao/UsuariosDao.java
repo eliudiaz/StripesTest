@@ -26,13 +26,17 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UsuariosDao {
 
-    public UsuarioDto doLogin(String username, String password) throws Exception {
+    public UsuarioDto doLogin(String username, String password, String sesion) throws Exception {
         try {
             RestTemplate rt = new RestTemplate();
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            String r = new Gson().toJson(UsuarioDto.builder().withUsuario(username).withClave(password).build());
+            String r = new Gson().toJson(UsuarioDto.builder()
+                    .withUsuario(username)
+                    .withClave(password)
+                    .withSesion(sesion)
+                    .build());
             HttpEntity<String> entity = new HttpEntity<String>(r, headers);
             System.out.println(">> " + r);
             String servicesCtx;
@@ -45,12 +49,10 @@ public class UsuariosDao {
             return g.fromJson(re.getBody(), UsuarioDto.class);
 
         } catch (HttpClientErrorException rc) {
-            if (rc.getStatusCode().toString().equals("500")) {
-                throw new Exception("Servicio de autenticacion no disponible");
-            } else if (rc.getStatusCode().toString().equals("422")) {
+            if (rc.getStatusCode().toString().equals("422")) {
                 throw ServerMessagesHelper.parseValidationHttpErrorMessage(rc.getResponseBodyAsString());
             } else {
-                throw new Exception(rc.getResponseBodyAsString());
+                throw new Exception("Servicio de autenticacion no disponible");
             }
         }
     }

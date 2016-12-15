@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -125,11 +126,29 @@ public class Persona implements Serializable, DesactivableEntity {
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Idioma> idiomaCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<HistoricoIdioma> hisIdiomaCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<HistoricoPersona> hisPersonaCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<HistoricoRegistroAcademico> hisRegAcademicoCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<HistoricoRegistroLaboral> hisRegLaboralCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<HistoricoLugarResidencia> hisLugarResidenciaCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<RegistroAcademico> registroAcademicoCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<EstudioSalud> estudioSaludCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
+    private Collection<HistoricoEstudioSalud> hisEstudioSaludCollection;
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<RegistroLaboral> registroLaboralCollection;
@@ -139,8 +158,67 @@ public class Persona implements Serializable, DesactivableEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "fkPersona", cascade = CascadeType.ALL)
     private Collection<Dpi> dpiCollection;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "fkPersona", orphanRemoval = true)
+    private Collection<Usuario> usuariosCollection;
 
     public Persona() {
+    }
+
+    public Collection<Usuario> getUsuariosCollection() {
+        return usuariosCollection;
+    }
+
+    public void setUsuariosCollection(Collection<Usuario> usuariosCollection) {
+        this.usuariosCollection = usuariosCollection;
+    }
+
+    public Collection<HistoricoLugarResidencia> getHisLugarResidenciaCollection() {
+        return hisLugarResidenciaCollection;
+    }
+
+    public void setHisLugarResidenciaCollection(Collection<HistoricoLugarResidencia> hisLugarResidenciaCollection) {
+        this.hisLugarResidenciaCollection = hisLugarResidenciaCollection;
+    }
+
+    public Collection<HistoricoEstudioSalud> getHisEstudioSaludCollection() {
+        return hisEstudioSaludCollection;
+    }
+
+    public void setHisEstudioSaludCollection(Collection<HistoricoEstudioSalud> hisEstudioSaludCollection) {
+        this.hisEstudioSaludCollection = hisEstudioSaludCollection;
+    }
+
+    public Collection<HistoricoIdioma> getHisIdiomaCollection() {
+        return hisIdiomaCollection;
+    }
+
+    public void setHisIdiomaCollection(Collection<HistoricoIdioma> hisIdiomaCollection) {
+        this.hisIdiomaCollection = hisIdiomaCollection;
+    }
+
+    public Collection<HistoricoPersona> getHisPersonaCollection() {
+        return hisPersonaCollection;
+    }
+
+    public void setHisPersonaCollection(Collection<HistoricoPersona> hisPersonaCollection) {
+        this.hisPersonaCollection = hisPersonaCollection;
+    }
+
+    public Collection<HistoricoRegistroAcademico> getHisRegAcademicoCollection() {
+        return hisRegAcademicoCollection;
+    }
+
+    public void setHisRegAcademicoCollection(Collection<HistoricoRegistroAcademico> hisRegAcademicoCollection) {
+        this.hisRegAcademicoCollection = hisRegAcademicoCollection;
+    }
+
+    public Collection<HistoricoRegistroLaboral> getHisRegLaboralCollection() {
+        return hisRegLaboralCollection;
+    }
+
+    public void setHisRegLaboralCollection(Collection<HistoricoRegistroLaboral> hisRegLaboralCollection) {
+        this.hisRegLaboralCollection = hisRegLaboralCollection;
     }
 
     public Persona(String cui) {

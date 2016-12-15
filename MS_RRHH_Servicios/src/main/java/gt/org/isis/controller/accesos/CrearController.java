@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.accesos;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.accesos.handlers.CrearAcHandler;
 import gt.org.isis.controller.dto.AccesoDto;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller("crearAcceso")
 @RequestMapping("accesos")
-public class CrearController {
+public class CrearController extends BaseController {
 
     @Autowired
     CrearAcHandler crear;
@@ -34,7 +36,9 @@ public class CrearController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     public @ResponseBody
-    AccesoDto crear(@RequestBody @Valid AccesoDto acceso) {
+    AccesoDto crear(@RequestBody @Valid AccesoDto acceso,
+            HttpServletRequest request) {
+        configureSesion(acceso, request);
         return crear.handle(acceso);
     }
 }

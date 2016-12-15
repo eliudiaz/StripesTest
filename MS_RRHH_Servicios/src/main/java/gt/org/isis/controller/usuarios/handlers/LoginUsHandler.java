@@ -18,6 +18,7 @@ import gt.org.isis.api.utils.EntitiesHelper;
 import gt.org.isis.controller.dto.AccesoDto;
 import gt.org.isis.converters.AccesoDtoConverter;
 import gt.org.isis.model.Acceso;
+import gt.org.isis.model.enums.Estado;
 import gt.org.isis.repository.AccesosRepository;
 import gt.org.isis.repository.PersonasRepository;
 import gt.org.isis.repository.RolesRepository;
@@ -55,9 +56,7 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
                     new String[]{"usuario,Usuario es requerido!"});
         }
 
-        RuntimeException usuarioInvalido = ExceptionsManager.newValidationException("usuario_invalido",
-                new String[]{"usuario,Usuario invalido!"});
-
+        RuntimeException usuarioInvalido = ExceptionsManager.newValidationException("usuario_invalido", "Usuario invalido!");
         List<Usuario> ls = usuarios.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery cq, CriteriaBuilder cb) {
@@ -68,6 +67,9 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             throw usuarioInvalido;
         }
         Usuario r = ls.get(0);
+        if (r.getEstado().equals(Estado.INACTIVO)) {
+            throw usuarioInvalido;
+        }
         if (!r.getClave().equalsIgnoreCase(EntitiesHelper.md5Gen(request.getClave()))) {
             throw usuarioInvalido;
         }
@@ -95,6 +97,8 @@ public class LoginUsHandler extends AbstractRequestHandler<UsuarioLoginDto, Usua
             }));
         }
         request.setClave("");
+        r.setSesion(request.getSesion());
+        usuarios.save(r);
         return request;
     }
 

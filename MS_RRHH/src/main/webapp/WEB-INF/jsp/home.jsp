@@ -38,7 +38,7 @@
                         '<c:out value="${sessionScope.pullPath}"/>');
                 localStorage.setItem("currentUser", JSON.stringify(<%=currentUser%>));
                 setTimeout(function () {
-                    window.location = "${sessionScope.applicationPath}/fuse";
+                    window.location = "${sessionScope.applicationPath}/app";
                 }, 300);
             } else {
                 alert("Explorador no compatible con aplicacion!, intente con uno mas reciente.");

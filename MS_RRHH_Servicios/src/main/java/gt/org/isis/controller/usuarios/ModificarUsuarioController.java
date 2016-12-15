@@ -5,8 +5,10 @@
  */
 package gt.org.isis.controller.usuarios;
 
+import gt.org.isis.api.requesting.BaseController;
 import gt.org.isis.controller.dto.UsuarioDto;
 import gt.org.isis.controller.usuarios.handlers.ModificarUsHandler;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("usuarios")
-public class ModificarUsuarioController {
+public class ModificarUsuarioController extends BaseController {
 
     @Autowired
     ModificarUsHandler handler;
@@ -33,7 +35,9 @@ public class ModificarUsuarioController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.PUT)
-    public HttpEntity modificar(@PathVariable("id") String id, @RequestBody UsuarioDto usuario) {
+    public HttpEntity modificar(@PathVariable("id") String id, @RequestBody UsuarioDto usuario,
+            HttpServletRequest request) {
+        configureSesion(usuario, request);
         usuario.setUsuario(id);
         handler.handle(usuario);
         return new ResponseEntity(HttpStatus.ACCEPTED);
