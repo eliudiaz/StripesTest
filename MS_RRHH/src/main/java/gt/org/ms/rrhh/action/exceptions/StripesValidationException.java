@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ms.rrhh.action.exceptions;
+package gt.org.ms.rrhh.action.exceptions;
 
 import java.util.List;
 import net.sourceforge.stripes.validation.ValidationError;

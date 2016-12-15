@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ms.rrhh.utils.exceptions;
+package gt.org.ms.rrhh.utils.exceptions;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.http.HttpStatus;

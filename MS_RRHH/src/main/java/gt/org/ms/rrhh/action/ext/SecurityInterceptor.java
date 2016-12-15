@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ms.rrhh.action.ext;
+package gt.org.ms.rrhh.action.ext;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,7 +25,7 @@ import net.sourceforge.stripes.controller.Intercepts;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.util.HttpUtil;
 import net.sourceforge.stripes.util.Log;
-import org.ms.rrhh.action.LoginActionBean;
+import gt.org.ms.rrhh.action.LoginActionBean;
 
 /**
  * After the {@link LifecycleStage#ActionBeanResolution} stage, this interceptor

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. *
  */
-package org.ms.rrhh.action;
+package gt.org.ms.rrhh.action;
 
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 
-@UrlBinding("/ValidateUser.htm")
-public class ValidateUserActionBean extends BaseActionBean {
+@UrlBinding("/Home.htm")
+public class HomeActionBean extends BaseActionBean {
 
     @DefaultHandler
     public Resolution view() {

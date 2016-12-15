@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ms.rrhh.utils;
+package gt.org.ms.rrhh.utils;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import net.sourceforge.stripes.validation.SimpleError;
-import org.ms.rrhh.action.exceptions.StripesValidationException;
-import org.ms.rrhh.utils.exceptions.ValidationError;
-import org.ms.rrhh.utils.exceptions.ValidationException;
+import gt.org.ms.rrhh.action.exceptions.StripesValidationException;
+import gt.org.ms.rrhh.utils.exceptions.ValidationError;
+import gt.org.ms.rrhh.utils.exceptions.ValidationException;
 
 /**
  *

@@ -1,7 +1,7 @@
-package org.ms.rrhh.action.ext;
+package gt.org.ms.rrhh.action.ext;
 
 import net.sourceforge.stripes.action.ActionBeanContext;
-import org.ms.rrhh.dao.dto.UsuarioDto;
+import gt.org.ms.rrhh.dao.dto.UsuarioDto;
 
 /**
  * ActionBeanContext subclass for the Bugzooky application that manages where

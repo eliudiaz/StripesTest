@@ -14,7 +14,7 @@
  * limitations under the License. * 
  */
 
-package org.ms.rrhh.action;
+package gt.org.ms.rrhh.action;
 
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;

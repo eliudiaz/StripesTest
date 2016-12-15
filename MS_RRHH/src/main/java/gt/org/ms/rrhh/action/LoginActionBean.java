@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. *
  */
-package org.ms.rrhh.action;
+package gt.org.ms.rrhh.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,12 +28,12 @@ import net.sourceforge.stripes.integration.spring.SpringBean;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationError;
-import org.ms.rrhh.action.exceptions.StripesValidationException;
-import org.ms.rrhh.dao.UsuariosDao;
-import org.ms.rrhh.dao.dto.AccesoDto;
-import org.ms.rrhh.dao.dto.RoleDto;
-import org.ms.rrhh.dao.dto.UsuarioDto;
-import org.ms.rrhh.utils.C;
+import gt.org.ms.rrhh.action.exceptions.StripesValidationException;
+import gt.org.ms.rrhh.dao.UsuariosDao;
+import gt.org.ms.rrhh.dao.dto.AccesoDto;
+import gt.org.ms.rrhh.dao.dto.RoleDto;
+import gt.org.ms.rrhh.dao.dto.UsuarioDto;
+import gt.org.ms.rrhh.utils.C;
 
 @UrlBinding("/Login.htm")
 public class LoginActionBean extends BaseActionBean {

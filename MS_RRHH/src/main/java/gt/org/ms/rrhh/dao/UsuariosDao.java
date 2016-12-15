@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ms.rrhh.dao;
+package gt.org.ms.rrhh.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.ms.rrhh.dao.dto.UsuarioDto;
-import org.ms.rrhh.utils.C;
-import org.ms.rrhh.utils.ServerMessagesHelper;
+import gt.org.ms.rrhh.dao.dto.UsuarioDto;
+import gt.org.ms.rrhh.utils.C;
+import gt.org.ms.rrhh.utils.ServerMessagesHelper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

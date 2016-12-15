@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.ms.rrhh.dao.dto;
+package gt.org.ms.rrhh.dao.dto;
 
 import java.util.Date;
 

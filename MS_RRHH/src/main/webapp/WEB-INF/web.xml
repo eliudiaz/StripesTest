@@ -32,7 +32,7 @@
     </servlet>
     <filter>
         <filter-name>SecurityInterceptor</filter-name>
-        <filter-class>org.ms.rrhh.action.filters.SecurityInterceptor</filter-class>
+        <filter-class>gt.org.ms.rrhh.action.filters.SecurityInterceptor</filter-class>
     </filter>
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>
