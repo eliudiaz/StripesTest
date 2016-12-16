@@ -8,7 +8,7 @@ package gt.org.ms.controller.catalogos.generales.handlers;
 import gt.org.ms.api.jpa.SpecificationBuilder;
 import gt.org.ms.controller.dto.CatalogosRequestDto;
 import gt.org.ms.model.Catalogos;
-import gt.org.isis.model.Catalogos_;
+import gt.org.ms.model.Catalogos_;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;

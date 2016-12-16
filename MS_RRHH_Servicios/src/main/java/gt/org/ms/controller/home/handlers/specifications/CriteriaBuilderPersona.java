@@ -8,7 +8,7 @@ package gt.org.ms.controller.home.handlers.specifications;
 import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.BusquedaNormalDto;
 import gt.org.ms.model.Persona;
-import gt.org.isis.model.Persona_;
+import gt.org.ms.model.Persona_;
 import gt.org.ms.model.enums.Estado;
 import java.util.ArrayList;
 import java.util.List;

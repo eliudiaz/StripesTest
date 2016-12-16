@@ -17,7 +17,7 @@ import gt.org.ms.controller.home.handlers.specifications.RegistroLaboralQSpec;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.PersonaChildEntity;
 import gt.org.ms.model.Puesto;
-import gt.org.isis.model.Puesto_;
+import gt.org.ms.model.Puesto_;
 import gt.org.ms.model.RegistroLaboral;
 import gt.org.ms.model.enums.CampoBusquedaAvanzada;
 import gt.org.ms.repository.PuestoRepository;

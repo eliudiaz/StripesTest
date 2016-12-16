@@ -6,10 +6,8 @@
 package gt.org.ms.controller.home.handlers.specifications;
 
 import gt.org.ms.controller.dto.FiltroAvanzadoDto;
-import gt.org.ms.model.Puesto;
-import gt.org.isis.model.Puesto_;
 import gt.org.ms.model.UnidadEjecutora;
-import gt.org.isis.model.UnidadEjecutora_;
+import gt.org.ms.model.UnidadEjecutora_;
 import gt.org.ms.model.enums.ComparadorBusqueda;
 import java.util.ArrayList;
 import java.util.List;

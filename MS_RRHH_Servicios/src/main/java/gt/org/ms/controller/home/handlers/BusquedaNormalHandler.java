@@ -15,7 +15,7 @@ import gt.org.ms.controller.dto.BusquedaNormalDto;
 import gt.org.ms.controller.dto.PersonaDto;
 import gt.org.ms.converters.PersonaDtoConverter;
 import gt.org.ms.model.AreaGeografica;
-import gt.org.isis.model.AreaGeografica_;
+import gt.org.ms.model.AreaGeografica_;
 import gt.org.ms.model.LugarResidencia;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.enums.Estado;

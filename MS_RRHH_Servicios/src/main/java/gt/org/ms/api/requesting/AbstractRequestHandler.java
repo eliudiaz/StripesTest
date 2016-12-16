@@ -12,7 +12,7 @@ import gt.org.ms.controller.dto.SecureRequestDto;
 import gt.org.ms.api.utils.EntitiesHelper;
 import gt.org.ms.controller.dto.LoggedUserDto;
 import gt.org.ms.model.Usuario;
-import gt.org.isis.model.Usuario_;
+import gt.org.ms.model.Usuario_;
 import gt.org.ms.repository.UsuariosRepository;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;

@@ -32,7 +32,7 @@ import gt.org.ms.converters.RegistroAcademicoConverter;
 import gt.org.ms.converters.RegistroLaboralConverter;
 import gt.org.ms.model.AreaGeografica;
 import gt.org.ms.model.Catalogos;
-import gt.org.isis.model.Catalogos_;
+import gt.org.ms.model.Catalogos_;
 import gt.org.ms.model.Dpi;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.Puestos;

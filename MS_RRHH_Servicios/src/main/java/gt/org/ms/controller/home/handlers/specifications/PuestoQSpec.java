@@ -7,7 +7,7 @@ package gt.org.ms.controller.home.handlers.specifications;
 
 import gt.org.ms.controller.dto.FiltroAvanzadoDto;
 import gt.org.ms.model.Puesto;
-import gt.org.isis.model.Puesto_;
+import gt.org.ms.model.Puesto_;
 import gt.org.ms.model.enums.ComparadorBusqueda;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class PuestoQSpec implements Specification<Puesto> {
     @Override
     public Predicate toPredicate(Root<Puesto> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
         List<Predicate> ls = new ArrayList<Predicate>();
-        
+
         if (puestosNominales != null) {
             if (fa.getComparador().equals(ComparadorBusqueda.IGUAL)) {
                 ls.add(root.get(Puesto_.fkPuestoNominal).in(puestosNominales));

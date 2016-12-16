@@ -7,7 +7,7 @@ package gt.org.ms.controller.usuarios.handlers;
 
 import gt.org.ms.api.jpa.DoDesactivarHandler;
 import gt.org.ms.model.Usuario;
-import gt.org.isis.model.Usuario_;
+import gt.org.ms.model.Usuario_;
 import java.io.Serializable;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

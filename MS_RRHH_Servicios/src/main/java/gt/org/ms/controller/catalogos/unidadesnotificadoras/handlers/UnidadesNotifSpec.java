@@ -8,7 +8,7 @@ package gt.org.ms.controller.catalogos.unidadesnotificadoras.handlers;
 import gt.org.ms.api.jpa.SpecificationBuilder;
 import gt.org.ms.controller.dto.CatalogosRequestDto;
 import gt.org.ms.model.UnidadNotificadora;
-import gt.org.isis.model.UnidadNotificadora_;
+import gt.org.ms.model.UnidadNotificadora_;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;

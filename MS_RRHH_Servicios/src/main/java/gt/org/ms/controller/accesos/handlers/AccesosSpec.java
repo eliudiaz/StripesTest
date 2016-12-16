@@ -7,7 +7,7 @@ package gt.org.ms.controller.accesos.handlers;
 
 import gt.org.ms.api.jpa.SpecificationBuilder;
 import gt.org.ms.model.Acceso;
-import gt.org.isis.model.Acceso_;
+import gt.org.ms.model.Acceso_;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;

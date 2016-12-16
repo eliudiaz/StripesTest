@@ -8,7 +8,7 @@ package gt.org.ms.controller.catalogos.puestos.handlers;
 import gt.org.ms.api.jpa.SpecificationBuilder;
 import gt.org.ms.controller.dto.CatalogosRequestDto;
 import gt.org.ms.model.Puestos;
-import gt.org.isis.model.Puestos_;
+import gt.org.ms.model.Puestos_;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;

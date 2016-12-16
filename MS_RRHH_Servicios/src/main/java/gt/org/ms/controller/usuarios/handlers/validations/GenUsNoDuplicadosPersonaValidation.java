@@ -14,7 +14,7 @@ import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.controller.dto.UsuarioDto;
 import gt.org.ms.model.Persona;
 import gt.org.ms.model.Usuario;
-import gt.org.isis.model.Usuario_;
+import gt.org.ms.model.Usuario_;
 import gt.org.ms.model.enums.Estado;
 import gt.org.ms.repository.PersonasRepository;
 import gt.org.ms.repository.UsuariosRepository;

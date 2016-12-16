@@ -7,7 +7,7 @@ package gt.org.ms.controller.home.handlers.specifications;
 
 import gt.org.ms.controller.dto.FiltroAvanzadoDto;
 import gt.org.ms.model.RegistroLaboral;
-import gt.org.isis.model.RegistroLaboral_;
+import gt.org.ms.model.RegistroLaboral_;
 import gt.org.ms.model.enums.ComparadorBusqueda;
 import gt.org.ms.model.enums.EstadoVariable;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@
 package gt.org.ms.controller.home.handlers.specifications;
 
 import gt.org.ms.model.Puestos;
-import gt.org.isis.model.Puestos_;
+import gt.org.ms.model.Puestos_;
 import gt.org.ms.model.enums.TipoPuestosCatalogo;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

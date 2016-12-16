@@ -8,7 +8,7 @@ package gt.org.ms.controller.home.handlers.specifications;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import gt.org.ms.controller.dto.BusquedaNormalDto;
 import gt.org.ms.model.LugarResidencia;
-import gt.org.isis.model.LugarResidencia_;
+import gt.org.ms.model.LugarResidencia_;
 import gt.org.ms.model.enums.EstadoVariable;
 import java.util.ArrayList;
 import java.util.Collection;
