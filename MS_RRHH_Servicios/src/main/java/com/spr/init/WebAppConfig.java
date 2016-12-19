@@ -31,11 +31,11 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
-@ComponentScan("gt.org.isis")
+@ComponentScan("gt.org.ms")
 @PropertySource({"classpath:application-${spring.profiles.active}.properties",
     "classpath:application.properties"
 })
-@EnableJpaRepositories("gt.org.isis.repository")
+@EnableJpaRepositories("gt.org.ms.repository")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";

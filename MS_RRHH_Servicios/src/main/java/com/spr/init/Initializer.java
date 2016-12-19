@@ -1,6 +1,6 @@
 package com.spr.init;
 
-import gt.org.isis.web.NativeCorsFilter;
+import gt.org.ms.web.NativeCorsFilter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
