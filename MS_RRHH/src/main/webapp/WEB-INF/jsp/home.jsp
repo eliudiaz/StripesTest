@@ -21,8 +21,8 @@
         <!--<meta http-equiv="refresh" content="0;url=/MS_RRHH/fuse">-->
     </head>
     <body>
-    <stripes:useActionBean beanclass="org.ms.rrhh.action.HomeActionBean" var="bean"/>
-    <jsp:useBean id="currentUser"   class="org.ms.rrhh.dao.dto.UsuarioDto" scope="session"></jsp:useBean>
+    <stripes:useActionBean beanclass="gt.org.ms.rrhh.action.HomeActionBean" var="bean"/>
+    <jsp:useBean id="currentUser"   class="gt.org.ms.rrhh.dao.dto.UsuarioDto" scope="session"></jsp:useBean>
         <script type="text/javascript">
             if (typeof (Storage) !== "undefined") {
                 localStorage.setItem("sessionId", '<c:out value="${pageContext.session.id}"/>');

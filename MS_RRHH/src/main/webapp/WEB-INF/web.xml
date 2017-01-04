@@ -18,11 +18,12 @@
         <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
         <init-param>
             <param-name>ActionResolver.Packages</param-name>
-            <param-value>org.ms.rrhh</param-value>
+            <param-value>gt.org.ms.rrhh</param-value>
         </init-param>
         <init-param>
             <param-name>Extension.Packages</param-name>
-            <param-value>org.ms.rrhh.extensions, org.ms.rrhh.reload.extensions, net.sourceforge.stripes.integration.spring</param-value>
+            <param-value>gt.org.ms.rrhh.extensions, gt.org.ms.rrhh.reload.extensions,
+                net.sourceforge.stripes.integration.spring</param-value>
         </init-param>
     </filter>
     <servlet>
@@ -32,7 +33,7 @@
     </servlet>
     <filter>
         <filter-name>SecurityInterceptor</filter-name>
-        <filter-class>org.ms.rrhh.action.filters.SecurityInterceptor</filter-class>
+        <filter-class>gt.org.ms.rrhh.action.filters.SecurityInterceptor</filter-class>
     </filter>
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>
