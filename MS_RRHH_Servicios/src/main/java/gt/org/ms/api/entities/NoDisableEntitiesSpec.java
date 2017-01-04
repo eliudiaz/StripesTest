@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
  *
  * @author eliud
  */
-public class NoDisableEntitiesSpec<T extends DesactivableEntity> implements Specification<T> {
+public class NoDisableEntitiesSpec<T extends PersistentEntity> implements Specification<T> {
 
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {

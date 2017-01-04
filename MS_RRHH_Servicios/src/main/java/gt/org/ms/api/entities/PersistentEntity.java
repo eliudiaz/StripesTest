@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author eliud
  */
-public interface DesactivableEntity extends CustomEntity {
+public interface PersistentEntity extends CustomEntity {
 
     public Serializable getId();
 

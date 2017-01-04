@@ -5,19 +5,19 @@
  */
 package gt.org.ms.controller.dto;
 
-import gt.org.ms.api.entities.DesactivableEntity;
 import gt.org.ms.api.entities.SessionEntityImpl;
 import gt.org.ms.model.enums.Estado;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
+import gt.org.ms.api.entities.PersistentEntity;
 
 /**
  *
  * @author eliud
  */
-public class RoleDto extends SessionEntityImpl implements DesactivableEntity {
+public class RoleDto extends SessionEntityImpl implements PersistentEntity {
 
     private Integer id;
     @NotNull

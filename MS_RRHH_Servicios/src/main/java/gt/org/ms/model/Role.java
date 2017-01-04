@@ -5,7 +5,6 @@
  */
 package gt.org.ms.model;
 
-import gt.org.ms.api.entities.DesactivableEntity;
 import gt.org.ms.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
@@ -27,6 +26,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import gt.org.ms.api.entities.PersistentEntity;
 
 /**
  *
@@ -34,7 +34,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(name = "role", schema = "public")
-public class Role implements Serializable, DesactivableEntity {
+public class Role implements Serializable, PersistentEntity {
 
     private static final long serialVersionUID = 1L;
     @Id

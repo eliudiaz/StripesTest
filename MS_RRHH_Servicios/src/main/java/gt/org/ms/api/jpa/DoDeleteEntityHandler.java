@@ -7,20 +7,20 @@ package gt.org.ms.api.jpa;
 
 import gt.org.ms.api.requesting.AbstractRequestHandler;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
-import gt.org.ms.api.entities.DesactivableEntity;
 import gt.org.ms.api.global.exceptions.ExceptionsManager;
 import gt.org.ms.repository.CustomRepository;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import gt.org.ms.api.entities.PersistentEntity;
 
 /**
  *
  * @author edcracken
  * @param <T>
  */
-public class DoDeleteEntityHandler<T extends DesactivableEntity>
+public class DoDeleteEntityHandler<T extends PersistentEntity>
         extends AbstractRequestHandler<T, Boolean> {
 
     private final JpaRepository<T, Serializable> repo;

@@ -5,7 +5,6 @@
  */
 package gt.org.ms.model;
 
-import gt.org.ms.api.entities.DesactivableEntity;
 import gt.org.ms.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Collection;
@@ -23,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import gt.org.ms.api.entities.PersistentEntity;
 
 /**
  *
@@ -30,7 +30,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "Acceso", schema = "public")
-public class Acceso implements Serializable, DesactivableEntity {
+public class Acceso implements Serializable, PersistentEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
