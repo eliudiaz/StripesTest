@@ -25,10 +25,4 @@ public class EliminarCatalogoGeneralHandler extends DoDeleteEntityHandler<Catalo
         super(repo);
     }
 
-    @Override
-    public Boolean execute(final Catalogos e) {
-
-        return super.execute(e);
-    }
-
 }

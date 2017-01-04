@@ -5,7 +5,7 @@
  */
 package gt.org.ms.controller.catalogos.generales.handlers;
 
-import gt.org.ms.api.jpa.DoSaveEntityHandler;
+import gt.org.ms.api.jpa.DoUpdateEntityHandler;
 import gt.org.ms.model.Catalogos;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class ActualizarCatalogoGeneralHandler extends DoSaveEntityHandler<Catalogos> {
+public class ActualizarCatalogoGeneralHandler extends DoUpdateEntityHandler<Catalogos> {
 
     @Autowired
     public ActualizarCatalogoGeneralHandler(@Qualifier("catalogosRepository") JpaRepository<Catalogos, Serializable> repo) {
