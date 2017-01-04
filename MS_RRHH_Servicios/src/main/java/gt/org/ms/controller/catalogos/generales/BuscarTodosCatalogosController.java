@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller("getCatalos")
 @RequestMapping("catalogos")
-public class BuscarGenTodosController {
+public class BuscarTodosCatalogosController {
 
     @Autowired
     BuscarGenTodosHandler handler;
