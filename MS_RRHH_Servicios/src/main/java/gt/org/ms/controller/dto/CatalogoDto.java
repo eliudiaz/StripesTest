@@ -7,6 +7,7 @@ package gt.org.ms.controller.dto;
 
 import gt.org.ms.model.enums.Estado;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -15,7 +16,9 @@ import java.util.Date;
 public class CatalogoDto {
 
     private Integer id;
+    @NotNull
     private String valor;
+    @NotNull
     private String tipo;
     private Estado estado;
     private Integer codigoPadre;
