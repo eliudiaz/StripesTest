@@ -29,7 +29,7 @@ public class CrearCatalogoController {
     private GuardarCatalogoGeneralHandler handler;
 
     @RequestMapping(value = "/save",
-            method = RequestMethod.PUT)
+            method = RequestMethod.POST)
     public HttpEntity modificar(@RequestBody CatalogoDto catalogo) {
         handler.handle(new CatalogosDtoConverter().toEntity(catalogo));
         return new ResponseEntity(HttpStatus.ACCEPTED);

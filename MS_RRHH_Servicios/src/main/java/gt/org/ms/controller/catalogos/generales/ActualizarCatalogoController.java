@@ -8,7 +8,6 @@ package gt.org.ms.controller.catalogos.generales;
 import gt.org.ms.controller.catalogos.generales.handlers.ActualizarCatalogoGeneralHandler;
 import gt.org.ms.controller.dto.CatalogoDto;
 import gt.org.ms.converters.CatalogosDtoConverter;
-import gt.org.ms.model.Catalogos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
