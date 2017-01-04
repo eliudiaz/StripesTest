@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
 @Controller("desactivarAcceso")
 @RequestMapping("accesos")
