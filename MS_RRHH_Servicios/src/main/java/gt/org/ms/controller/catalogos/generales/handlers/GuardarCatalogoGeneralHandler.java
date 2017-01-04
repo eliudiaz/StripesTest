@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gt.org.ms.controller.catalogos.generales;
+package gt.org.ms.controller.catalogos.generales.handlers;
 
-import gt.org.ms.api.jpa.DoDeleteEntityHandler;
+import gt.org.ms.api.jpa.DoSaveEntityHandler;
 import gt.org.ms.model.Catalogos;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +18,11 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class EliminarCatalogoGeneralHandler extends DoDeleteEntityHandler<Catalogos> {
+public class GuardarCatalogoGeneralHandler extends DoSaveEntityHandler<Catalogos> {
 
     @Autowired
-    public EliminarCatalogoGeneralHandler(@Qualifier("catalogosRepository") JpaRepository<Catalogos, Serializable> repo) {
+    public GuardarCatalogoGeneralHandler(@Qualifier("catalogosRepository") JpaRepository<Catalogos, Serializable> repo) {
         super(repo);
-    }
-
-    @Override
-    public Boolean execute(final Catalogos e) {
-
-        return super.execute(e);
     }
 
 }
