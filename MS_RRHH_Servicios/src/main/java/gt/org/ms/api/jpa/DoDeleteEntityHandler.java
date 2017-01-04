@@ -9,7 +9,6 @@ import gt.org.ms.api.requesting.AbstractRequestHandler;
 import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import gt.org.ms.api.entities.DesactivableEntity;
 import gt.org.ms.api.global.exceptions.ExceptionsManager;
-import gt.org.ms.model.enums.Estado;
 import gt.org.ms.repository.CustomRepository;
 import java.io.Serializable;
 import java.util.List;
@@ -21,13 +20,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author edcracken
  * @param <T>
  */
-public class DoDesactivarHandler<T extends DesactivableEntity>
+public class DoDeleteEntityHandler<T extends DesactivableEntity>
         extends AbstractRequestHandler<T, Boolean> {
 
     private final JpaRepository<T, Serializable> repo;
     private Specification<T> customSpec;
 
-    public DoDesactivarHandler(JpaRepository<T, Serializable> repo) {
+    public DoDeleteEntityHandler(JpaRepository<T, Serializable> repo) {
         this.repo = repo;
     }
 

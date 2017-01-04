@@ -5,7 +5,7 @@
  */
 package gt.org.ms.controller.accesos.handlers;
 
-import gt.org.ms.api.jpa.DoDesactivarHandler;
+import gt.org.ms.api.jpa.DoDeleteEntityHandler;
 import gt.org.ms.model.Acceso;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service("accesosDesactivar")
-public class DesactivarAcHandler extends DoDesactivarHandler<Acceso> {
+public class DesactivarAcHandler extends DoDeleteEntityHandler<Acceso> {
 
     @Autowired
     public DesactivarAcHandler(@Qualifier("accesosRepository") JpaRepository<Acceso, Serializable> repo) {

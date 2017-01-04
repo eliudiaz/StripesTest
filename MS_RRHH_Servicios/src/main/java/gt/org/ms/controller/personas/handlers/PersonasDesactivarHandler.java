@@ -5,7 +5,7 @@
  */
 package gt.org.ms.controller.personas.handlers;
 
-import gt.org.ms.api.jpa.DoDesactivarHandler;
+import gt.org.ms.api.jpa.DoDeleteEntityHandler;
 import gt.org.ms.model.Persona;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class PersonasDesactivarHandler extends DoDesactivarHandler<Persona> {
+public class PersonasDesactivarHandler extends DoDeleteEntityHandler<Persona> {
 
     @Autowired
     public PersonasDesactivarHandler(@Qualifier("personasRepository") JpaRepository<Persona, Serializable> repo) {

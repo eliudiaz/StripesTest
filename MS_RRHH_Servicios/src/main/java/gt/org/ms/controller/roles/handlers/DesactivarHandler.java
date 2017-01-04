@@ -5,7 +5,7 @@
  */
 package gt.org.ms.controller.roles.handlers;
 
-import gt.org.ms.api.jpa.DoDesactivarHandler;
+import gt.org.ms.api.jpa.DoDeleteEntityHandler;
 import gt.org.ms.model.Role;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  * @author edcracken
  */
 @Service
-public class DesactivarHandler extends DoDesactivarHandler<Role> {
+public class DesactivarHandler extends DoDeleteEntityHandler<Role> {
 
     @Autowired
     public DesactivarHandler(@Qualifier("rolesRepository") JpaRepository<Role, Serializable> repo) {
