@@ -33,8 +33,7 @@ public class BuscarTodosCatalogosController {
     public @ResponseBody
     List<CatalogoDto> getList(@RequestParam(value = "padre", required = false) Integer padre,
             @RequestParam(value = "valor", required = false) String valor,
-            @RequestParam("tipo") String tipo) {
-
+            @RequestParam(value = "tipo", required = false) String tipo) {
         return handler.handle(new CatalogosRequestDto(padre, tipo, valor));
     }
 }

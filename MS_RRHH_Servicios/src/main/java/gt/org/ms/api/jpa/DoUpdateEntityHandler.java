@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import gt.org.ms.api.entities.PersistentEntity;
+import org.springframework.beans.BeanUtils;
 
 /**
  *
@@ -25,6 +26,7 @@ public class DoUpdateEntityHandler<T extends PersistentEntity>
 
     private final JpaRepository<T, Serializable> repo;
     private Specification<T> customSpec;
+    private String[] updatableFields;
 
     public DoUpdateEntityHandler(JpaRepository<T, Serializable> repo) {
         this.repo = repo;
@@ -34,24 +36,27 @@ public class DoUpdateEntityHandler<T extends PersistentEntity>
         this.customSpec = customSpec;
     }
 
+    public void setUpdatableFields(String[] updatableFields) {
+        this.updatableFields = updatableFields;
+    }
+
     @Override
     public Boolean execute(T e) {
-        T r;
+        T r = null;
         if (!isNull(customSpec) && repo instanceof CustomRepository) {
             List<T> l = ((CustomRepository) repo).findAll(customSpec);
             if (!isNull(l) && !l.isEmpty()) {
                 r = l.get(0);
-            } else {
-                throw ExceptionsManager.newValidationException("entity_not_found", "No existe registro con ese ID");
             }
         } else {
             r = repo.findOne(e.getId());
         }
-        if (!isNull(r)) {
-            repo.save(r);
-        } else {
+        if (isNull(r)) {
             throw ExceptionsManager.newValidationException("entity_not_found", "No existe registro con ese ID");
         }
+        BeanUtils.copyProperties(e, r, updatableFields);
+        repo.save(r);
+
         return true;
     }
 

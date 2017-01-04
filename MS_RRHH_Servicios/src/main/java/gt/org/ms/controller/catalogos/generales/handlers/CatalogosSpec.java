@@ -6,6 +6,7 @@
 package gt.org.ms.controller.catalogos.generales.handlers;
 
 import gt.org.ms.api.jpa.SpecificationBuilder;
+import static gt.org.ms.api.requesting.ValidationsHelper.isNull;
 import gt.org.ms.controller.dto.CatalogosRequestDto;
 import gt.org.ms.model.Catalogos;
 import gt.org.ms.model.Catalogos_;
@@ -33,13 +34,13 @@ public class CatalogosSpec implements SpecificationBuilder<CatalogosRequestDto, 
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 predicates.add(cb.like(cb.lower(root.get(Catalogos_.tipo)),
                         param.getTipo().toLowerCase()));
-                if (param.getCodigoPadre() != null) {
+                if (!isNull(param.getCodigoPadre())) {
                     predicates.add(cb.equal(root.get(Catalogos_.codigoPadre), param.getCodigoPadre()));
-                } else {
+                } else if (param.getCodigoPadre().intValue() >= 0) {
                     predicates.add(cb.isNull(root.get(Catalogos_.codigoPadre)));
                 }
 
-                if (param.getValor() != null) {
+                if (!isNull(param.getValor())) {
                     predicates.add(cb.like(cb.lower(root.get(Catalogos_.valor)),
                             param.getValor().toLowerCase()));
                 }
