@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author eliud
+ * @author edcracken
  */
-@Repository
+@Repository("catalogosRepository")
 public interface CatalogosRepository extends JpaRepository<Catalogos, Integer>, JpaSpecificationExecutor {
 
 }

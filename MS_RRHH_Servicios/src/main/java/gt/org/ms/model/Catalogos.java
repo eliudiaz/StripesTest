@@ -5,6 +5,7 @@
  */
 package gt.org.ms.model;
 
+import gt.org.ms.api.entities.PersistentEntity;
 import gt.org.ms.model.enums.Estado;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,7 +27,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "catalogos", schema = "public")
-public class Catalogos implements Serializable {
+public class Catalogos implements Serializable, PersistentEntity {
 
     private static final long serialVersionUID = 1L;
     @Id

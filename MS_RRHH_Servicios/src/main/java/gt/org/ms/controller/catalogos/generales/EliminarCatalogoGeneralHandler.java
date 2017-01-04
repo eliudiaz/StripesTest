@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 public class EliminarCatalogoGeneralHandler extends DoDeleteEntityHandler<Catalogos> {
 
     @Autowired
-    public EliminarCatalogoGeneralHandler(@Qualifier("usuariosRepository") JpaRepository<Catalogos, Serializable> repo) {
+    public EliminarCatalogoGeneralHandler(@Qualifier("catalogosRepository") JpaRepository<Catalogos, Serializable> repo) {
         super(repo);
     }
 
