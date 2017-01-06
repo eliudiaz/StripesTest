@@ -33,6 +33,7 @@ public class ActualizarCatalogoController {
             method = RequestMethod.PUT)
     public HttpEntity modificar(@PathVariable("id") Integer id, @RequestBody CatalogoDto catalogo) {
         catalogo.setId(id);
+        handler.setUpdatableFields(new String[]{"valor", "tipo", "codigoPadre"});
         handler.handle(new CatalogosDtoConverter().toEntity(catalogo));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }

@@ -30,7 +30,6 @@ public class PersonaDto {
     private String otrosNombres;
     @NotNull
     private String primerApellido;
-    @NotNull
     private String segundoApellido;
     private String otrosApellidos;
     private String apellidoCasada;

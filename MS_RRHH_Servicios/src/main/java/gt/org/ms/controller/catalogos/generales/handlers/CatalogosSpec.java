@@ -39,9 +39,8 @@ public class CatalogosSpec implements SpecificationBuilder<CatalogosRequestDto, 
                 }
                 if (!isNull(param.getCodigoPadre())
                         && param.getCodigoPadre().intValue() >= 0) {
-                    predicates.add(cb.equal(root.get(Catalogos_.codigoPadre), param.getCodigoPadre()));
-                } else if (param.getCodigoPadre().intValue() >= 0) {
-                    predicates.add(cb.isNull(root.get(Catalogos_.codigoPadre)));
+                    predicates.add(cb.equal(root.get(Catalogos_.codigoPadre),
+                            param.getCodigoPadre()));
                 }
 
                 if (!isNull(param.getValor())) {
